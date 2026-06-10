@@ -98,6 +98,16 @@ public class Productimpl implements Productdao {
 
         return brandProducts;
     }
+    @Override
+    public Iterable<Product> findByName(String name){
+        List<Product> productListName=new LinkedList<>();
+        for(Product p:products){
+            if(p.getName().equalsIgnoreCase(name)){
+                productListName.add(p);
+            }
+        }
+        return  productListName;
+    }
 
     @Override
     public Iterable<Product> sortByPriceAsc() {
