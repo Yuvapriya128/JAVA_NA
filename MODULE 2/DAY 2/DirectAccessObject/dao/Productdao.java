@@ -14,4 +14,5 @@ public interface Productdao {
     public Iterable<Product> findByBrand(String brand);
     public Iterable<Product> sortByPriceAsc();
     public Iterable<Product> sortByRatingDesc();
+    public Iterable<Product> findByName(String name);
 }
