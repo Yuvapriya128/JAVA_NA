@@ -1,5 +1,8 @@
 package covariant;
-
+/*When getClass() says:
+Dog
+it means the actual runtime object is Dog.
+*/
 public class Student extends Person{
     protected String course;
 

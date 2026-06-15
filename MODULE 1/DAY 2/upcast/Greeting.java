@@ -13,6 +13,19 @@ public class Greeting {
 //    public void  greet(Employee e){
 //        System.out.println("Greetings Employee: "+e.getName());
 //    }
+
+    //null can be assigned to:
+/*
+Person
+Student
+Employee
+
+Java tries to find the most specific method.
+
+But Student and Employee are siblings.
+
+Neither is more specific than the other.
+    */
     public static void main(String[] args) {
         Person p=new Person("siva","priya");
         Student s=new Student("jackie","chan","antony");

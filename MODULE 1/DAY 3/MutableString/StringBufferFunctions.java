@@ -1,6 +1,7 @@
 package MutableString;
 
 public class StringBufferFunctions {
+    //string functions replace,substring same : start index included, end excluded
     public static void main(String[] args) {
         StringBuffer sb=new StringBuffer("volcano");
         System.out.println(sb.append("'s lava"));

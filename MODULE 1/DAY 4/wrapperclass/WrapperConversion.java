@@ -1,5 +1,9 @@
 package WrapperClass;
-
+/*
+double → Double	✅ Autoboxing
+Double → double	✅ Auto-unboxing
+null Integer → int	⚠️ Auto-unboxing + NPE
+    */
 public class WrapperConversion {
     public static void main(String[] args) {
         int intval=8;

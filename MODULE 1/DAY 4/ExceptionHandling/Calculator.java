@@ -1,5 +1,26 @@
 package ExceptionHandling;
 
+/*
+System.exit(0) terminates the JVM immediately. 
+Since the JVM shuts down, the finally block does not get a chance to execute.
+
+If return occurs:
+
+try/catch
+   ↓
+finally
+   ↓
+method exits
+
+If no return:
+
+try/catch
+   ↓
+finally
+   ↓
+next statement executes
+*/
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

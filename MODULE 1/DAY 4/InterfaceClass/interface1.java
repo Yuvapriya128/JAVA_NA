@@ -1,5 +1,7 @@
 package InterfaceClass;
 
+//In an interface, every variable is automatically: public static final even if you don't write those keywords.
+
 public class interface1 {
     public static void main(String[] args) {
         Shape shapeCircle=new Circle(1.5);
