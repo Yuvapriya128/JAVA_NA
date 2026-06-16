@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="credit"
+          class="demo.service.CreditCard"/>
+    <bean id="debit"
+          class="demo.service.DebitCard"/>
+    <bean id="upi"
+          class="demo.service.Upi"/>
+
+    <bean id="email"
+          class="demo.service.Email"/>
+    <bean id="whatsapp"
+          class="demo.service.Whatsapp"/>
+
+
+<!--Setter injection through entity with setter methods-->
+
+    <bean id="ExpenseManager1" class="demo.service.ExpenseManagerSetter">
+        <property name="paymentService" ref="credit"/>
+        <property name="notificationService" ref="email"/>
+    </bean>
+
+    <bean id="ExpenseManager2" class="demo.service.ExpenseManagerSetter">
+        <property name="paymentService" ref="credit"/>
+        <property name="notificationService" ref="whatsapp"/>
+    </bean>
+
+    <bean id="ExpenseManager3" class="demo.service.ExpenseManagerSetter">
+        <property name="paymentService" ref="debit"/>
+        <property name="notificationService" ref="email"/>
+    </bean>
+
+    <bean id="ExpenseManager4" class="demo.service.ExpenseManagerSetter">
+        <property name="paymentService" ref="debit"/>
+        <property name="notificationService" ref="whatsapp"/>
+    </bean>
+
+    <bean id="ExpenseManager5" class="demo.service.ExpenseManagerSetter">
+        <property name="paymentService" ref="upi"/>
+        <property name="notificationService" ref="email"/>
+    </bean>
+
+    <bean id="ExpenseManager6" class="demo.service.ExpenseManagerSetter">
+        <property name="paymentService" ref="upi"/>
+        <property name="notificationService" ref="whatsapp"/>
+    </bean>
+
+
+
+
+
+
+
+</beans>
