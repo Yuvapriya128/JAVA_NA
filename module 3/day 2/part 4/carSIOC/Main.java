@@ -1,4 +1,4 @@
-package CarSIOC;
+package carSIOC;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Scanner;
 
 @Configuration
-@ComponentScan(basePackages = "CarSIOC")
+@ComponentScan(basePackages = "carSIOC")
 public class Main {
 
     @Bean

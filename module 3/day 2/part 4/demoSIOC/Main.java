@@ -1,4 +1,4 @@
-package DemoSIOC;
+package demoSIOC;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Scanner;
 
 @Configuration
-@ComponentScan(basePackages = "DemoSIOC")
+@ComponentScan(basePackages = "demoSIOC")
 public class Main {
     @Bean
     public Scanner getSc(){

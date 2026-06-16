@@ -1,4 +1,4 @@
-package DemoSIOC;
+package demoSIOC;
 
 import org.springframework.stereotype.Component;
 
