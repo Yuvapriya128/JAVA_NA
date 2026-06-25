@@ -1,0 +1,24 @@
+package org.example.springdatajpademo.Ecommerce.DTO;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderItemUpdateDTO {
+    @NotNull(message = "OrderItem id is required")
+    private Integer id;
+
+    @NotNull(message = "Order is required")
+    private Integer orderId;
+
+    @NotNull(message = "Product is required")
+    private Integer productId;
+
+    @Min(value = 1, message = "Quantity must be atleast 1")
+    private int quantity;
+}
