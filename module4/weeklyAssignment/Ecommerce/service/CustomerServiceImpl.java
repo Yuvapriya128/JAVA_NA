@@ -1,11 +1,13 @@
 package org.example.springdatajpademo.Ecommerce.service;
 
+import org.example.springdatajpademo.Ecommerce.DTO.AdminCustomerRequestDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerRequestDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerResponseDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerUpdateDTO;
 import org.example.springdatajpademo.Ecommerce.exceptions.CustomerNotFound;
 import org.example.springdatajpademo.Ecommerce.model.Customer;
 import org.example.springdatajpademo.Ecommerce.model.Order;
+import org.example.springdatajpademo.Ecommerce.model.UserRole;
 import org.example.springdatajpademo.Ecommerce.repository.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponseDTO saveCustomer(CustomerRequestDTO dto) {
 
-        Customer customer = mapToEntity(dto);
+        Customer customer = mapToEntity(dto, UserRole.USER);
+
+        Customer savedCustomer = customerRepo.save(customer);
+
+        return mapToResponse(savedCustomer);
+    }
+
+    @Override
+    public CustomerResponseDTO saveCustomerByAdmin(AdminCustomerRequestDTO dto) {
+
+        UserRole role = dto.getRole() != null ? dto.getRole() : UserRole.USER;
+        Customer customer = mapToEntity(dto, role);
 
         Customer savedCustomer = customerRepo.save(customer);
 
@@ -64,6 +77,23 @@ public class CustomerServiceImpl implements CustomerService {
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             customer.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
+        if (customer.getRole() == null) {
+            customer.setRole(UserRole.USER);
+        }
+
+        Customer updatedCustomer = customerRepo.save(customer);
+
+        return mapToResponse(updatedCustomer);
+    }
+
+    @Override
+    public CustomerResponseDTO updateCustomerRole(Integer id, UserRole role) {
+
+        Customer customer = customerRepo.findById(id)
+                .orElseThrow(() ->
+                        new CustomerNotFound("Customer not found"));
+
+        customer.setRole(role != null ? role : UserRole.USER);
 
         Customer updatedCustomer = customerRepo.save(customer);
 
@@ -89,7 +119,7 @@ public class CustomerServiceImpl implements CustomerService {
     // Mapping Methods
     // =========================
 
-    private Customer mapToEntity(CustomerRequestDTO dto) {
+    private Customer mapToEntity(CustomerRequestDTO dto, UserRole role) {
 
         Customer customer = new Customer();
 
@@ -97,6 +127,20 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmail(dto.getEmail());
         customer.setAddress(dto.getAddress());
         customer.setPassword(passwordEncoder.encode(dto.getPassword()));
+        customer.setRole(role);
+
+        return customer;
+    }
+
+    private Customer mapToEntity(AdminCustomerRequestDTO dto, UserRole role) {
+
+        Customer customer = new Customer();
+
+        customer.setName(dto.getName());
+        customer.setEmail(dto.getEmail());
+        customer.setAddress(dto.getAddress());
+        customer.setPassword(passwordEncoder.encode(dto.getPassword()));
+        customer.setRole(role);
 
         return customer;
     }

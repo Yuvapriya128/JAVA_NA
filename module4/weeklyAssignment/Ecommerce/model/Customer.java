@@ -31,6 +31,10 @@ public class Customer {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private UserRole role;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonManagedReference("customer-order")
     private List<Order> orders;

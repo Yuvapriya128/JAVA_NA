@@ -7,6 +7,7 @@ import org.example.springdatajpademo.Ecommerce.DTO.ProductUpdateDTO;
 import org.example.springdatajpademo.Ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     public ResponseEntity<ProductResponseDTO> save(
             @Valid @RequestBody ProductRequestDTO dto) {
 
@@ -44,6 +46,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     public ResponseEntity<ProductResponseDTO> update(
             @PathVariable Integer id,
             @Valid @RequestBody ProductUpdateDTO dto) {
@@ -54,6 +57,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     public ResponseEntity<Void> deleteById(
             @PathVariable Integer id) {
 

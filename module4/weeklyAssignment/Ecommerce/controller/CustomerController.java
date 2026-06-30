@@ -1,6 +1,8 @@
 package org.example.springdatajpademo.Ecommerce.controller;
 
 import jakarta.validation.Valid;
+import org.example.springdatajpademo.Ecommerce.DTO.AdminCustomerRequestDTO;
+import org.example.springdatajpademo.Ecommerce.DTO.ChangeRoleRequestDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerRequestDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerResponseDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerUpdateDTO;
@@ -8,6 +10,7 @@ import org.example.springdatajpademo.Ecommerce.model.Order;
 import org.example.springdatajpademo.Ecommerce.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +23,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CustomerResponseDTO>> findAll() {
 
         return ResponseEntity.ok(customerService.getAllCustomers());
@@ -41,7 +45,18 @@ public class CustomerController {
                 .body(customerService.saveCustomer(customerDTO));
     }
 
+    @PostMapping("/admin/create")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CustomerResponseDTO> saveByAdmin(
+            @Valid @RequestBody AdminCustomerRequestDTO customerDTO) {
+
+        return ResponseEntity
+                .status(201)
+                .body(customerService.saveCustomerByAdmin(customerDTO));
+    }
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomerResponseDTO> update(
             @PathVariable Integer id,
             @Valid @RequestBody CustomerUpdateDTO customerDTO) {
@@ -51,7 +66,19 @@ public class CustomerController {
         );
     }
 
+    @PutMapping("/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CustomerResponseDTO> updateRole(
+            @PathVariable Integer id,
+            @Valid @RequestBody ChangeRoleRequestDTO requestDTO) {
+
+        return ResponseEntity.ok(
+                customerService.updateCustomerRole(id, requestDTO.getRole())
+        );
+    }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteById(
             @PathVariable Integer id) {
 

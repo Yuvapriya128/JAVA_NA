@@ -1,6 +1,7 @@
 package org.example.springdatajpademo.Ecommerce.security;
 
 import org.example.springdatajpademo.Ecommerce.model.Customer;
+import org.example.springdatajpademo.Ecommerce.model.UserRole;
 import org.example.springdatajpademo.Ecommerce.repository.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,10 +51,12 @@ public class SecurityConfig {
             Customer customer = customerRepo.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Customer not found with email: " + email));
 
+            String roleName = customer.getRole() != null ? customer.getRole().name() : UserRole.USER.name();
+
             return User.builder()
                     .username(customer.getEmail())
                     .password(customer.getPassword())
-                    .roles("USER")
+                    .roles(roleName)
                     .build();
         };
     }
