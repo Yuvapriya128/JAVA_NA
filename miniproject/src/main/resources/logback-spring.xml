@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+    Logback Spring Configuration with Automatic File Rollover
+
+    Rolling Policy: SizeAndTimeBasedRollingPolicy
+    - Creates new log file when it reaches maxFileSize
+    - Also creates new files daily (based on date in filename)
+    - Automatically archives old log files with date and index
+    - Deletes old archives based on maxHistory and totalSizeCap
+
+    File Rolling Examples:
+    - application.log (current, active file)
+    - application-2026-07-01.1.log (first rollover on 2026-07-01)
+    - application-2026-07-01.2.log (second rollover on same day)
+    - application-2026-07-02.1.log (first rollover on 2026-07-02)
+    -->
+
+    <!-- Define paths for log files -->
+    <property name="LOG_FILE_PATH" value="logs"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- Configurable properties - Can be overridden by environment variables or application.properties -->
+    <property name="LOG_MAX_FILE_SIZE" value="${LOG_MAX_FILE_SIZE:-10MB}"/>
+    <property name="LOG_MAX_HISTORY_DAYS" value="${LOG_MAX_HISTORY_DAYS:-30}"/>
+    <property name="LOG_TOTAL_SIZE_CAP" value="${LOG_TOTAL_SIZE_CAP:-1GB}"/>
+    <property name="LOG_TOTAL_SIZE_CAP_ERROR" value="${LOG_TOTAL_SIZE_CAP_ERROR:-500MB}"/>
+
+    <!-- Console Appender (for console output) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--
+    File Appender (application logs) with Automatic Rollover
+
+    Rollover Triggers:
+    1. File Size: When application.log reaches 10MB
+    2. Date: When day changes (daily rollover)
+    3. Automatic Cleanup: Keeps 30 days of history or 1GB total, whichever comes first
+
+    When rollover occurs:
+    - Current file (application.log) is renamed to application-YYYY-MM-DD.N.log
+    - New active file (application.log) is created
+    - Old archives are deleted if they exceed retention policy
+    -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/application.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- Archive file pattern: application-2026-07-01.1.log, application-2026-07-01.2.log, etc. -->
+            <fileNamePattern>${LOG_FILE_PATH}/application-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- Trigger rollover when file size reaches this limit -->
+            <maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+            <!-- Keep archive files for this many days -->
+            <maxHistory>${LOG_MAX_HISTORY_DAYS}</maxHistory>
+            <!-- Total size of all archive files combined -->
+            <totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- File Appender (error logs) with Automatic Rollover -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/error.log</file>
+        <append>true</append>
+        <!-- Only capture ERROR level logs -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${LOG_MAX_HISTORY_DAYS}</maxHistory>
+            <totalSizeCap>${LOG_TOTAL_SIZE_CAP_ERROR}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- File Appender (service logs) with Automatic Rollover -->
+    <appender name="SERVICE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/service.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${LOG_MAX_HISTORY_DAYS}</maxHistory>
+            <totalSizeCap>${LOG_TOTAL_SIZE_CAP_ERROR}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- File Appender (security/authentication logs) with Automatic Rollover -->
+    <appender name="SECURITY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/security.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/security-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${LOG_MAX_HISTORY_DAYS}</maxHistory>
+            <totalSizeCap>${LOG_TOTAL_SIZE_CAP_ERROR}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- File Appender (controller/API logs) with Automatic Rollover -->
+    <appender name="API_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/api.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/api-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${LOG_MAX_HISTORY_DAYS}</maxHistory>
+            <totalSizeCap>${LOG_TOTAL_SIZE_CAP_ERROR}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Logger configurations -->
+    <logger name="org.example.loanemimgmt.serviceImpl" level="INFO" additivity="false">
+        <appender-ref ref="SERVICE_FILE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="org.example.loanemimgmt.security" level="INFO" additivity="false">
+        <appender-ref ref="SECURITY_FILE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="org.example.loanemimgmt.controller" level="INFO" additivity="false">
+        <appender-ref ref="API_FILE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="org.example.loanemimgmt.exception" level="INFO" additivity="false">
+        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!--
+    Root Logger - Captures all logs that don't match above loggers
+    Configuration:
+    - Level: INFO (logs INFO, WARN, ERROR; excludes DEBUG, TRACE)
+    - Outputs to: CONSOLE, FILE, and ERROR_FILE
+    - File rollover happens automatically when size/date thresholds are reached
+    -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+</configuration>
+
