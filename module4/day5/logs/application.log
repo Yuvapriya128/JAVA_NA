@@ -1,0 +1,48 @@
+2026-06-30 12:22:15 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-06-30 12:22:15 INFO  c.e.d.service.ProductServiceImplTest - Starting ProductServiceImplTest using Java 21.0.11 with PID 15288 (started by yuvapriya.s in C:\Users\yuvapriya.s\IdeaProjects\Day24_June30\demo)
+2026-06-30 12:22:15 DEBUG c.e.d.service.ProductServiceImplTest - Running with Spring Boot v3.3.0, Spring v6.1.8
+2026-06-30 12:22:15 INFO  c.e.d.service.ProductServiceImplTest - No active profile set, falling back to 1 default profile: "default"
+2026-06-30 12:22:16 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-30 12:22:16 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 1 JPA repository interface.
+2026-06-30 12:22:17 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-30 12:22:18 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-06-30 12:22:18 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-06-30 12:22:18 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-30 12:22:18 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-30 12:22:18 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@77d95e5a
+2026-06-30 12:22:18 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-06-30 12:22:19 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-30 12:22:19 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-30 12:22:19 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-30 12:22:20 INFO  c.e.d.service.ProductServiceImplTest - Started ProductServiceImplTest in 5.263 seconds (process running for 6.544)
+2026-06-30 12:22:20 INFO  c.e.demo.service.ProductServiceImpl - LOG INFO: product: Product(id=1, name=fridge, brand=lg, cost=2000.0)
+2026-06-30 12:22:20 WARN  c.e.demo.service.ProductServiceImpl - LOG WARN: product arrived
+2026-06-30 12:22:20 DEBUG c.e.demo.service.ProductServiceImpl - LOG DEBUG: product details: Product(id=1, name=fridge, brand=lg, cost=2000.0)
+2026-06-30 12:22:20 INFO  c.e.demo.service.ProductServiceImpl - product will be saved
+2026-06-30 12:22:20 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-30 12:22:20 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-06-30 12:22:20 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-06-30 12:25:03 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-06-30 12:25:03 INFO  c.e.d.service.ProductServiceImplTest - Starting ProductServiceImplTest using Java 21.0.11 with PID 26748 (started by yuvapriya.s in C:\Users\yuvapriya.s\IdeaProjects\Day24_June30\demo)
+2026-06-30 12:25:03 DEBUG c.e.d.service.ProductServiceImplTest - Running with Spring Boot v3.3.0, Spring v6.1.8
+2026-06-30 12:25:03 INFO  c.e.d.service.ProductServiceImplTest - No active profile set, falling back to 1 default profile: "default"
+2026-06-30 12:25:03 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-30 12:25:04 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 50 ms. Found 1 JPA repository interface.
+2026-06-30 12:25:05 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-30 12:25:05 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-06-30 12:25:05 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-06-30 12:25:05 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-30 12:25:05 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-30 12:25:05 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3d718248
+2026-06-30 12:25:05 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-06-30 12:25:06 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-30 12:25:06 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-30 12:25:06 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-30 12:25:06 INFO  c.e.d.service.ProductServiceImplTest - Started ProductServiceImplTest in 3.583 seconds (process running for 4.71)
+2026-06-30 12:25:06 INFO  c.e.demo.service.ProductServiceImpl - LOG INFO: product: Product(id=1, name=fridge, brand=lg, cost=2000.0)
+2026-06-30 12:25:06 WARN  c.e.demo.service.ProductServiceImpl - LOG WARN: product arrived
+2026-06-30 12:25:06 DEBUG c.e.demo.service.ProductServiceImpl - LOG DEBUG: product details: Product(id=1, name=fridge, brand=lg, cost=2000.0)
+2026-06-30 12:25:06 INFO  c.e.demo.service.ProductServiceImpl - product will be saved
+2026-06-30 12:25:06 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-30 12:25:06 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-06-30 12:25:06 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
