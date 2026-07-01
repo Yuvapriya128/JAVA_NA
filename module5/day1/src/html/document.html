@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head xmlns:padding="http://www.w3.org/1999/xhtml" xmlns:padding="http://www.w3.org/1999/xhtml"
+      xmlns:padding="http://www.w3.org/1999/xhtml" xmlns:padding="http://www.w3.org/1999/xhtml"
+      xmlns:padding="http://www.w3.org/1999/xhtml">
+    <title>Hello World</title>
+</head>
+<body>
+<h1>Hello World</h1>
+<h2>Hello World</h2>
+<h3>Hello World</h3>
+<h4>Hello World</h4>
+<h5>Hello World</h5>
+<h6>Hello World</h6>
+<p>this is a paragraph</p>
+<p>this is another paragraph</p>
+<a href="first.html">This is a link</a>
+
+<img src="https://www.w3schools.com/howto/img_logo.gif" height="200px" alt="W3School Logo"/>
+<br>
+<img src="https://www.w3schools.com/howto/img_logo.gif" alt="W3School Logo"/>
+<br>
+<!--Fieldset layout-->
+<fieldset>
+    <legend>Hello </legend>
+    This is the behavior of fieldset
+</fieldset>
+
+
+<!--List layout-->
+<!--ordered-->
+<ol type="i">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ol>
+
+<!--unordered -->
+<ul type="square">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ul>
+
+<!--unordered with images as listholders-->
+
+<ul style="list-style-type: none ; padding:0px">
+    <li >
+        <img src="images/roses.jpg" alt="Rose" width="30">
+        Item 1
+    </li>
+    <li>
+        <img src="images/roses.jpg" alt="Rose" width="30">
+        Item 2
+    </li>
+    <li>
+        <img src="images/roses.jpg" alt="Rose" width="30">
+        Item 3
+    </li>
+
+</ul>
+
+<!--table layout-->
+<table border="1" cellpadding="10" cellspacing="10" align="left">
+    <thead>
+    <tr>
+<!--        merge 2 colums-->
+        <th colspan="2">Name</th>
+    </tr>
+     <tr>
+         <th>First Name</th>
+         <th>Last Name</th>
+     </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Yuva</td>
+        <td rowspan="2">s</td>
+    </tr>
+
+    <tr>
+        <td>siva</td>
+<!--        <td>s</td>-->
+    </tr>
+
+    </tbody>
+</table>
+
+
+<!--form-->
+<form action="firt.html" method="post">
+<table align="center">
+
+       <tbody>
+       <tr>
+           <td>
+              <input type="text" name="username" placeholder="User Name" required>
+           </td>
+       </tr>
+       <tr>
+           <td>
+               <input type="password" name="password" placeholder="password" required>
+           </td>
+       </tr>
+       <tr>
+           <td>
+               gender: <input type="radio" name="gender" value="male">Male
+               <input type="radio" name="gender" value="female">Female
+           </td>
+       </tr>
+       <tr>
+           <td>
+               skills: <input type="checkbox" name="skills" value="HTML">HTML
+               <input type="checkbox" name="skills" value="CSS">CSS
+           </td>
+       </tr>
+       <tr>
+           <td>
+           <label for="country">Country</label>
+           <select name="country" id="country">
+               <option value="india">India</option>
+               <option value="australia">Australia</option>
+               <option value="canada">Canada</option>
+           </select>
+           </td>
+       </tr>
+
+       <tr>
+           <td>
+               <textarea height="400px" placeholder="Enter your message"></textarea>
+           </td>
+       </tr>
+       <tr>
+           <td>
+               <input type="submit" name="Submit" value="Submit">
+           </td>
+       </tr>
+
+       </tbody>
+
+
+</table>
+</form>
+
+</body>
