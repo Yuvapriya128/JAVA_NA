@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>XO game</title>
+</head>
+<body>
+<h2 align="center" style="height: 15px">3x3 box with X</h2>
+<div id="container"></div>
+<button type="button" disabled>count</button>
+<div id="count"></div>
+</body>
+<script>
+    let cnt=0;
+    window.onload=function(){
+        init();
+    }
+    function init(){
+        var box=`<table border="1" align="center" cellspacing="5px" cellpadding="50px">
+<tbody>`;
+        let val=1;
+        for(let i=0;i<3;i++){
+            box+='<tr>';
+            for(var j=0;j<3;j++) {
+
+                box+=`<td onclick=check(this)>${val++} </td>`;
+
+            }
+            box+=`</tr>`;
+        }
+        box+=`</tbody></table>`
+        document.getElementById("container").innerHTML=box;
+        document.getElementById("count").innerText=cnt;
+    }
+    // all possible combinations
+    const wins = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ];
+    function checkWinner(){
+        let cells=document.getElementsByTagName("td");
+        for(var i=0;i<wins.length;i++){
+            //multipe rows with 3 columns
+            let a=wins[i][0];
+            let b=wins[i][1];
+            let c=wins[i][2];
+
+            if(cells[a].innerText==="X" || cells[a].innerText==="O"){
+                if(cells[a].innerText=== cells[b].innerText
+                && cells[a].innerText=== cells[c].innerText){
+                    alert(cells[a].innerText+" wins");
+                    return;
+                }
+            }
+        }
+    }
+    function check(val){
+        if(cnt%2!==0){
+            return makex(val);
+        }else{
+            return makeo(val);
+        }
+    }
+    function makex(val){
+        // validation
+        if(val.innerText ==="X" || val.innerText==="O"){
+            alert("Value can't be changed");
+        }else {
+            val.innerText = 'X';
+            cnt++;
+            document.getElementById("count").innerText = cnt;
+            checkWinner();
+        }
+    }
+    function makeo(val){
+        // vaildation
+        if(val.innerText ==="X" || val.innerText==="O"){
+            alert("Value can't be changed");
+        }else {
+            val.innerText = 'O';
+            cnt++;
+            document.getElementById("count").innerText = cnt;
+            checkWinner();
+        }
+    }
+</script>
+</html>

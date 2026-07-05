@@ -1,0 +1,76 @@
+<html>
+<head>
+    <title>Form</title>
+</head>
+<body>
+<!--field layout-->
+<fieldset>
+    <legend>Display Details</legend>
+    <div id="displayDetails"></div>
+</fieldset>
+
+
+
+<form>
+    <fieldset>Form
+    <legend>Enter Details</legend>
+
+<input type="text" placeholder="Enter your name" name="name" id="name">
+        <br>
+<input type="number" placeholder="Enter phone number" name="phone" id="phone">
+        <br>
+<input type="email" placeholder="Enter your email" name="email" id="email">
+        <br>
+
+<!--    why this disabled selected-->
+    <label id="skills">Choose your skills</label>
+        <label><input type="checkbox" name="skills" value="HTML"> HTML</label>
+        <label><input type="checkbox" name="skills" value="CSS"> CSS</label>
+        <label><input type="checkbox" name="skills" value="JavaScript"> JavaScript</label>
+        <label><input type="checkbox" name="skills" value="Java"> Java</label>
+
+<!--submit button reloads the page by default-->
+        <button type="button" onclick="displayDetails()">Submit</button>
+        <button type="reset" onclick="resetDetails()">Reset</button>
+        </fieldset>
+</form>
+</body>
+<script>
+
+    function displayDetails() {
+        // make this local, to reset this everytime
+        var names="<ul>";
+        var name=document.getElementById("name").value;
+        var phone=document.getElementById("phone").value;
+        var email=document.getElementById("email").value;
+        // skills []
+        var skills = document.querySelectorAll('input[name="skills"]:checked');
+
+
+        names+=`<li>Name : ${name}</li>`;
+        names+=`<li>Phone number: ${phone}</li>`;
+        names+=`<li>Email : ${email}</li>`;
+        names+=`<li>Skills: `;
+        for(var i=0;i<skills.length;i++)
+        names+=skills[i].value +" ";
+        names+=`</li>`
+
+        names+=`</ul>`;
+        document.getElementById("displayDetails").innerHTML=names;
+
+    }
+    // this func is not needed, can be done with type=reset in button itself
+    function resetDetails() {
+        document.getElementById("name").value="";
+        document.getElementById("phone").value="";
+        document.getElementById("email").value="";
+        var resetskills=document.querySelectorAll('input[name="skills"]');
+        resetskills.forEach(
+            (skill)=>{
+                skill.checked=false;
+            }
+        )
+    }
+
+</script>
+</html>

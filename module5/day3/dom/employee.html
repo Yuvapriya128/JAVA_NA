@@ -1,0 +1,151 @@
+<html>
+<head>
+    <title>First Document</title>
+    <style>
+        #content{
+            color:red;
+            font-size:50px;
+        }
+        button,input{
+            color:white;
+            background-color:black;
+            border:4px outset grey;
+            font-size:50px;
+        }
+        button:hover{
+            border:4px inset grey;
+        }
+    </style>
+</head>
+<body onload="drawlist()">
+<input type="text" id="additem" placeholder="Enter name"/>
+<input type="number" id="additem2" placeholder="Enter salary"/>
+<button onclick="add()">Add</button>
+<button onclick="sortdemo()">Sort</button>
+<button onclick="rsortdemo()">Reverse Sort</button>
+<div id="content"></div>
+</body>
+<script>
+    names=[];
+    function drawlist(){
+        var content="<ol>";
+        for(let i=0;i<names.length;i++){
+            content= content+`<li>${names[i]["name"].toUpperCase()}
+<button onclick="remove('${names[i].id}')">remove</button>
+<button onclick="update(${names[i].id})">update</button></li>`;
+        }
+        content+="</ol>";
+//alert(content);
+        document.getElementById("content").innerHTML=content;
+    }
+    window.onload=function (){
+        getAll();
+    }
+    function sortdemo(){
+        fetch("http://localhost:8080/api/employees/salary-sort",
+            {method:"GET"})
+            .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            names=data;
+            drawlist();
+        }).catch(error => console.log(error));
+    }
+    function rsortdemo(){
+        fetch("http://localhost:8080/api/employees/salary-rsort",
+            {method:"GET"})
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                names=data;
+                drawlist();
+            }).catch(error => console.log(error));
+    }
+
+    function getAll(){
+        fetch("http://localhost:8080/api/employees",{method:"GET"})
+            .then((response)=>{
+                return response.json();
+            })
+            .then(data =>{
+                console.log(data);
+                names= data;
+                drawlist();
+            })
+            .catch(err=>{
+                console.log("There was some problem in contacting the server: "+err)
+            });
+    }
+    function remove(id){
+        fetch(`http://localhost:8080/api/employees/${id}`,{method:"DELETE"})
+            .then((response)=>{
+                if(response.ok){
+                    alert("Successfully deleted employee");
+                    getAll()
+                }else{
+                    console.log(response);
+                }
+            })
+
+            .catch(error=>{
+            console.log("Error while deleting"+error);
+        })
+    }
+    function update(id){
+       /* var newname=document.getElementById("additem").value;
+        var newsal=parseFloat(document.getElementById("additem2").value);
+        var employee={
+            id:id,
+            name:newname,
+            salary:newsal,
+        }*/
+        var newname=document.getElementById("additem").value;
+        var newsal=parseFloat(document.getElementById("additem2").value);
+        var employee=names.find((employee)=>employee["id"]==id)
+
+        employee["name"]=newname;
+        employee["salary"]=newsal;
+
+        fetch(`http://localhost:8080/api/employees/${id}`,{
+            method:"PUT",
+        body:JSON.stringify(employee),
+        headers: { "Content-Type": "application/json"}})
+        .then((response)=>{
+            if(response.ok){
+                alert("Successfully updated employee");
+                drawlist();
+            //   drawlist-> updated will be in exact place
+            //     getAll(); -->it will change positions
+            }else{
+                console.log(response);
+            }
+        })
+    }
+    function add(){
+        var newname=document.getElementById("additem").value;
+        var newsal=parseFloat(document.getElementById("additem2").value);
+
+        // create new employee
+        var employee=({
+                name:newname,
+                salary:newsal
+
+        })
+        getAll();
+        fetch(`http://localhost:8080/api/employees`,{
+            method:"POST",
+            body:JSON.stringify(employee),
+            headers: { "Content-Type": "application/json"}
+        })
+            .then((response)=>{
+            if(response.ok){
+                alert("Successfully updated employee");
+                getAll();
+            }else{
+                console.log(response);
+            }
+        })
+    }
+
+</script>
+</html>

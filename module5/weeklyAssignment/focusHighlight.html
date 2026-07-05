@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>h1 highlighting with event binding</title>
+</head>
+<body>
+<table cellpadding="20px">
+    <thead>
+    <tr>
+        <td><h1 onclick="homeclick()" id="home">home</h1></td>
+<td><h1 onclick="aboutclick()" id="about">about</h1></td>
+<td><h1 onclick="contactclick()" id="contact">contact</h1></td>
+    </tr>
+    </thead>
+</table>
+
+
+
+</body>
+<script>
+    function homeclick() {
+
+        document.getElementById("home").style.color="red";
+        document.getElementById("about").style.color="black";
+        document.getElementById("contact").style.color="black";
+    }
+    function aboutclick() {
+
+        document.getElementById("home").style.color="black";
+        document.getElementById("about").style.color="red";
+        document.getElementById("contact").style.color="black";
+
+    }
+    function contactclick() {
+
+        document.getElementById("home").style.color="black";
+        document.getElementById("about").style.color="black";
+        document.getElementById("contact").style.color="red";
+    }
+
+</script>
+</html>

@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>Array of objects - CRUD</title>
+</head>
+<body onload="drawTable()">
+<div id="drawTable"></div>
+<br>
+<input type="text" placeholder="Enter first name" id="addFname">
+<br>
+<input type="text" placeholder="Enter last name" id="addLname">
+<br>
+<input type="number" placeholder="Enter age" id="addAge">
+<br>
+<button onclick="addRow()">Add row</button>
+<div id="addRow"></div>
+<br>
+<button onclick="deleteRow()">Delete row</button>
+<div id="deleteRow"></div>
+<br>
+<button onclick="updateRow()">Update row</button>
+<div id="updateRow"></div>
+<br>
+<button onclick="sortTable()">Sort</button>
+<div id="sortTable"></div>
+<br>
+<button onclick="reverse()">Reverse Sort</button>
+<div id="rsort"></div>
+
+</body>
+<script>
+    var people = [
+        { fname: "John", lname: "Doe", age: 28 },
+        { fname: "Priya", lname: "Sharma", age: 24 },
+        { fname: "Arun", lname: "Kumar", age: 31 }
+    ];
+    function sortTable() {
+        // add return for sorting lambda functions
+        // compare name use a.fname.localeCompare(b.fname)
+        people.sort(function (a, b) { return a.age - b.age});
+        drawTable();
+    }
+    function reverse() {
+        people.sort(function (a, b) {return b.age - a.age});
+        drawTable()
+    }
+    function deleteRow(i) {
+        people=
+            people.filter((person,index)=>index!=i)
+        ;
+
+        drawTable();
+    }
+    function updateRow(i) {
+        var newFname=document.getElementById("addFname").value;
+        var newLname=document.getElementById("addLname").value;
+        var newAge=parseInt(document.getElementById("addAge").value);
+
+        // for update this will not work
+        // people.push({
+        //     fname: newFname,
+        //     lname: newLname,
+        //     age: newAge,
+        // });
+
+        people[i].fname=newFname;
+        people[i].lname=newLname;
+        people[i].age=newAge;
+
+        drawTable();
+    }
+    function addRow() {
+        var newFname=document.getElementById("addFname").value;
+        var newLname=document.getElementById("addLname").value;
+        var newAge=parseInt(document.getElementById("addAge").value);
+
+        if (newFname != "" && newLname != "" && newAge != "") {
+            // people.push(newFname); --> this will fail
+            people.push({
+                fname: newFname,
+                lname: newLname,
+                age: newAge,
+            });
+            drawTable();
+        }else{
+            console.log("field is empty");
+        }
+    }
+    function drawTable(){
+        var content="<table>";
+        content+=`<thead>
+<tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Age</th>
+    <th>Actions</th>
+</tr>
+</thead>`;
+
+        content+="<tbody>";
+
+        for(var i=0; i<people.length; i++){
+            content+= `<tr>
+                           <td>${people[i].fname}</td>
+                           <td> ${people[i].lname}</td>
+                           <td>${people[i].age}</td>
+                           <td><button onclick="deleteRow('${i}')">remove Row</button>
+                           <button onclick="updateRow('${i}')">update Row</button></td>
+                           </tr>` ;
+        }
+        content+="</tbody>";
+        content+="</table>";
+        alert(content);
+        document.getElementById("drawTable").innerHTML = content;
+    }
+</script>
+</html>

@@ -1,0 +1,127 @@
+<html>
+<head>
+    <style>
+        #ulli ul{
+            color:deeppink;
+            font-size: 50px;
+        }
+        #ulli li{
+            color:white;
+            background-color: black;
+            border:4px outset grey;
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="demo()">Click Me</button>
+
+<div id="content"></div>
+<div id="jsontype"></div>
+<br>
+<button onclick="arrayofnames()">Click Me for array of names</button>
+<div id="arrayofnames"></div>
+<br>
+<button onclick="mapofnames()">Click Me for map of names</button>
+<div id="mapofnames"></div>
+
+<br>
+<button onclick="ulli()">Click Me for ul and li</button>
+<div id="ulli"></div>
+
+<br>
+<button onclick="table()">Click Me for table</button>
+<div id="table"></div>
+</body>
+
+<br>
+<button onclick="sorttable()">Click Me for sorttable</button>
+<div id="sorttable"></div>
+</body>
+
+<script>
+    function demo(){
+        // data comes from backend
+        var data="heaven and hell";
+        var content=document.getElementById("content");
+        // content.innerText("Stable "+data+" not true");  -> should assign
+         content.innerHTML=("<h2>stable "+data+" true</h2>");
+
+         var data2={gate:"heaven's gate",exit:"mortal world again"};
+         var result=document.getElementById("jsontype");
+         // result.innerHTML="<h2>Unstable "+data2.gate+" "+data2["exit"]+" and again</h2>";
+
+        result.innerHTML=`<h1>Hello ${data2.gate} and ${data2["exit"]} , bye bye</h1>`
+    //     use backtick above
+
+    }
+    function  arrayofnames(){
+        var names=["yuva","priya","sivanantham"];
+        var content="";
+
+        for(let i=0;i<names.length;i++) {
+            content += `<h1>Hello ${names[i]}</h1>`;
+
+        }
+        alert(content);
+        document.getElementById("arrayofnames").innerHTML=content;
+    }
+
+    function  mapofnames(){
+        var names=["yuva","priya","sivanantham"];
+
+        // fat arrow => cause of =
+        var content=
+            names.sort()
+                .map(name => `<h1>Hello ${name.toUpperCase()}</h1>`)
+                .join(" ");
+        alert(content);
+        document.getElementById("mapofnames").innerHTML=content;
+    }
+
+    function  ulli(){
+        var names=["yuva","priya","sivanantham"];
+
+        var content="<ul>";
+        for(let i=0;i<names.length;i++){
+            content += `<li>Hello ${names[i].toLowerCase()} </li>`;
+        }
+        content+="</ul>";
+        alert(content);
+        document.getElementById("ulli").innerHTML=content;
+    }
+    // sort button after click sort
+    // name == window.name. check that?
+    var names=["yuvapriya s","sivanantham saravanan","amudha sivanantham"];
+    function table(){
+        //var names=["yuvapriya s","sivanantham saravanan","amudha sivanantham"];
+        var content="<table border='1'>";
+        for(var i=0;i<names.length;i++){
+            part=names[i].split(" ");
+            content+=`<tr>`;
+            content+=`<td>${part[0]}</td>`;
+            content+=`<td>${part[1]}</td>`;
+            content+=`</tr>`;
+        }
+        content+="</table>";
+
+        alert(content);
+        document.getElementById("table").innerHTML=content;
+    }
+    function sorttable(){
+        // names.sort((a,b)=> a.localeCompare(b));
+        // table();
+
+        console.log("Before:", names);
+
+        names.sort((a, b) => a.localeCompare(b));
+
+        console.log("After:", names);
+
+        table();
+    }
+
+
+</script>
+</html>

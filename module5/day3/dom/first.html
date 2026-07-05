@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>First Page</title>
+</head>
+<body>
+
+<button onclick="demo()"> Click me! :)</button>
+<button ondblclick="demo()"> Click me twice! :)</button>
+<button onmouseover="demo()">On mouse over</button>
+<button onmouseout="demo()">On mouse out</button>
+<button onmousedown="demo()">On mouse down</button>
+<!--how it works-->
+<button onmouseup="demo()">On mouse up</button>
+<button onfocus="demo()">On focus</button>
+<button onblur="demo()">On blur</button>
+<button onsubmit="demo()">SUBMIT</button>
+
+
+<input type="text" onkeyup="demo()">
+<input type="text" onkeydown="demo()">
+<input type="text" onkeypress="demo()">
+
+<h1>First Page</h1>
+<h1>Second Page</h1>
+<h1>Third Page</h1>
+
+<h1 class="group">Fourth Page</h1>
+<h1 class="group">Fifth Page</h1>
+<h1 id="sixth"> Sixth Page</h1>
+
+
+</body>
+
+<!--onclick, ondoubleclick,onmouseover,
+onmouseout,onfocus,onblur,form->onsubmit
+textfields,password,textarea: onkeyup,onkeypress-->
+
+<script>
+    function demo() {
+        //alert("js is in action for DOM  operation!")
+        var headings = document.getElementsByTagName("h1");
+        for (var i = 0; i < headings.length; i++) {
+            headings[i].style.color = "red";
+            headings[i].style.backgroundColor = "yellow";
+        }
+//     group selectors: class
+        var headings2 = document.getElementsByClassName("group");
+        for (var i = 0; i < headings2.length; i++) {
+            headings2[i].style.color = "red";
+            headings2[i].style.backgroundColor = "black";
+        }
+
+//     unique selectors: id
+        var sixth = document.getElementById("sixth");
+        sixth.style.color = "blue";
+        sixth.style.backgroundColor = "red";
+    }
+</script>
+</html>

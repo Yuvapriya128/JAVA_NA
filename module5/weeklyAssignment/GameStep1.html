@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>XO game</title>
+</head>
+<body>
+<h2 align="centre" style="height: 15px">3x3 box</h2>
+<div id="container"></div>
+</body>
+<script>
+    window.onload=function(){
+        init();
+    }
+    function init(){
+        var box=`<table border="1" align="center" cellspacing="5px" cellpadding="50px">
+<tbody>`;
+        let val=1;
+        for(let i=0;i<3;i++){
+            box+='<tr>';
+            for(var j=0;j<3;j++) {
+
+                box+=`<td> ${val++} </td>`;
+            }
+            box+=`</tr>`;
+        }
+        box+=`</tbody></table>`
+        document.getElementById("container").innerHTML=box;
+    }
+</script>
+</html>

@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title>crud in dom</title>
+</head>
+
+<!--use body for onload-->
+<body onload="drawlist()">
+<div id="drawlist"></div>
+<br>
+<!--use onclick for buttons-->
+<button onclick="sortList()">sort</button>
+<div id="sort"></div>
+<br>
+<button onclick="rsort()">reverse sort</button>
+<div id="rsort"></div>
+
+<br>
+<!--for this i need input place-->
+<!--this id in input will be given to get var name: input comes from ui-->
+<input type="text" placeholder="Enter name" id="addItem">
+<button onclick="add()">add</button>
+<div id="add"></div>
+
+
+</body>
+<script>
+    var names=["yuva","priya","sivanantham"];
+    function drawlist(){
+        var content="<ol>";
+        for(var i=0;i<names.length;i++){
+            // remove items here
+            content+=`<li>
+${names[i].toLowerCase()}
+<button onclick="removeItem('${names[i]}')">remove</button>
+<button onclick="update('${i}')">update</button>
+</li>`;
+        }
+        content+="</ol>";
+        // used to check the which kind of data is going: number, string ${} or ''
+        alert(content);
+        document.getElementById("drawlist").innerHTML=content;
+    }
+    function sortList(){
+        names.sort();
+        drawlist();
+    }
+    function rsort(){
+        names.sort((a,b)=>{
+            if(a==b) return 0;
+            else if (a>b) return -1;
+            else return 1;
+        });
+        drawlist();
+    }
+    function removeItem(nameToRemove){
+        // should assign
+        names = names.filter(
+            (name)=>name !== nameToRemove
+        );
+        drawlist();
+    }
+
+    function add(){
+        var newname=document.getElementById('addItem').value;
+        // if(newname==""){return false;} or
+        if(newname.trim()!="") {
+            names.push(newname);
+            drawlist();
+        }else{
+            console.log("empty string can't be added");
+        }
+    }
+    function update(i){
+        var newname=document.getElementById('addItem').value;
+        if(newname.trim()!=""){
+            names[i]=newname;
+            drawlist();
+        }
+    }
+
+</script>
+</html>
