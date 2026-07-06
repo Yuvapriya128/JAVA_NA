@@ -1,0 +1,31 @@
+<html>
+<body>
+<!--if i give script inside body tag, then it will behave like onload-->
+<script>
+
+    /*functional programming*/
+    function mypromise(resolve,reject){
+        console.log("How are you?");
+        setTimeout(()=>{
+            let answer=Math.round(Math.random());
+            if(answer===1){
+                resolve();
+            }else{
+                reject();
+            }
+        },Math.random()*5*1000);
+    }
+    // arrow function
+    const success =()=> alert("I am fine");
+    const error = ()=>{
+        alert("I am not fine");
+    }
+
+/*    normal function
+    function success(){
+        alert("I am fine");
+    }*/
+mypromise(success, error);
+</script>
+</body>
+</html>

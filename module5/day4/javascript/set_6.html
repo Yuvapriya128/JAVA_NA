@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>setTimeout & setInterval</title>
+</head>
+<body>
+<button onclick="start()">Start</button>
+<button onclick="stop()">Stop</button>
+<div id="timeout"></div>
+<div id="interval"></div>
+</body>
+
+<script>
+    let i=0;
+    let interval;
+    function start(){
+        setTimeout(()=>{
+            document.getElementById("timeout").innerHTML="Hello Timeout";
+        },1000);
+
+        var names=["yuva","amudha","siva","gokul"];
+        interval=setInterval(()=>{
+           document.getElementById("interval").innerHTML=`<h1>Hello ${names[i%4].toUpperCase()}</h1>`;
+           i++;
+        },1000);
+    }
+    function stop(){
+      clearInterval(interval);
+    }
+</script>
+</html>

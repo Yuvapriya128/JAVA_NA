@@ -1,0 +1,21 @@
+<html>
+<body>
+<button onclick="start()">Start</button>
+</body>
+<script>
+<!--    This leads to development of promise design pattern-->
+    /*
+    Promise : behaves like if-then conditions
+    instead of considering time
+    *
+    * */
+    function start(){
+        console.log("Starting");
+        // asynchronous behavior and non blocking
+        setTimeout(()=>{
+            console.log("Timeout");
+        }, 1000);
+        console.log("Stoping");
+    }
+</script>
+</html>

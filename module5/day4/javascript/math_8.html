@@ -1,0 +1,19 @@
+<html>
+<body>
+<button onclick="myPromise()">Start</button>
+</body>
+<script>
+    let answer;
+    let promiseResult=["yes","no"];
+    function myPromise(){
+        console.log("Did you sleep?");
+        setTimeout(()=>{
+            // to get 1 or 0
+            answer=Math.round(Math.random());
+            alert(promiseResult[answer]);
+        //     randomly 0 - 5 seconds timeout
+        },Math.random()*5*1000);
+        console.log("Stopping");
+    }
+</script>
+</html>
