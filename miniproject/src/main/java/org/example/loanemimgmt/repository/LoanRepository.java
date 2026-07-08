@@ -2,6 +2,7 @@ package org.example.loanemimgmt.repository;
 
 import org.example.loanemimgmt.enums.EmiStatus;
 import org.example.loanemimgmt.enums.LoanStatus;
+import org.example.loanemimgmt.enums.LoanType;
 import org.example.loanemimgmt.model.Loan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
 
-    Page<Loan> findByLoanTypeIgnoreCase(String loanType, Pageable pageable);
+    Page<Loan> findByLoanType(LoanType loanType, Pageable pageable);
 
     Page<Loan> findByCustomerCityIgnoreCase(String city, Pageable pageable);
 
@@ -48,7 +49,7 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
             set l.annualInterestRate = :newAnnualRate
             where l.loanType in :loanTypes
             """)
-    int reviseAnnualInterestRateByLoanTypes(@Param("loanTypes") Collection<String> loanTypes,
+    int reviseAnnualInterestRateByLoanTypes(@Param("loanTypes") Collection<LoanType> loanTypes,
                                             @Param("newAnnualRate") BigDecimal newAnnualRate);
 }
 

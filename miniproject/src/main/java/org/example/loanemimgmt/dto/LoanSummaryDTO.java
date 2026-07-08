@@ -1,6 +1,7 @@
 package org.example.loanemimgmt.dto;
 
 import org.example.loanemimgmt.enums.LoanStatus;
+import org.example.loanemimgmt.enums.LoanType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ public record LoanSummaryDTO(
         Long loanId,
         Long customerId,
         String customerName,
-        String loanType,
+        LoanType loanType,
         BigDecimal principalAmount,
         BigDecimal annualInterestRate,
         Integer tenureMonths,

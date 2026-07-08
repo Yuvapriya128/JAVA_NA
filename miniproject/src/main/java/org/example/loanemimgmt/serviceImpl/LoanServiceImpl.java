@@ -6,6 +6,7 @@ import org.example.loanemimgmt.dto.LoanSummaryDTO;
 import org.example.loanemimgmt.dto.SystemDashboardDTO;
 import org.example.loanemimgmt.enums.EmiStatus;
 import org.example.loanemimgmt.enums.LoanStatus;
+import org.example.loanemimgmt.enums.LoanType;
 import org.example.loanemimgmt.exception.BusinessRuleException;
 import org.example.loanemimgmt.exception.LoanNotFoundException;
 import org.example.loanemimgmt.model.EmiPayment;
@@ -258,7 +259,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int reviseAnnualInterestRates(List<String> loanTypes, BigDecimal newAnnualRate) {
+    public int reviseAnnualInterestRates(List<LoanType> loanTypes, BigDecimal newAnnualRate) {
         logger.info("Revising annual interest rates for loan types: {}, New Rate: {}", loanTypes, newAnnualRate);
         if (loanTypes == null || loanTypes.isEmpty()) {
             logger.error("Interest rate revision failed - loanTypes must not be empty");

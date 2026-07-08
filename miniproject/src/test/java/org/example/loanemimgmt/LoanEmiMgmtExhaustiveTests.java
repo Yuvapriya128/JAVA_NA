@@ -2,6 +2,7 @@ package org.example.loanemimgmt;
 
 import org.example.loanemimgmt.enums.EmiStatus;
 import org.example.loanemimgmt.enums.LoanStatus;
+import org.example.loanemimgmt.enums.LoanType;
 import org.example.loanemimgmt.enums.UserRole;
 import org.example.loanemimgmt.model.Customer;
 import org.example.loanemimgmt.model.EmiPayment;
@@ -87,7 +88,7 @@ class LoanEmiMgmtExhaustiveTests {
         customer = customerRepository.save(customer);
 
         loan = Loan.builder()
-                .loanType("PERSONAL")
+                .loanType(LoanType.PERSONAL)
                 .principalAmount(new BigDecimal("500000.00"))
                 .annualInterestRate(new BigDecimal("12.00"))
                 .tenureMonths(24)
@@ -157,7 +158,7 @@ class LoanEmiMgmtExhaustiveTests {
         void testEmiLoanMapping() {
             EmiSchedule emi = emiScheduleRepository.findById(emiSchedule.getEmiId()).orElseThrow();
             assertThat(emi.getLoan()).isNotNull();
-            assertThat(emi.getLoan().getLoanType()).isEqualTo("PERSONAL");
+            assertThat(emi.getLoan().getLoanType()).isEqualTo(LoanType.PERSONAL);
         }
 
         @Test
@@ -324,7 +325,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Principal amount cannot be zero or negative")
         void testZeroPrincipal() {
             Loan invalid = Loan.builder()
-                    .loanType("PERSONAL")
+                    .loanType(LoanType.PERSONAL)
                     .principalAmount(BigDecimal.ZERO)
                     .annualInterestRate(new BigDecimal("10.00"))
                     .tenureMonths(24)
@@ -337,7 +338,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Interest rate cannot be negative")
         void testNegativeInterestRate() {
             Loan invalid = Loan.builder()
-                    .loanType("PERSONAL")
+                    .loanType(LoanType.PERSONAL)
                     .principalAmount(new BigDecimal("100000.00"))
                     .annualInterestRate(new BigDecimal("-5.00"))
                     .tenureMonths(24)
@@ -350,7 +351,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Tenure should be greater than zero")
         void testZeroTenure() {
             Loan invalid = Loan.builder()
-                    .loanType("PERSONAL")
+                    .loanType(LoanType.PERSONAL)
                     .principalAmount(new BigDecimal("100000.00"))
                     .annualInterestRate(new BigDecimal("10.00"))
                     .tenureMonths(0)
@@ -360,10 +361,10 @@ class LoanEmiMgmtExhaustiveTests {
         }
 
         @Test
-        @DisplayName("Loan type cannot be blank")
+        @DisplayName("Loan type cannot be null")
         void testBlankLoanType() {
             Loan invalid = Loan.builder()
-                    .loanType("")
+                    .loanType(null)
                     .principalAmount(new BigDecimal("100000.00"))
                     .annualInterestRate(new BigDecimal("10.00"))
                     .tenureMonths(24)
@@ -376,7 +377,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Principal amount cannot be negative")
         void testNegativePrincipal() {
             Loan invalid = Loan.builder()
-                    .loanType("PERSONAL")
+                    .loanType(LoanType.PERSONAL)
                     .principalAmount(new BigDecimal("-100000.00"))
                     .annualInterestRate(new BigDecimal("10.00"))
                     .tenureMonths(24)
@@ -413,9 +414,9 @@ class LoanEmiMgmtExhaustiveTests {
         @Test
         @DisplayName("Find loans by loan type")
         void testFindByLoanType() {
-            Page<Loan> loans = loanRepository.findByLoanTypeIgnoreCase("PERSONAL", PageRequest.of(0, 10));
+            Page<Loan> loans = loanRepository.findByLoanType(LoanType.PERSONAL, PageRequest.of(0, 10));
             assertThat(loans.getContent()).isNotEmpty();
-            assertThat(loans.getContent().get(0).getLoanType()).isEqualTo("PERSONAL");
+            assertThat(loans.getContent().get(0).getLoanType()).isEqualTo(LoanType.PERSONAL);
         }
 
         @Test
@@ -639,7 +640,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Increase interest rate for PERSONAL loans")
         void testIncreaseInterestRate() {
             int updated = loanRepository.reviseAnnualInterestRateByLoanTypes(
-                    List.of("PERSONAL"),
+                    List.of(LoanType.PERSONAL),
                     new BigDecimal("15.00")
             );
 
@@ -654,7 +655,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Update should not affect other loan types")
         void testUpdateSpecificLoanTypeOnly() {
             Loan vehicleLoan = Loan.builder()
-                    .loanType("VEHICLE")
+                    .loanType(LoanType.VEHICLE)
                     .principalAmount(new BigDecimal("800000.00"))
                     .annualInterestRate(new BigDecimal("11.00"))
                     .tenureMonths(60)
@@ -665,7 +666,7 @@ class LoanEmiMgmtExhaustiveTests {
             loanRepository.save(vehicleLoan);
 
             loanRepository.reviseAnnualInterestRateByLoanTypes(
-                    List.of("PERSONAL"),
+                    List.of(LoanType.PERSONAL),
                     new BigDecimal("14.50")
             );
 
@@ -680,7 +681,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Updating non-existing loan type returns zero")
         void testUpdateInvalidLoanType() {
             int updated = loanRepository.reviseAnnualInterestRateByLoanTypes(
-                    List.of("GOLD"),
+                    List.of(LoanType.GOLD),
                     new BigDecimal("20.00")
             );
             assertThat(updated).isZero();
@@ -695,7 +696,7 @@ class LoanEmiMgmtExhaustiveTests {
         void createLoans() {
             for (int i = 1; i <= 10; i++) {
                 Loan l = Loan.builder()
-                        .loanType("PERSONAL")
+                        .loanType(LoanType.PERSONAL)
                         .principalAmount(new BigDecimal(100000L * i))
                         .annualInterestRate(new BigDecimal("10.00"))
                         .tenureMonths(24)
@@ -778,7 +779,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Create Business Loan Successfully")
         void testCreateLoan() {
             Loan newLoan = Loan.builder()
-                    .loanType("BUSINESS")
+                    .loanType(LoanType.BUSINESS)
                     .principalAmount(new BigDecimal("800000.00"))
                     .annualInterestRate(new BigDecimal("13.50"))
                     .tenureMonths(48)
@@ -789,14 +790,14 @@ class LoanEmiMgmtExhaustiveTests {
             Loan saved = loanRepository.save(newLoan);
 
             assertThat(saved.getLoanId()).isNotNull();
-            assertThat(saved.getLoanType()).isEqualTo("BUSINESS");
+            assertThat(saved.getLoanType()).isEqualTo(LoanType.BUSINESS);
         }
 
         @Test
         @DisplayName("Principal Amount must be greater than zero")
         void testNegativePrincipalRejected() {
             Loan newLoan = Loan.builder()
-                    .loanType("PERSONAL")
+                    .loanType(LoanType.PERSONAL)
                     .principalAmount(new BigDecimal("-1000.00"))
                     .annualInterestRate(new BigDecimal("12.00"))
                     .tenureMonths(24)
@@ -811,7 +812,7 @@ class LoanEmiMgmtExhaustiveTests {
         @DisplayName("Zero Principal Amount")
         void testZeroPrincipalRejected() {
             Loan newLoan = Loan.builder()
-                    .loanType("PERSONAL")
+                    .loanType(LoanType.PERSONAL)
                     .principalAmount(BigDecimal.ZERO)
                     .annualInterestRate(new BigDecimal("12.00"))
                     .tenureMonths(24)
