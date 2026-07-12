@@ -1,0 +1,36 @@
+.card-senior {
+  border: 2px solid #dc3545;
+}
+
+.card-adult {
+  border: 2px solid #007bff;
+}
+
+.card-young {
+  border: 2px solid #28a745;
+}
+
+.age-high {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.age-medium {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.age-low {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+}
+

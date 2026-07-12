@@ -1,0 +1,11 @@
+<input type="number" placeholder="Enter flight ID" [(ngModel)]="newFlight.id"/>
+<input type="text" placeholder="Enter flight name" [(ngModel)]="newFlight.name"/>
+<input type="text" placeholder="Enter source" [(ngModel)]="newFlight.source"/>
+<input type="text" placeholder="Enter destination" [(ngModel)]="newFlight.destination"/>
+
+<label>
+  <input type="checkbox" [(ngModel)]="newFlight.completed"/>
+  Completed
+</label>
+
+<button type="button" class="btn btn-primary" (click)="updateFlight(newFlight)">Update Flight</button>

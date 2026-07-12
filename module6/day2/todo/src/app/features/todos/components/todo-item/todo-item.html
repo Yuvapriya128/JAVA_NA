@@ -1,0 +1,14 @@
+<div class="card mb-3 border-2" [ngClass]="todo.completed ? 'completed-card' : 'pending-card'">
+  <div class="card-header">
+    {{todo.title}}
+  </div>
+
+  <div class="card-body">
+    <p>{{todo.description}}</p>
+
+    <p>
+      {{ todo.completed ? '✅ Completed' : '❌ Pending' }}
+    </p>
+    <button type="button" class="btn btn-danger" (click)="todoService.deleteTodo(todo.id)">Delete</button>
+  </div>
+</div>

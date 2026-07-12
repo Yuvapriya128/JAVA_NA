@@ -1,0 +1,32 @@
+<!--<p>person-component works!</p>-->
+
+<div class="card m-3 shadow"
+  [ngClass]="{'card-senior': p.age >= 50, 'card-young': p.age < 30, 'card-adult': p.age >= 30 && p.age < 50}"
+  [ngStyle]="{'border-left': '4px solid', 'border-left-color': getAgeBorderColor(p.age)}">
+
+  <div class="card-header text-white"
+    [ngClass]="getHeaderClass(p.age)"
+    [ngStyle]="{'background-color': getHeaderColor(p.age)}">
+    <h5 class="mb-0">{{ p.name }}</h5>
+  </div>
+
+  <div class="card-body">
+    <p [ngStyle]="{'font-weight': 'bold', 'color': '#333'}"><strong>ID:</strong> {{ p.id }}</p>
+    <p [ngClass]="{'age-high': p.age >= 50, 'age-medium': p.age >= 30 && p.age < 50, 'age-low': p.age < 30}">
+      <strong>Age:</strong> {{ p.age }}
+    </p>
+    <p [ngStyle]="{'word-break': 'break-all'}"><strong>Email:</strong> {{ p.email }}</p>
+
+    <button
+      class="btn btn-danger"
+      (click)="removePerson(p.id)"
+      [ngStyle]="{'margin-right': '8px'}">
+      Remove
+    </button>
+    <button
+      class="btn btn-primary"
+      (click)="updatePerson(p.id)">
+      Update
+    </button>
+  </div>
+</div>

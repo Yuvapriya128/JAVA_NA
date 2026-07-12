@@ -1,0 +1,27 @@
+<article class="card border-0 shadow-sm">
+  <div class="card-body">
+    <h2 class="h5 mb-3">People</h2>
+
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <app-add-people></app-add-people>
+      </div>
+      <div class="col-12">
+        <app-update-people></app-update-people>
+      </div>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      @for(person of peopleServices.getNames() | async; track $index){
+        <li class="list-group-item d-flex align-items-center justify-content-between gap-3 px-0">
+          <span class="fw-medium">{{ person }}</span>
+          <button class="btn btn-sm btn-outline-danger" type="button" (click)="peopleServices.removeName(person)">
+            Remove
+          </button>
+        </li>
+      } @empty {
+        <li class="list-group-item px-0 text-secondary">No people added yet.</li>
+      }
+    </ul>
+  </div>
+</article>

@@ -1,0 +1,27 @@
+<article class="card border-0 shadow-sm">
+  <div class="card-body">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+      <h2 class="h5 mb-0">Books</h2>
+      <div class="form-check form-switch m-0">
+        <input class="form-check-input" type="checkbox" id="book-mode" [(ngModel)]="showUpdate">
+        <label class="form-check-label" for="book-mode">Enable update mode</label>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      @if(showUpdate){
+        <app-update-book></app-update-book>
+      } @else {
+        <app-add-book></app-add-book>
+      }
+    </div>
+
+    <div class="row g-3">
+      @for(book of bookServices.getBooks() | async ; track book.id){
+        <div class="col-12 col-lg-6">
+          <app-book-items [book]="book"></app-book-items>
+        </div>
+      }
+    </div>
+  </div>
+</article>

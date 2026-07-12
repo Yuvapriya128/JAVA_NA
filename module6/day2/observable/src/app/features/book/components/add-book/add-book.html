@@ -1,0 +1,25 @@
+<div class="row g-3 align-items-end">
+  <div class="col-12 col-md-2">
+    <label class="form-label fw-semibold" for="add-book-id">ID</label>
+    <input id="add-book-id" class="form-control" type="number" [(ngModel)]="newBook.id">
+  </div>
+
+  <div class="col-12 col-md-3">
+    <label class="form-label fw-semibold" for="add-book-title">Title</label>
+    <input id="add-book-title" class="form-control" type="text" [(ngModel)]="newBook.title">
+  </div>
+
+  <div class="col-12 col-md-3">
+    <label class="form-label fw-semibold" for="add-book-author">Author</label>
+    <input id="add-book-author" class="form-control" type="text" [(ngModel)]="newBook.author">
+  </div>
+
+  <div class="col-12 col-md-3">
+    <label class="form-label fw-semibold" for="add-book-publisher">Publisher</label>
+    <input id="add-book-publisher" class="form-control" type="text" [(ngModel)]="newBook.publisher">
+  </div>
+
+  <div class="col-12 col-md-1 d-grid">
+    <button class="btn btn-primary" type="button" (click)="bookServices.addBook(newBook)">Add</button>
+  </div>
+</div>

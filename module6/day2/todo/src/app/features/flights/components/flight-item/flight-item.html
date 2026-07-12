@@ -1,0 +1,12 @@
+<div class="card mb-3 border-2" [ngClass]="flight.completed ? 'completed-card' : 'pending-card'">
+  <div class="card-header">{{ flight.name }}</div>
+
+  <div class="card-body">
+	<p>{{ flight.source }} -> {{ flight.destination }}</p>
+
+	<p>
+	  {{ flight.completed ? '✅ Completed' : '❌ Pending' }}
+	</p>
+	<button type="button" class="btn btn-danger" (click)="flightService.deleteFlight(flight.id)">Delete</button>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<form #form="ngForm" (ngSubmit)="isUpdate ? updatePerson() : addPerson()" novalidate>
+
+  <div class="form-check mb-3">
+    <input
+      type="checkbox"
+      class="form-check-input"
+      [(ngModel)]="isUpdate"
+      name="isUpdate">
+
+    <label class="form-check-label"
+      [ngClass]="{'text-warning': isUpdate, 'text-primary': !isUpdate}"
+      [ngStyle]="{'font-weight': isUpdate ? 'bold' : 'normal'}">
+      Update Mode
+    </label>
+  </div>
+
+  <div class="mb-3">
+    <input
+      #idInput="ngModel"
+      class="form-control"
+      type="number"
+      [(ngModel)]="person.id"
+      name="id"
+      placeholder="Enter ID"
+      [disabled]="isUpdate"
+      [ngClass]="{'is-disabled': isUpdate}"
+      [ngStyle]="{'background-color': isUpdate ? '#e9ecef' : '#ffffff', 'cursor': isUpdate ? 'not-allowed' : 'auto'}">
+  </div>
+
+  <!-- Name Field with Validation -->
+  <div class="mb-3">
+    <label for="nameInput" class="form-label">Name <span class="text-danger">*</span></label>
+    <input
+      #nameInput="ngModel"
+      id="nameInput"
+      class="form-control"
+      type="text"
+      [(ngModel)]="person.name"
+      name="name"
+      placeholder="Enter Name"
+      required
+      [ngClass]="{'is-invalid': nameInput.invalid && (nameInput.dirty || nameInput.touched), 'is-valid': nameInput.valid && nameInput.touched}">
+    <div class="invalid-feedback d-block"
+      *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
+      {{ getNameErrorMessage() }}
+    </div>
+  </div>
+
+  <!-- Age Field with Validation -->
+  <div class="mb-3">
+    <label for="ageInput" class="form-label">Age <span class="text-danger">*</span></label>
+    <input
+      #ageInput="ngModel"
+      id="ageInput"
+      class="form-control"
+      type="number"
+      [(ngModel)]="person.age"
+      name="age"
+      placeholder="Enter Age"
+      required
+      min="1"
+      max="120"
+      [ngClass]="{'is-invalid': ageInput.invalid && (ageInput.dirty || ageInput.touched), 'is-valid': ageInput.valid && ageInput.touched}">
+    <div class="invalid-feedback d-block"
+      *ngIf="ageInput.invalid && (ageInput.dirty || ageInput.touched)">
+      {{ getAgeErrorMessage() }}
+    </div>
+  </div>
+
+  <!-- Email Field with Validation -->
+  <div class="mb-3">
+    <label for="emailInput" class="form-label">Email <span class="text-danger">*</span></label>
+    <input
+      #emailInput="ngModel"
+      id="emailInput"
+      class="form-control"
+      type="email"
+      [(ngModel)]="person.email"
+      name="email"
+      placeholder="Enter Email"
+      required
+      email
+      [ngClass]="{'is-invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched), 'is-valid': emailInput.valid && emailInput.touched}">
+    <div class="invalid-feedback d-block"
+      *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+      {{ getEmailErrorMessage() }}
+    </div>
+  </div>
+
+  <!-- Submit Buttons -->
+  @if(!isUpdate){
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!isFormValid()"
+      [ngStyle]="{'opacity': isFormValid() ? '1' : '0.6', 'cursor': isFormValid() ? 'pointer' : 'not-allowed'}">
+      Add Person
+    </button>
+  }
+
+  @if(isUpdate){
+    <button
+      type="submit"
+      class="btn btn-warning"
+      [disabled]="!isFormValid()"
+      [ngStyle]="{'opacity': isFormValid() ? '1' : '0.6', 'cursor': isFormValid() ? 'pointer' : 'not-allowed'}">
+      Update Person
+    </button>
+  }
+
+</form>
+

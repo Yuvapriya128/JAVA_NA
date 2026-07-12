@@ -1,0 +1,4 @@
+<input type="number" placeholder="Enter todo ID" [(ngModel)]="newTodo.id"/>
+<input type="text" placeholder="Enter todo title" [(ngModel)]="newTodo.title"/>
+<input type="text" placeholder="Enter todo description" [(ngModel)]="newTodo.description"/>
+<button type="button" class="btn btn-primary" (click)="addTodo(newTodo)">Add Todo</button>

@@ -1,0 +1,13 @@
+<div class="input-group">
+  <span class="input-group-text">-</span>
+  <input
+    class="form-control text-end"
+    type="number"
+    #decrementValue
+    aria-label="Decrement by value"
+    placeholder="Value"
+  >
+  <button class="btn btn-outline-danger" type="button" (click)="countService.decrementBy(decrementValue.valueAsNumber)">
+    Subtract
+  </button>
+</div>

@@ -1,0 +1,13 @@
+<div class="input-group">
+  <span class="input-group-text">+</span>
+  <input
+    class="form-control text-end"
+    type="number"
+    #incrementValue
+    aria-label="Increment by value"
+    placeholder="Value"
+  >
+  <button class="btn btn-success" type="button" (click)="countService.incrementBy(incrementValue.valueAsNumber)">
+    Add
+  </button>
+</div>

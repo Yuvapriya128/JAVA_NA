@@ -1,0 +1,16 @@
+<label>
+  <input type="checkbox" [(ngModel)]="showUpdate">
+  Update Flight
+</label>
+
+@if (!showUpdate) {
+  <app-add-flight></app-add-flight>
+}
+
+@if (showUpdate) {
+  <app-update-flight></app-update-flight>
+}
+
+@for (flight of flightService.getFlights(); track flight.id) {
+  <app-flight-item [flight]="flight"></app-flight-item>
+}

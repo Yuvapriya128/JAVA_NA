@@ -1,0 +1,17 @@
+<label>
+  <input type="checkbox" [(ngModel)]="showUpdate">
+  Update Todo
+</label>
+
+@if (!showUpdate) {
+<app-add-todo></app-add-todo>
+}
+
+@if (showUpdate) {
+<app-update-todo></app-update-todo>
+}
+<div class="list-group">
+  @for (todo of todoService.getTodos(); track todo.id) {
+  <app-todo-item [todo]="todo"></app-todo-item>
+  }
+</div>

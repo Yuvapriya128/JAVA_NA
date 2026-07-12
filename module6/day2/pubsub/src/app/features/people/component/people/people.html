@@ -1,0 +1,36 @@
+<div [ngStyle]="{'padding': '20px', 'background-color': '#f8f9fa', 'border-radius': '8px', 'margin-bottom': '20px'}"
+  class="form-section">
+  <h4 [ngClass]="{'text-primary': people.length < 2, 'text-success': people.length >= 2}"
+    [ngStyle]="{'margin-bottom': '15px'}">
+    Add/Update Person
+  </h4>
+  <app-add-person
+    [person]="selectedPerson"
+    (onAdd)="addPerson($event)"
+    (onUpdate)="updatePerson($event)">
+  </app-add-person>
+</div>
+
+<div [ngStyle]="{'margin-top': '30px'}">
+  <h4 [ngClass]="{'text-success': people.length > 0, 'text-danger': people.length === 0}"
+    [ngStyle]="{'margin-bottom': '20px', 'font-weight': 'bold'}">
+    People List ({{ people.length }})
+  </h4>
+
+  @if(people.length === 0) {
+    <div class="alert alert-info" role="alert"
+      [ngStyle]="{'text-align': 'center', 'padding': '20px'}">
+      No people found. Add a person to get started!
+    </div>
+  }
+
+  @for(person of people; track person.id){
+
+    <app-person-component
+      [p]="person"
+      (onRemove)="remove($event)"
+      (onUpdate)="editPerson($event)">
+    </app-person-component>
+
+  }
+</div>

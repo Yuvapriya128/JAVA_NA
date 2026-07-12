@@ -1,0 +1,11 @@
+<article class="card h-100 border-light-subtle">
+  <div class="card-body">
+    <p class="text-secondary small mb-1">ID: {{ book.id }}</p>
+    <h3 class="h6 mb-1">{{ book.title }}</h3>
+    <p class="mb-1"><span class="text-secondary">Author:</span> {{ book.author }}</p>
+    <p class="mb-3"><span class="text-secondary">Publisher:</span> {{ book.publisher }}</p>
+    <button class="btn btn-sm btn-outline-danger" type="button" (click)="bookServices.deleteBook(book.id)">
+      Remove
+    </button>
+  </div>
+</article>

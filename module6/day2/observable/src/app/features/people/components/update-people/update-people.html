@@ -1,0 +1,29 @@
+<div class="row g-2 align-items-end">
+  <div class="col-12 col-md-5">
+    <label class="form-label fw-semibold" for="old-person-name">Current name</label>
+    <input
+      id="old-person-name"
+      class="form-control"
+      type="text"
+      [(ngModel)]="oldName"
+      placeholder="Existing name"
+    >
+  </div>
+
+  <div class="col-12 col-md-5">
+    <label class="form-label fw-semibold" for="new-person-name">New name</label>
+    <input
+      id="new-person-name"
+      class="form-control"
+      type="text"
+      [(ngModel)]="newName"
+      placeholder="Updated name"
+    >
+  </div>
+
+  <div class="col-12 col-md-2 d-grid">
+    <button class="btn btn-outline-primary" type="button" (click)="peopleServices.updateName(oldName, newName)">
+      Update
+    </button>
+  </div>
+</div>
