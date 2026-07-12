@@ -1,0 +1,10 @@
+.auth-layout {
+  min-height: 100vh;
+  width: 100%;
+  background: transparent;
+}
+
+.auth-container {
+  min-height: 100vh;
+  width: 100%;
+}

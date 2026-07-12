@@ -1,0 +1,80 @@
+<div class="form-container">
+  <div class="header">
+    <h2>Create Order</h2>
+    <button class="btn-back" (click)="onCancel()">← Cancel</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group" *ngIf="!isUserRole()">
+      <label>Customer ID *</label>
+      <input type="number" formControlName="customerId" placeholder="Enter customer ID" />
+      <small *ngIf="form.get('customerId')?.invalid && form.get('customerId')?.touched" class="error">
+        Customer ID is required
+      </small>
+    </div>
+
+    <div class="form-group" *ngIf="isUserRole()">
+      <label>Customer ID</label>
+      <input type="number" [value]="getCurrentUserId()" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Product ID *</label>
+      <input type="number" formControlName="productId" placeholder="Enter product ID" />
+      <small *ngIf="form.get('productId')?.invalid && form.get('productId')?.touched" class="error">
+        Product ID is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Quantity *</label>
+      <input type="number" formControlName="quantity" placeholder="Enter quantity" />
+      <small *ngIf="form.get('quantity')?.invalid && form.get('quantity')?.touched" class="error">
+        Quantity is required and must be at least 1
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Total Amount *</label>
+      <input type="number" formControlName="totalAmount" placeholder="Enter total amount" />
+      <small *ngIf="form.get('totalAmount')?.invalid && form.get('totalAmount')?.touched" class="error">
+        Valid amount is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Status *</label>
+      <select formControlName="status">
+        <option value="">Select status</option>
+        <option value="PENDING">Pending</option>
+        <option value="CONFIRMED">Confirmed</option>
+        <option value="SHIPPED">Shipped</option>
+        <option value="DELIVERED">Delivered</option>
+        <option value="CANCELLED">Cancelled</option>
+      </select>
+      <small *ngIf="form.get('status')?.invalid && form.get('status')?.touched" class="error">
+        Status is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Order Date *</label>
+      <input type="date" formControlName="orderDate" />
+      <small *ngIf="form.get('orderDate')?.invalid && form.get('orderDate')?.touched" class="error">
+        Order date is required
+      </small>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-save" [disabled]="form.invalid || isSubmitting">
+        {{ isSubmitting ? 'Creating...' : 'Create' }}
+      </button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+    </div>
+
+    <div *ngIf="error" class="alert-error">{{ error }}</div>
+    <div *ngIf="fieldErrors.length" class="alert-error">
+      <div *ngFor="let fieldError of fieldErrors">{{ fieldError }}</div>
+    </div>
+  </form>
+</div>

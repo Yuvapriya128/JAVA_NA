@@ -1,0 +1,11 @@
+<div
+  class="content-wrapper"
+  [ngClass]="[
+    'padding-' + padding,
+    'max-width-' + maxWidth,
+    className
+  ]"
+>
+  <ng-content></ng-content>
+</div>
+

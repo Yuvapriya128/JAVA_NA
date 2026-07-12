@@ -1,0 +1,20 @@
+<div class="modal d-block" tabindex="-1" *ngIf="isVisible" role="dialog" aria-modal="true" [attr.aria-label]="title" (click)="onCancel()">
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content shadow-lg border-0">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0 text-muted">{{ message }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">{{ cancelText }}</button>
+        <button type="button" class="btn" [ngClass]="destructive ? 'btn-danger' : 'btn-primary'" (click)="onConfirm()">
+          {{ confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isVisible" class="modal-backdrop fade show"></div>

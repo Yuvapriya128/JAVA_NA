@@ -1,0 +1,59 @@
+<section class="orderitem-dashboard">
+  <header class="page-head">
+    <div>
+      <h1 class="app-page-title">Order Items</h1>
+      <p>Track line items associated with customer orders and quantities.</p>
+    </div>
+    <button *ngIf="canCreateOrderItem()" class="btn btn-primary" (click)="onAddOrderItem()">
+      <i class="bi bi-plus-lg me-2"></i>New Order Item
+    </button>
+  </header>
+
+  <app-loading [isLoading]="isLoading" message="Loading order items..."></app-loading>
+
+  <div class="table-modern-wrap" *ngIf="!isLoading">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Item ID</th>
+            <th>Order ID</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of orderItems">
+            <td>#{{ item.id }}</td>
+            <td>#{{ item.orderId }}</td>
+            <td>#{{ item.productId }}</td>
+            <td>{{ item.quantity }}</td>
+            <td class="text-end">
+              <div class="action-buttons">
+                <button class="btn btn-outline-primary btn-icon" (click)="onViewOrderItem(item.id)" aria-label="View order item">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button *ngIf="canEditOrderItem()" class="btn btn-outline-warning btn-icon" (click)="onEditOrderItem(item.id)" aria-label="Edit order item">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button *ngIf="canDeleteOrderItem()" class="btn btn-outline-danger btn-icon" (click)="onDeleteOrderItem(item.id)" aria-label="Delete order item">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="orderItems.length === 0">
+            <td colspan="5" class="empty-state">
+              <i class="bi bi-receipt-cutoff"></i>
+              <p>No order items found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+</section>
+

@@ -1,0 +1,31 @@
+.register-wrapper {
+  width: 100%;
+}
+
+.register-card {
+  border-radius: 0.75rem;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #667eea;
+}
+
+.btn-primary {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #5568d3;
+  border-color: #5568d3;
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+}
+

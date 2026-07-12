@@ -1,0 +1,66 @@
+
+    <div class="form-container">
+      <div class="header">
+        <h2>Create Product</h2>
+        <button class="btn-back" (click)="onCancel()">← Cancel</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+        <div class="form-group">
+          <label>Name *</label>
+          <input type="text" formControlName="name" placeholder="Enter product name" />
+          <small *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error">Name is required</small>
+        </div>
+
+        <div class="form-group">
+          <label>Price *</label>
+          <input type="number" formControlName="cost" placeholder="Enter price" />
+          <small *ngIf="form.get('cost')?.invalid && form.get('cost')?.touched" class="error">Valid price is required</small>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea formControlName="description" placeholder="Enter description" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Stock *</label>
+          <input type="number" formControlName="stock" placeholder="Enter stock quantity" />
+          <small *ngIf="form.get('stock')?.invalid && form.get('stock')?.touched" class="error">Stock is required</small>
+        </div>
+
+        <div class="form-group">
+          <label>Category *</label>
+          <input type="text" formControlName="category" placeholder="Enter category" />
+          <small *ngIf="form.get('category')?.invalid && form.get('category')?.touched" class="error">Category is required</small>
+        </div>
+
+        <div class="form-group">
+          <label>Brand</label>
+          <input type="text" formControlName="brand" placeholder="Enter brand" />
+        </div>
+
+        <div class="form-group">
+          <label>Minimum Stock</label>
+          <input type="number" formControlName="minimumStock" placeholder="Enter minimum stock level" />
+          <small *ngIf="form.get('minimumStock')?.invalid && form.get('minimumStock')?.touched" class="error">Minimum stock must be 0 or greater</small>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" formControlName="active" />
+            Active
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save" [disabled]="form.invalid || isSubmitting">
+            {{ isSubmitting ? 'Creating...' : 'Create' }}
+          </button>
+          <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+        </div>
+
+        <div *ngIf="error" class="alert-error">{{ error }}</div>
+      </form>
+    </div>
+  

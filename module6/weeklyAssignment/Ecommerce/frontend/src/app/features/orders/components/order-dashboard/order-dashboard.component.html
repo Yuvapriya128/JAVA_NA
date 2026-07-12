@@ -1,0 +1,96 @@
+<section class="order-dashboard">
+  <header class="page-head">
+    <div>
+      <h1 class="app-page-title">{{ isUserRole() ? 'My Orders' : 'Orders' }}</h1>
+      <p>Track order lifecycle, payments, and fulfillment statuses in one place.</p>
+    </div>
+    <button *ngIf="canCreateOrder()" class="btn btn-primary" (click)="onAddOrder()">
+      <i class="bi bi-plus-lg me-2"></i>New Order
+    </button>
+  </header>
+
+  <app-loading [isLoading]="isLoading" message="Loading orders..."></app-loading>
+
+  <div class="table-modern-wrap" *ngIf="!isLoading && isUserRole()">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>#{{ order.id }}</td>
+            <td>{{ order.orderDate | dateFormat:'short' }}</td>
+            <td>{{ order.itemCount || 0 }}</td>
+            <td class="fw-semibold">{{ order.totalAmount | currency }}</td>
+            <td>
+              <span class="d-block fw-semibold">{{ order.paymentMethod || 'N/A' }}</span>
+              <span [ngClass]="getPaymentStatusBadgeClass(order.paymentStatus)">{{ order.paymentStatus || 'PENDING' }}</span>
+            </td>
+            <td><span [ngClass]="getStatusBadgeClass(order.status)">{{ order.status }}</span></td>
+            <td class="text-end">
+              <div class="action-buttons">
+                <button class="btn btn-outline-primary btn-icon" (click)="onViewOrder(order.id)" aria-label="View order"><i class="bi bi-eye"></i></button>
+                <button *ngIf="canDeleteOrder(order)" class="btn btn-outline-danger btn-icon" (click)="onDeleteOrder(order.id)" aria-label="Cancel order"><i class="bi bi-x-circle"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="orders.length === 0">
+            <td colspan="7" class="empty-state"><i class="bi bi-bag-x"></i><p>No orders found</p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="table-modern-wrap" *ngIf="!isLoading && !isUserRole()">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer ID</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Payment Status</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>#{{ order.id }}</td>
+            <td>#{{ order.customerId }}</td>
+            <td class="fw-semibold">{{ order.totalAmount | currency }}</td>
+            <td>{{ order.paymentMethod || 'N/A' }}</td>
+            <td><span [ngClass]="getPaymentStatusBadgeClass(order.paymentStatus)">{{ order.paymentStatus || 'PENDING' }}</span></td>
+            <td><span [ngClass]="getStatusBadgeClass(order.status)">{{ order.status }}</span></td>
+            <td>{{ order.orderDate | dateFormat:'short' }}</td>
+            <td class="text-end">
+              <div class="action-buttons">
+                <button class="btn btn-outline-primary btn-icon" (click)="onViewOrder(order.id)" aria-label="View order"><i class="bi bi-eye"></i></button>
+                <button *ngIf="canEditOrder(order)" class="btn btn-outline-warning btn-icon" (click)="onEditOrder(order.id)" aria-label="Edit order"><i class="bi bi-pencil"></i></button>
+                <button *ngIf="canDeleteOrder(order)" class="btn btn-outline-danger btn-icon" (click)="onDeleteOrder(order.id)" aria-label="Delete order"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="orders.length === 0">
+            <td colspan="8" class="empty-state"><i class="bi bi-bag-x"></i><p>No orders found</p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+</section>
+

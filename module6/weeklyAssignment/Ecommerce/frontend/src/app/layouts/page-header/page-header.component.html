@@ -1,0 +1,45 @@
+<div class="page-header">
+  <div class="page-header-container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumb-section" *ngIf="breadcrumbs.length > 0">
+      <nav class="breadcrumbs">
+        <ol>
+          <li *ngFor="let crumb of breadcrumbs; let last = last" class="breadcrumb-item">
+            <a *ngIf="!last && crumb.route" [routerLink]="crumb.route">{{ crumb.label }}</a>
+            <span *ngIf="last || !crumb.route" class="breadcrumb-current">{{ crumb.label }}</span>
+            <i *ngIf="!last" class="bi bi-chevron-right"></i>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Title Section -->
+    <div class="title-section">
+      <div class="title-left">
+        <button *ngIf="showBackButton" class="btn-back" (click)="onBackClick()" title="Go back">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <div class="title-content">
+          <h1 class="page-title">{{ title }}</h1>
+          <p *ngIf="description" class="page-description">{{ description }}</p>
+        </div>
+      </div>
+
+      <!-- Actions Toolbar -->
+      <div class="title-right" *ngIf="actions.length > 0">
+        <div class="action-toolbar">
+          <button
+            *ngFor="let action of actions"
+            [class]="'btn btn-' + (action.variant || 'secondary')"
+            (click)="onAction(action)"
+            [disabled]="action.disabled"
+          >
+            <i *ngIf="action.icon" [class]="'bi ' + action.icon"></i>
+            <span>{{ action.label }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

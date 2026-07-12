@@ -1,0 +1,167 @@
+<div class="product-dashboard container-fluid">
+  <!-- Page Header -->
+  <div class="product-header mb-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div>
+        <h1 class="product-heading">Discover Our Products</h1>
+        <p class="product-subheading">Browse our curated collection with advanced filters and search.</p>
+      </div>
+      <button *ngIf="!isUserRole() && canCreateProduct()" type="button" class="btn btn-primary btn-lg" (click)="onAddProduct()">
+        <i class="bi bi-plus-lg me-2"></i>Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="row g-4 align-items-start">
+    <!-- Sidebar Filters -->
+    <aside class="col-12 col-lg-3">
+      <div class="filter-card sticky-filter-panel">
+        <h2 class="filter-title">Filters</h2>
+
+        <!-- Search Section -->
+        <div class="filter-section">
+          <label class="filter-label">Search Products</label>
+          <app-search
+            [placeholder]="'Search by name, brand, category'"
+            [suggestions]="searchSuggestions"
+            [debounceMs]="250"
+            [loading]="isLoading"
+            [buttonLabel]="'Find'"
+            [ariaLabel]="'Search products'"
+            (search)="onSearch($event)"
+            (searchChange)="onSearchChange($event)"
+            (suggestionSelected)="onSuggestionSelected($event)">
+          </app-search>
+        </div>
+
+        <!-- Sort Section -->
+        <div class="filter-section">
+          <label class="filter-label">Sort By</label>
+          <select class="form-select form-select-modern" [value]="sortBy" (change)="onSortChange($event)" aria-label="Sort products">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+
+        <!-- Category Section -->
+        <div class="filter-section">
+          <label class="filter-label">Category</label>
+          <select class="form-select form-select-modern" [value]="selectedCategory" (change)="setCategory(($any($event.target).value))" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+        </div>
+
+        <!-- Brand Section -->
+        <div class="filter-section">
+          <label class="filter-label">Brand</label>
+          <select class="form-select form-select-modern" [value]="selectedBrand" (change)="setBrand(($any($event.target).value))" aria-label="Filter by brand">
+            <option value="all">All Brands</option>
+            <option *ngFor="let brand of brands" [value]="brand">{{ brand }}</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <button type="button" class="btn btn-outline-secondary w-100 btn-reset-filters" (click)="clearFilters()">
+          <i class="bi bi-arrow-clockwise me-2"></i>Reset Filters
+        </button>
+      </div>
+    </aside>
+
+    <!-- Product Grid Section -->
+    <section class="col-12 col-lg-9">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="row g-4" aria-label="Loading products">
+        <div class="col-6" *ngFor="let _item of [1,2,3,4,5,6]">
+          <div class="product-card-skeleton">
+            <app-skeleton height="240px" width="100%" wrapperClass="mb-3"></app-skeleton>
+            <app-skeleton height="16px" width="70%" wrapperClass="mb-2"></app-skeleton>
+            <app-skeleton height="14px" width="45%" wrapperClass="mb-2"></app-skeleton>
+            <app-skeleton height="14px" width="100%" wrapperClass="mb-3"></app-skeleton>
+            <app-skeleton height="48px" width="100%" wrapperClass="mb-2"></app-skeleton>
+            <app-skeleton height="48px" width="100%"></app-skeleton>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="row g-4" *ngIf="!isLoading && products.length">
+        <div class="col-6" *ngFor="let product of products">
+          <app-product-card
+            *ngIf="!isAdminContext()"
+            [product]="product"
+            (quickView)="onQuickView($event)"
+            (addToCart)="onAddedToCart()">
+          </app-product-card>
+
+          <article *ngIf="isAdminContext()" class="admin-product-card">
+            <div class="admin-card-media" aria-hidden="true">
+              <div class="admin-image-placeholder">
+                <i class="bi bi-image"></i>
+                <span>Image</span>
+              </div>
+            </div>
+            <div class="admin-card-body">
+              <h3 class="admin-card-title">{{ product.name }}</h3>
+              <p class="admin-card-meta">{{ product.brand }} • {{ product.category }}</p>
+              <p class="admin-card-price">{{ product.cost | currency }}</p>
+              <p class="admin-card-stock" [ngClass]="getStockClass(product)">{{ getStockLabel(product) }}</p>
+              <p class="admin-card-description">{{ getShortDescription(product) }}</p>
+              <div class="admin-card-actions">
+                <button class="btn btn-outline-primary btn-sm admin-icon-btn" (click)="onViewProduct(product.id)" title="View" aria-label="View product">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-warning btn-sm admin-icon-btn" (click)="onEditProduct(product.id)" title="Edit" aria-label="Edit product">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger btn-sm admin-icon-btn" (click)="confirmDeleteProduct(product.id)" title="Delete" aria-label="Delete product">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <app-empty-state
+        *ngIf="!isLoading && !products.length"
+        title="No matching products"
+        description="Try changing search text or filters to find products."
+        icon="bi-search"
+        actionText="Clear filters"
+        (actionClick)="clearFilters()">
+      </app-empty-state>
+
+      <!-- Pagination -->
+      <div class="mt-5" *ngIf="!isLoading && filteredProducts.length">
+        <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast Notifications -->
+  <app-toast
+    [show]="toastShow"
+    [title]="toastTitle"
+    [message]="toastMessage"
+    [variant]="toastVariant"
+    position="top-end"
+    (closed)="toastShow = false">
+  </app-toast>
+
+  <!-- Confirm Delete Dialog -->
+  <app-confirm-dialog
+    [isVisible]="showDeleteDialog"
+    title="Delete product"
+    message="This action cannot be undone. Do you want to continue?"
+    confirmText="Delete"
+    cancelText="Keep"
+    [destructive]="true"
+    (confirmed)="onDeleteConfirmed()"
+    (cancelled)="onDeleteCancelled()">
+  </app-confirm-dialog>
+</div>

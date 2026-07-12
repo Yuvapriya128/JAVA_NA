@@ -1,0 +1,61 @@
+    <div class="view-container">
+      <div class="header">
+        <h2>Customer Details</h2>
+        <button class="btn-back" (click)="onBack()">← Back</button>
+      </div>
+
+      <div *ngIf="isLoading" class="loading">Loading...</div>
+
+      <div *ngIf="!isLoading && errorMessage" class="error" style="padding: 20px; background: #f8d7da; color: #721c24; border-radius: 4px; margin-bottom: 20px;">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="!isLoading && customer" class="details-card">
+        <div class="detail-row">
+          <label>ID:</label>
+          <span>{{ customer.id }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Name:</label>
+          <span>{{ customer.name }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Email:</label>
+          <span>{{ customer.email }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Address:</label>
+          <span>{{ customer.address }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Role:</label>
+          <span>{{ customer.role }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Phone Number:</label>
+          <span>{{ customer.phoneNumber || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Joined Date:</label>
+          <span>{{ customer.joinedDate ? (customer.joinedDate | date:'short') : '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Created:</label>
+          <span>{{ customer.createdAt | date:'short' }}</span>
+        </div>
+        <div class="detail-row">
+          <label>Updated:</label>
+          <span>{{ customer.updatedAt | date:'short' }}</span>
+        </div>
+
+        <div class="actions">
+          <button *ngIf="canEditCustomer()" class="btn-edit" (click)="onEdit()">Edit</button>
+          <button *ngIf="canDeleteCustomer()" class="btn-delete" (click)="onDelete()">Delete</button>
+          <button *ngIf="canManageRoles()" class="btn-edit" (click)="onChangeRole()">Change Role</button>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading && !customer && !errorMessage" class="error">
+        Customer not found
+      </div>
+    </div>
