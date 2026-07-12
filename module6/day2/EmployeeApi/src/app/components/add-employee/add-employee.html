@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Add Employee</h4>
+    </div>
+
+    <div class="card-body">
+      <form (ngSubmit)="addEmployee()" #employeeForm="ngForm">
+
+        <div class="mb-3">
+          <label for="id" class="form-label">Employee ID</label>
+          <input
+            type="number"
+            id="id"
+            class="form-control"
+            name="id"
+            [(ngModel)]="newEmployee.id"
+            placeholder="Enter Employee ID"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label for="name" class="form-label">Employee Name</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            name="name"
+            [(ngModel)]="newEmployee.name"
+            placeholder="Enter Employee Name"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label for="salary" class="form-label">Employee Salary</label>
+          <input
+            type="number"
+            id="salary"
+            class="form-control"
+            name="salary"
+            [(ngModel)]="newEmployee.salary"
+            placeholder="Enter Employee Salary"
+            required>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="status().loading">
+            {{ status().loading ? 'Saving...' : 'Submit' }}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="clearForm()">
+            Clear
+          </button>
+        </div>
+
+        <div *ngIf="status().success" class="alert alert-success mt-3">
+          Employee added successfully!
+        </div>
+
+        <div *ngIf="status().error" class="alert alert-danger mt-3">
+          {{ status().error }}
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+``

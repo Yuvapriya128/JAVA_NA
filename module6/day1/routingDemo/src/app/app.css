@@ -1,0 +1,99 @@
+/* Navbar */
+
+.custom-navbar{
+  background: linear-gradient(90deg,#0f172a,#1e3a8a);
+  padding: 12px 0;
+}
+
+/* Logo */
+
+.logo-circle{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#ffffff;
+  color:#1e3a8a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  font-size:20px;
+}
+
+/* Brand */
+
+.navbar-brand{
+  font-size:1.5rem;
+  letter-spacing:.5px;
+}
+
+/* Links */
+
+.nav-link{
+  color:#e2e8f0 !important;
+  font-weight:500;
+  transition:.3s;
+  position:relative;
+}
+
+/* Hover */
+
+.nav-link:hover{
+  color:#ffffff !important;
+}
+
+/* Underline Animation */
+
+.nav-link::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0;
+  height:2px;
+  background:#38bdf8;
+  transition:.3s;
+}
+
+.nav-link:hover::after{
+  width:100%;
+}
+
+/* Active Link */
+
+.nav-link.active{
+  color:#ffffff !important;
+  font-weight:600;
+}
+
+.nav-link.active::after{
+  width:100%;
+}
+
+/* Login Button */
+
+.btn-primary{
+  background:#38bdf8;
+  border:none;
+  transition:.3s;
+}
+
+.btn-primary:hover{
+  background:#0ea5e9;
+  transform:translateY(-2px);
+}
+
+/* Mobile */
+
+@media(max-width:991px){
+
+  .navbar-nav{
+    margin-top:15px;
+    text-align:center;
+  }
+
+  .nav-item{
+    margin:8px 0;
+  }
+
+}

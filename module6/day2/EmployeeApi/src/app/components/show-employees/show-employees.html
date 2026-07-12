@@ -1,0 +1,16 @@
+<input type="checkbox" [(ngModel)]="showupdate">
+<label>Update Employees</label>
+@if(!showupdate){
+<app-add-employee></app-add-employee>
+}
+@else{
+<app-update-employee></app-update-employee>
+}
+<p>show-employees works!</p>
+@for(employee of employeeService.employees() ;track employee.id) {
+<app-show-employee [employee]="employee"></app-show-employee>
+}
+<!--<app-add-employee></app-add-employee>-->
+<!--<app-update-employee></app-update-employee>-->
+
+

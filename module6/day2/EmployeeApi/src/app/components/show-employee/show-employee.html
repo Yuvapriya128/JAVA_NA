@@ -1,0 +1,19 @@
+
+<p>{{employee.id}} {{employee?.name}} {{employee?.salary}}</p>
+<button (click)="remove()" type="button" class="btn btn-danger">Remove</button>
+<!--STATUS -->
+@if(status().loading){
+<p>Deleting employee...</p>
+}
+
+@if(status().error){
+<p class="text-danger">
+  {{status().error}}
+</p>
+}
+
+@if(status().success){
+<p class="text-success">
+  Employee deleted successfully.
+</p>
+}
