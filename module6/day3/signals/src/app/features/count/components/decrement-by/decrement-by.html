@@ -1,0 +1,7 @@
+<div class="input-group input-group-lg">
+  <span class="input-group-text">Subtract</span>
+  <input type="number" class="form-control" [(ngModel)]="value" aria-label="Decrement by value">
+  <button type="button" class="btn btn-danger" (click)="countService.decrementBy(value)">
+	-{{ value }}
+  </button>
+</div>

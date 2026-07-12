@@ -1,0 +1,7 @@
+<div class="input-group input-group-lg">
+  <span class="input-group-text">Add</span>
+  <input type="number" class="form-control" [(ngModel)]="value" aria-label="Increment by value">
+  <button type="button" class="btn btn-success" (click)="countService.incrementBy(value)">
+	+{{ value }}
+  </button>
+</div>

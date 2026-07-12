@@ -1,0 +1,27 @@
+<main class="count-page container py-5">
+  <section class="card shadow-sm border-0 count-card mx-auto">
+	<div class="card-body p-4 p-md-5">
+	  <p class="text-uppercase text-secondary small mb-2">Signal Counter</p>
+	  <h1 class="h3 fw-semibold mb-4">Count Dashboard</h1>
+
+	  <div class="count-value rounded-3 bg-light border p-4 text-center mb-4">
+		<p class="text-secondary mb-1">Current Count</p>
+		<p class="display-5 fw-bold mb-0">{{ countService.getCount()() }}</p>
+	  </div>
+
+	  <div class="row g-3 mb-3">
+		<div class="col-12 col-md-6">
+		  <app-increment></app-increment>
+		</div>
+		<div class="col-12 col-md-6">
+		  <app-decrement></app-decrement>
+		</div>
+	  </div>
+
+	  <div class="d-flex flex-column gap-3">
+		<app-increment-by></app-increment-by>
+		<app-decrement-by></app-decrement-by>
+	  </div>
+	</div>
+  </section>
+</main>

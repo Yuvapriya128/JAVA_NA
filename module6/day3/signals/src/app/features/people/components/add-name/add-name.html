@@ -1,0 +1,14 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+	<h2 class="h6 mb-3">Add Name</h2>
+	<div class="input-group">
+	  <input
+		type="text"
+		class="form-control"
+		[(ngModel)]="newName"
+		placeholder="Enter name"
+	  >
+	  <button class="btn btn-primary" (click)="nameServices.addName(newName)">Add</button>
+	</div>
+  </div>
+</div>

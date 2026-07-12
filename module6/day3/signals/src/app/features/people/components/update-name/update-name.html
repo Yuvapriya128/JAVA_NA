@@ -1,0 +1,26 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+	<h2 class="h6 mb-3">Update Name</h2>
+	<div class="row g-2">
+	  <div class="col-12 col-md-5">
+		<input
+		  type="text"
+		  class="form-control"
+		  [(ngModel)]="oldName"
+		  placeholder="Current name"
+		>
+	  </div>
+	  <div class="col-12 col-md-5">
+		<input
+		  type="text"
+		  class="form-control"
+		  [(ngModel)]="newName"
+		  placeholder="New name"
+		>
+	  </div>
+	  <div class="col-12 col-md-2 d-grid">
+		<button class="btn btn-outline-primary" (click)="nameServices.updateName(oldName,newName)">Update</button>
+	  </div>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<main class="container py-5">
+  <section class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h4 mb-0">People Directory</h1>
+        <span class="badge text-bg-light">{{ nameServices.getNames()().length }} names</span>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        @for(name of nameServices.getNames()(); track $index){
+          <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <span class="fw-medium">{{ name }}</span>
+            <button class="btn btn-sm btn-outline-danger" (click)="nameServices.deleteName(name)">Remove</button>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-5">
+      <app-add-name></app-add-name>
+    </div>
+    <div class="col-12 col-lg-7">
+      <app-update-name></app-update-name>
+    </div>
+  </div>
+</main>

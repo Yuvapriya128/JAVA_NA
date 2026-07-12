@@ -1,0 +1,30 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+	<h2 class="h5 mb-3">Add Movie</h2>
+	<div class="row g-3">
+	  <div class="col-12 col-md-3">
+		<label class="form-label">ID</label>
+		<input type="number" class="form-control" placeholder="101" [(ngModel)]="newMovie.id">
+	  </div>
+	  <div class="col-12 col-md-9">
+		<label class="form-label">Title</label>
+		<input type="text" class="form-control" placeholder="Movie title" [(ngModel)]="newMovie.title">
+	  </div>
+	  <div class="col-12 col-md-6">
+		<label class="form-label">Director</label>
+		<input type="text" class="form-control" placeholder="Director name" [(ngModel)]="newMovie.director">
+	  </div>
+	  <div class="col-12 col-md-4">
+		<label class="form-label">Genre</label>
+		<input type="text" class="form-control" placeholder="Genre" [(ngModel)]="newMovie.genre">
+	  </div>
+	  <div class="col-12 col-md-2">
+		<label class="form-label">Rating</label>
+		<input type="number" class="form-control" placeholder="5" [(ngModel)]="newMovie.rating">
+	  </div>
+	  <div class="col-12 d-grid d-md-flex justify-content-md-end">
+		<button class="btn btn-primary px-4" (click)="movieServices.addMovies(newMovie)">Add Movie</button>
+	  </div>
+	</div>
+  </div>
+</div>
