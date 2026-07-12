@@ -1,0 +1,56 @@
+<!--app.html <- app.ts <- main.ts<-index.html-->
+<button (click)="changeTitle()" >Click</button>
+<p>String</p>
+<h1>
+  Hi {{ title }}
+</h1>
+<!--object-->
+<p>Object</p>
+<p>
+  Name
+  {{ person.fname }} {{person.lname}}
+</p>
+<!--array-->
+<!--<p>List</p>
+<input type="text" placeholder="Enter name" [(ngModel)]="newName">
+<button (click)="addName()">Add name</button>
+<ul>
+@for (name of people; track $index){
+   <li>{{ name }} <button (click)="removeName(name)">Remove</button>
+   <button (click)="updateName($index)">Update</button>
+   </li>
+}
+</ul>-->
+
+<p>Table</p>
+<input type="text" placeholder="Enter name" [(ngModel)]="newPerson.name">
+<input type="text" placeholder="Enter age" [(ngModel)]="newPerson.age">
+<input type="text" placeholder="Enter city" [(ngModel)]="newPerson.city">
+<button (click)="addPerson()">Add Person</button>
+<table border="1">
+  <tbody>
+  @for ( people of peopleDetails; track $index){
+  <tr>
+    <td>{{ people.name }}</td>
+    <td>{{ people.age }}</td>
+    <td>{{ people.city }}</td>
+    <td><button (click)="removePerson(people)">Remove</button></td>
+    <td><button (click)="updatePerson($index)">Update</button></td>
+    </tr>
+  }
+  </tbody>
+
+</table>
+
+<p>Database connection: List</p>
+<input type="number" placeholder="Enter ID" [(ngModel)]="newEmployee.id">
+<input type="text" placeholder="Enter name" [(ngModel)]="newEmployee.name">
+<input type="number" placeholder="Enter salary" [(ngModel)]="newEmployee.salary">
+<button (click)="addEmployee()">Add employee</button>
+<ul>
+  @for (emp of people(); track emp.id){
+  <li>{{ emp.name }} - {{ emp.salary }} <button (click)="deleteEmployee(emp)">Remove</button>
+    <button (click)="updateEmployee(emp)">Update</button>
+  </li>
+  }
+</ul>
