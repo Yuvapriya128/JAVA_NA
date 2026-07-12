@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>Spread operator</title>
+</head>
+<body>
+</body>
+<script>
+
+  function sayHi(name1,name2,name3){
+      alert("Hi " + name1 + " " + name2 + " " + name3);
+  }
+
+  var arr=["yuva","alice","melisa"];
+  sayHi(arr[0],arr[1],arr[2]);
+  sayHi(...arr);
+
+  var obj={
+      name1:"Yuva",
+      name2:"Alice",
+      name3:"Melisa"
+  };
+  sayHi(...Object.values(obj));
+
+//   cloning
+  var arr=[1,2,3,4,5,6,7,8,9];
+  // spread the arr , then catch it by [], for pushing also add at end by ,
+  // this creates a new array with the elements of arr and adds 100 at the end
+  var arr2=[...arr,100];
+  arr2[0]=10;
+  console.log("Cloning by spread operator");
+  console.log(arr);
+  console.log(arr2);
+</script>
+</html>

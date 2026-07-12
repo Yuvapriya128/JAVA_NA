@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>class with inheritance</title>
+</head>
+<body>
+</body>
+<script>
+<!--    inside class don't write function-->
+    class Animal {
+        constructor(name) {
+            this.name = name;
+        }
+        speak(){
+            console.log(`${this.name} makes a noise`);
+        }
+    }
+//     inheritance using extends
+    class Dog extends Animal {
+        speak() {
+            console.log(`${this.name} barks!`);
+        }
+    }
+    const pet=new Dog('Fai fai');
+    pet.speak();
+</script>
+</html>

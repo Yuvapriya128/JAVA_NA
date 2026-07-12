@@ -1,0 +1,32 @@
+<html>
+<body>
+<button onclick="demo()">Start</button>
+<p>Have you eaten?</p>
+<div id="result"></div>
+<script>
+    function mypromise() {
+        return new Promise(((resolve,reject)=>{
+            setTimeout(()=>{
+                let answer=Math.round(Math.random());
+                if(answer===1){
+                    resolve();
+                }else{
+                    reject();
+                }
+            },Math.random()*5*1000);
+        }));
+    }
+/*
+without await -> return [Object Promise]
+with await-> it needs async funtion
+* */
+ async function demo() {
+    let result="waiting for result...";
+    document.getElementById("result").innerHTML=result;
+
+    result =  await mypromise().then(() => "Done").catch(() => "Not done");
+    document.getElementById("result").innerHTML=result;
+}
+</script>
+</body>
+</html>

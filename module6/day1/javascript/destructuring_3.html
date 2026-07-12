@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>Structuring & Destructuring</title>
+</head>
+<body></body>
+<script>
+    var obj={fname:"yuvapriya",lname:"S",age:21};
+    console.log(obj);
+
+    // object destructuring
+    const {fname, lname}=obj;
+    console.log(fname+" "+lname);
+
+
+    // object structuring : 2 ways
+    let name="Amudha";
+    let dept="HR";
+    let age=23;
+
+    let employee={name:name,
+    age:age,
+    dept:dept};
+    console.log(employee);
+    // variable names should match column name
+    let emp={name,dept,age};
+    console.log(emp);
+
+
+
+</script>
+</html>
