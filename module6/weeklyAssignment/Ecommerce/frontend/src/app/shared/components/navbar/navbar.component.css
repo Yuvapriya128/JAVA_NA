@@ -1,0 +1,256 @@
+.navbar-shell {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.navbar-left {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.subtitle {
+  margin: 0.2rem 0 0;
+  color: #6B7280;
+  font-size: 0.82rem;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.desktop-search {
+  width: min(27rem, 48vw);
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.85rem;
+}
+
+.desktop-search i {
+  color: #6B7280;
+}
+
+.desktop-search input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  font-size: 0.9rem;
+  color: #1F2937;
+  background: transparent;
+}
+
+.icon-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  position: relative;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn i {
+  color: #374151;
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #DC2626;
+  position: absolute;
+  top: 0.55rem;
+  right: 0.7rem;
+}
+
+.profile-chip {
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 0.75rem 0 0.5rem;
+  text-decoration: none;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #2563EB;
+  background: #DBEAFE;
+}
+
+.profile-text {
+  display: grid;
+  line-height: 1.1;
+}
+
+.profile-text strong {
+  font-size: 0.82rem;
+  color: #111827;
+}
+
+.role-badge {
+  margin-top: 0.1rem;
+  width: fit-content;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.mobile-search-btn,
+.mobile-profile-btn {
+  display: none;
+}
+
+.mobile-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 1rem;
+}
+
+.mobile-search-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.mobile-search-header button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+}
+
+.mobile-search-input {
+  flex: 1;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.85rem;
+}
+
+.mobile-search-input i {
+  color: #64748B;
+}
+
+.mobile-search-input input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 0.95rem;
+}
+
+[data-theme='dark'] .navbar-shell {
+  background: rgba(17, 24, 39, 0.92);
+  border-bottom-color: #334155;
+}
+
+[data-theme='dark'] .title {
+  color: #E5E7EB;
+}
+
+[data-theme='dark'] .desktop-search,
+[data-theme='dark'] .icon-btn,
+[data-theme='dark'] .profile-chip {
+  background: #111827;
+  border-color: #334155;
+}
+
+[data-theme='dark'] .desktop-search input {
+  color: #E2E8F0;
+}
+
+[data-theme='dark'] .icon-btn i {
+  color: #CBD5E1;
+}
+
+[data-theme='dark'] .profile-text strong {
+  color: #E2E8F0;
+}
+
+[data-theme='dark'] .role-badge {
+  background: #312E81;
+  color: #C7D2FE;
+}
+
+[data-theme='dark'] .mobile-search-overlay {
+  background: rgba(15, 23, 42, 0.98);
+}
+
+[data-theme='dark'] .mobile-search-header button,
+[data-theme='dark'] .mobile-search-input {
+  background: #111827;
+  border-color: #334155;
+  color: #E2E8F0;
+}
+
+[data-theme='dark'] .mobile-search-input input {
+  color: #E2E8F0;
+}
+
+@media (max-width: 767.98px) {
+  .navbar-shell {
+    padding: 0.75rem 0.9rem;
+  }
+
+  .title {
+    font-size: 1.05rem;
+  }
+
+  .desktop-search,
+  .profile-text {
+    display: none;
+  }
+
+  .mobile-search-btn,
+  .mobile-profile-btn {
+    display: inline-flex;
+  }
+
+  .icon-btn {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+}

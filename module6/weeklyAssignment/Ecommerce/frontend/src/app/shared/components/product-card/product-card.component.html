@@ -1,0 +1,82 @@
+<article class="product-card">
+  <!-- Product Image Section -->
+  <div class="product-image-wrapper">
+    <a [routerLink]="['/products', product?.id]" class="product-image-link">
+      <div class="product-image-skeleton" *ngIf="!isImageLoaded()" aria-hidden="true"></div>
+      <img
+        [src]="getImageUrl()"
+        [alt]="product?.name || 'Product image'"
+        class="product-image"
+        [class.loaded]="isImageLoaded()"
+        (load)="onImageLoaded()"
+        (error)="onImageError($event)">
+    </a>
+
+    <!-- Discount Badge (Top Left) -->
+    <div class="product-badge-discount" *ngIf="getDiscountPercentage() > 0">
+      <span class="badge-text">{{ getDiscountPercentage() }}% OFF</span>
+    </div>
+
+    <div class="product-badge-category">
+      <span>{{ product?.category || 'General' }}</span>
+    </div>
+
+    <!-- Wishlist Button (Top Right) -->
+    <button
+      type="button"
+      class="product-btn-wishlist"
+      [title]="isFavorite() ? 'Remove from wishlist' : 'Add to wishlist'"
+      [attr.aria-label]="isFavorite() ? 'Remove from wishlist' : 'Add to wishlist'"
+      (click)="onToggleFavorite($event)"
+      [class.active]="isFavorite()">
+      <i [class]="isFavorite() ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
+    </button>
+  </div>
+
+  <!-- Product Info Section -->
+  <div class="product-info">
+    <!-- Brand -->
+    <p class="product-brand">{{ product?.brand || 'Brand' }}</p>
+
+    <!-- Product Name -->
+    <a [routerLink]="['/products', product?.id]" class="product-link">
+      <h3 class="product-name">{{ product?.name }}</h3>
+    </a>
+
+    <div class="product-rating">
+      <i class="bi bi-star-fill" *ngFor="let _ of [1,2,3,4]"></i>
+      <i class="bi bi-star-half"></i>
+      <span>(128)</span>
+    </div>
+
+    <!-- Category -->
+    <p class="product-category">{{ product?.category || 'General' }}</p>
+
+    <!-- Price Section -->
+    <div class="product-price-section">
+      <app-price
+        [amount]="product?.cost || 0"
+        [originalAmount]="product?.originalPrice"
+        [currencyCode]="product?.currencyCode || 'USD'"
+        size="md">
+      </app-price>
+    </div>
+
+    <!-- Stock Status -->
+    <p class="product-stock" [ngClass]="getStockClass()">
+      <i class="bi bi-check-circle-fill me-1"></i>In Stock
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="product-actions">
+      <button class="btn btn-outline-secondary btn-action" type="button" (click)="onQuickView()">
+        <i class="bi bi-eye me-1"></i>View Details
+      </button>
+      <button class="btn btn-primary btn-action" type="button" (click)="onAddToCart($event)">
+        <i class="bi bi-bag-plus me-1"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</article>
+
+

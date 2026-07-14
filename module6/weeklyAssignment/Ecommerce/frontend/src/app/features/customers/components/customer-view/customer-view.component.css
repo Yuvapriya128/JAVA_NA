@@ -1,0 +1,13 @@
+
+    .view-container { padding: 20px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .details-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .detail-row { display: flex; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .detail-row label { font-weight: 600; width: 150px; }
+    .actions { margin-top: 20px; display: flex; gap: 10px; }
+    .btn-edit, .btn-delete, .btn-back { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+    .btn-back { background: #6c757d; color: white; }
+    .btn-edit { background: #0d6efd; color: white; }
+    .btn-delete { background: #dc3545; color: white; }
+    .loading, .error { padding: 20px; text-align: center; }
+  

@@ -1,0 +1,73 @@
+
+<div class="edit-page">
+  <div class="form-container">
+    <div class="header">
+      <div>
+        <h2>Edit Product</h2>
+        <p>Update product details and keep catalog information clean.</p>
+      </div>
+      <button class="btn-back" type="button" (click)="onCancel()">Back</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Loading...</div>
+
+    <div *ngIf="!isLoading" class="edit-layout">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+        <div class="form-grid">
+          <div class="form-group form-span-2">
+            <label>Name *</label>
+            <input type="text" formControlName="name" placeholder="Enter product name" />
+            <small *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error">Name is required</small>
+          </div>
+
+          <div class="form-group">
+            <label>Price *</label>
+            <input type="number" formControlName="cost" placeholder="Enter price" />
+            <small *ngIf="form.get('cost')?.invalid && form.get('cost')?.touched" class="error">Valid price is required</small>
+          </div>
+
+          <div class="form-group">
+            <label>Stock *</label>
+            <input type="number" formControlName="stock" placeholder="Enter stock quantity" />
+            <small *ngIf="form.get('stock')?.invalid && form.get('stock')?.touched" class="error">Stock is required</small>
+          </div>
+
+          <div class="form-group">
+            <label>Category *</label>
+            <input type="text" formControlName="category" placeholder="Enter category" />
+            <small *ngIf="form.get('category')?.invalid && form.get('category')?.touched" class="error">Category is required</small>
+          </div>
+
+          <div class="form-group">
+            <label>Brand</label>
+            <input type="text" formControlName="brand" placeholder="Enter brand" />
+          </div>
+
+          <div class="form-group form-span-2">
+            <label>Description</label>
+            <textarea formControlName="description" placeholder="Enter description" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save" [disabled]="form.invalid || isSubmitting">
+            {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+          </button>
+          <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+        </div>
+
+        <div *ngIf="error" class="alert-error">{{ error }}</div>
+      </form>
+
+      <aside class="preview-card" aria-label="Product preview placeholder">
+        <h3>Image Preview</h3>
+        <div class="preview-image-box">
+          <i class="bi bi-image"></i>
+          <span>Small image placeholder</span>
+        </div>
+        <p class="preview-text">Connect image upload later to replace this box with real product media.</p>
+      </aside>
+    </div>
+  </div>
+</div>
+

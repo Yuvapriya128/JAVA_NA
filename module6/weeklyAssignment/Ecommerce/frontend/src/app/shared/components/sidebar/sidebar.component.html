@@ -1,0 +1,68 @@
+<aside class="sidebar-shell" aria-label="Main navigation">
+  <div class="sidebar-top">
+    <div class="brand-block">
+      <div class="brand-icon"><i class="bi bi-shop"></i></div>
+      <div>
+        <h2 class="brand-title">Ecom</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-scroll">
+    <p class="nav-group-label">Main</p>
+    <nav class="nav-menu">
+      <a
+        *ngFor="let item of mainMenuItems()"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.exactMatch ?? false }"
+        class="nav-item"
+        [attr.aria-label]="item.label"
+      >
+        <span class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></span>
+        <span class="nav-label">{{ item.label }}</span>
+        <span *ngIf="getBadgeCount(item) > 0" class="cart-badge">{{ getBadgeCount(item) }}</span>
+      </a>
+    </nav>
+
+    <p class="nav-group-label account-label">Account</p>
+    <nav class="nav-menu">
+      <a
+        *ngFor="let item of accountMenuItems()"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.exactMatch ?? false }"
+        class="nav-item"
+        [attr.aria-label]="item.label"
+      >
+        <span class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></span>
+        <span class="nav-label">{{ item.label }}</span>
+        <span *ngIf="getBadgeCount(item) > 0" class="cart-badge">{{ getBadgeCount(item) }}</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="profile-card">
+      <div class="profile-avatar"><i class="bi bi-person-circle"></i></div>
+      <div class="profile-meta">
+        <p class="profile-name">{{ userName() }}</p>
+        <p class="profile-role">{{ role() || 'USER' }}</p>
+      </div>
+    </div>
+
+    <button *ngIf="canSwitchToUserView()" class="btn-view-mode" (click)="onViewAsUser()">
+      <i class="bi bi-person-check"></i>
+      View As User
+    </button>
+    <button *ngIf="isViewingAsUser()" class="btn-view-mode" (click)="onReturnToAdmin()">
+      <i class="bi bi-arrow-counterclockwise"></i>
+      Return to Admin
+    </button>
+
+    <button class="btn-logout" (click)="onLogout()">
+      <i class="bi bi-box-arrow-right"></i>
+      Logout
+    </button>
+  </div>
+</aside>

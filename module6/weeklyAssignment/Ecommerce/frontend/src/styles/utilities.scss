@@ -1,0 +1,623 @@
+// ============================================
+// DESIGN SYSTEM UTILITIES
+// ============================================
+
+@import 'variables.scss';
+@import 'responsive.scss';
+
+// ============================================
+// BUTTON STYLES
+// ============================================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  height: $button-height-md;
+  padding: $button-padding-md;
+  font-family: $font-primary;
+  font-size: $font-size-button;
+  font-weight: $font-weight-semibold;
+  border: none;
+  border-radius: $radius-button;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  transition: $transition-default;
+  position: relative;
+  overflow: hidden;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+
+  // Button sizes
+  &.btn-sm {
+    height: $button-height-sm;
+    padding: $button-padding-sm;
+    font-size: $font-size-small;
+  }
+
+  &.btn-lg {
+    height: $button-height-lg;
+    padding: $button-padding-lg;
+  }
+
+  &.btn-xl {
+    height: $button-height-xl;
+    padding: $button-padding-xl;
+    font-size: $font-size-h5;
+  }
+
+  // Button variants
+  &.btn-primary {
+    background-color: $primary;
+    color: $text-inverse;
+    box-shadow: $shadow-md;
+
+    &:hover:not(:disabled) {
+      background-color: $primary-hover;
+      box-shadow: $shadow-xl;
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: $shadow-md;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: $secondary;
+    color: $text-primary;
+    border: 1px solid $border;
+
+    &:hover:not(:disabled) {
+      background-color: $border-light;
+      border-color: $border-dark;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $border;
+    }
+  }
+
+  &.btn-outline {
+    background-color: transparent;
+    color: $primary;
+    border: 2px solid $primary;
+
+    &:hover:not(:disabled) {
+      background-color: $primary-lighter;
+      border-color: $primary-hover;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $primary-light;
+    }
+  }
+
+  &.btn-danger {
+    background-color: $danger;
+    color: $text-inverse;
+    box-shadow: $shadow-md;
+
+    &:hover:not(:disabled) {
+      background-color: darken($danger, 5%);
+      box-shadow: $shadow-xl;
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &.btn-success {
+    background-color: $success;
+    color: $text-inverse;
+    box-shadow: $shadow-md;
+
+    &:hover:not(:disabled) {
+      background-color: darken($success, 5%);
+      box-shadow: $shadow-xl;
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &.btn-warning {
+    background-color: $warning;
+    color: $text-inverse;
+    box-shadow: $shadow-md;
+
+    &:hover:not(:disabled) {
+      background-color: darken($warning, 5%);
+      box-shadow: $shadow-xl;
+      transform: translateY(-2px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &.btn-ghost {
+    background-color: transparent;
+    color: $text-primary;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background-color: $border-light;
+      color: $primary;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $border;
+    }
+  }
+
+  // Full width button
+  &.btn-block {
+    width: 100%;
+  }
+
+  // Icon button
+  &.btn-icon {
+    width: $icon-button-size;
+    height: $icon-button-size;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-full;
+  }
+
+  // Floating action button
+  &.btn-floating {
+    width: $floating-button-size;
+    height: $floating-button-size;
+    padding: 0;
+    border-radius: $radius-full;
+    position: fixed;
+    bottom: $space-6;
+    right: $space-6;
+    box-shadow: $shadow-2xl;
+
+    @include md-down {
+      bottom: $space-4;
+      right: $space-4;
+    }
+  }
+
+  // Loading state
+  &.btn-loading {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+}
+
+// ============================================
+// CARD STYLES
+// ============================================
+
+.card {
+  background-color: $surface;
+  border-radius: $radius-card;
+  box-shadow: $shadow-lg;
+  padding: $space-4;
+  transition: $transition-smooth;
+  border: 1px solid $border-light;
+
+  &:hover {
+    box-shadow: $shadow-card-hover;
+    transform: translateY(-6px);
+  }
+
+  &.card-bordered {
+    border: 2px solid $border;
+  }
+
+  &.card-hover-none {
+    &:hover {
+      transform: none;
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  // Card sections
+  .card-header {
+    padding: $space-4;
+    margin: (-$space-4) (-$space-4) $space-4 (-$space-4);
+    border-bottom: 1px solid $border-light;
+    border-radius: $radius-card $radius-card 0 0;
+    background-color: $background;
+  }
+
+  .card-body {
+    padding: $space-4;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+
+  .card-footer {
+    padding: $space-4;
+    margin: $space-4 (-$space-4) (-$space-4) (-$space-4);
+    border-top: 1px solid $border-light;
+    background-color: $background;
+    border-radius: 0 0 $radius-card $radius-card;
+  }
+}
+
+// ============================================
+// INPUT STYLES
+// ============================================
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-input;
+  padding: $input-padding-y $input-padding-x;
+  height: $input-height;
+  transition: $transition-default;
+  font-family: $font-primary;
+  font-size: $font-size-body;
+
+  &:hover:not(:disabled) {
+    border-color: $border-dark;
+  }
+
+  &:focus-within {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-lighter;
+  }
+
+  &:disabled {
+    background-color: $border-light;
+    color: $text-tertiary;
+    cursor: not-allowed;
+  }
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+input[type='time'],
+input[type='search'],
+textarea,
+select {
+  width: 100%;
+  height: $input-height;
+  padding: $input-padding-y $input-padding-x;
+  font-family: $font-primary;
+  font-size: $font-size-body;
+  color: $text-primary;
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-input;
+  transition: $transition-default;
+  appearance: none;
+
+  &:hover:not(:disabled) {
+    border-color: $border-dark;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px $primary-lighter;
+  }
+
+  &:disabled {
+    background-color: $border-light;
+    color: $text-tertiary;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: $text-tertiary;
+  }
+}
+
+textarea {
+  height: auto;
+  min-height: 120px;
+  resize: vertical;
+}
+
+// ============================================
+// TABLE STYLES
+// ============================================
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: $surface;
+  border-radius: $radius-card;
+  overflow: hidden;
+  box-shadow: $shadow-lg;
+
+  thead {
+    background-color: $background;
+    border-bottom: 2px solid $border;
+    position: sticky;
+    top: 0;
+    z-index: $z-sticky;
+  }
+
+  th {
+    padding: $space-3;
+    text-align: left;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    font-size: $font-size-small;
+  }
+
+  td {
+    padding: $space-3;
+    border-bottom: 1px solid $border-light;
+    color: $text-secondary;
+    font-size: $font-size-body;
+  }
+
+  tbody {
+    tr {
+      transition: $transition-default;
+
+      &:hover {
+        background-color: $border-light;
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+
+  &.table-striped {
+    tbody tr:nth-child(odd) {
+      background-color: $background;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: $surface;
+
+      &:hover {
+        background-color: $border-light;
+      }
+    }
+  }
+}
+
+// ============================================
+// BADGE STYLES
+// ============================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: 4px 12px;
+  border-radius: $radius-full;
+  font-size: $font-size-caption;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+
+  &.badge-primary {
+    background-color: $primary-light;
+    color: $primary;
+  }
+
+  &.badge-secondary {
+    background-color: $border-light;
+    color: $text-secondary;
+  }
+
+  &.badge-success {
+    background-color: $success-light;
+    color: $success;
+  }
+
+  &.badge-danger {
+    background-color: $danger-light;
+    color: $danger;
+  }
+
+  &.badge-warning {
+    background-color: $warning-light;
+    color: $warning;
+  }
+
+  &.badge-info {
+    background-color: $info-light;
+    color: $info;
+  }
+
+  &.badge-wishlist {
+    background-color: $wishlist-light;
+    color: $wishlist;
+  }
+
+  // Solid badges
+  &.badge-solid {
+    &.badge-primary {
+      background-color: $primary;
+      color: $text-inverse;
+    }
+
+    &.badge-success {
+      background-color: $success;
+      color: $text-inverse;
+    }
+
+    &.badge-danger {
+      background-color: $danger;
+      color: $text-inverse;
+    }
+
+    &.badge-warning {
+      background-color: $warning;
+      color: $text-inverse;
+    }
+
+    &.badge-info {
+      background-color: $info;
+      color: $text-inverse;
+    }
+  }
+}
+
+// ============================================
+// CONTAINER STYLES
+// ============================================
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $space-3;
+  padding-right: $space-3;
+
+  @include md-up {
+    padding-left: $space-4;
+    padding-right: $space-4;
+  }
+
+  @include lg-up {
+    max-width: $max-width-content;
+    padding-left: $space-4;
+    padding-right: $space-4;
+  }
+
+  @include xl-up {
+    max-width: $max-width-container;
+  }
+}
+
+// ============================================
+// GRID SYSTEM
+// ============================================
+
+.row {
+  display: grid;
+  gap: $space-2;
+
+  @include md-up {
+    gap: $space-3;
+  }
+
+  @include lg-up {
+    gap: $space-4;
+  }
+}
+
+// ============================================
+// UTILITY MARGIN & PADDING
+// ============================================
+// Bootstrap provides margin and padding utilities
+// These custom utilities are disabled to avoid conflicts
+
+// $spacing-values: (1, 2, 3, 4, 5, 6);
+// @each $value in $spacing-values {
+//   .m-#{$value} { margin: $space-#{$value}; }
+//   etc...
+// }
+
+// ============================================
+// UTILITY TEXT STYLES
+// ============================================
+
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+.font-light { font-weight: $font-weight-light; }
+.font-regular { font-weight: $font-weight-regular; }
+.font-medium { font-weight: $font-weight-medium; }
+.font-semibold { font-weight: $font-weight-semibold; }
+.font-bold { font-weight: $font-weight-bold; }
+
+.italic { font-style: italic; }
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ============================================
+// UTILITY FLEX STYLES
+// ============================================
+
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ============================================
+// UTILITY SHADOW STYLES
+// ============================================
+
+.shadow-xs { box-shadow: $shadow-xs; }
+.shadow-sm { box-shadow: $shadow-sm; }
+.shadow-md { box-shadow: $shadow-md; }
+.shadow-lg { box-shadow: $shadow-lg; }
+.shadow-xl { box-shadow: $shadow-xl; }
+.shadow-2xl { box-shadow: $shadow-2xl; }
+.shadow-none { box-shadow: none; }
+
+.shadow-hover {
+  transition: box-shadow $transition-normal $easing-in-out;
+
+  &:hover {
+    box-shadow: $shadow-hover;
+  }
+}
+

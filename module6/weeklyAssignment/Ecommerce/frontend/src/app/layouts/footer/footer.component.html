@@ -1,0 +1,78 @@
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Footer Content Grid -->
+    <div class="footer-grid">
+      <!-- Company Info -->
+      <div class="footer-section">
+        <h4 class="footer-title">eCommerce</h4>
+        <p class="footer-description">
+          A modern, responsive eCommerce platform built with Angular and Bootstrap.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-link" title="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="social-link" title="Twitter">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" class="social-link" title="Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" class="social-link" title="LinkedIn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h5 class="footer-section-title">Quick Links</h5>
+        <ul class="footer-list">
+          <li><a routerLink="/products">Products</a></li>
+          <li><a routerLink="/orders">Orders</a></li>
+          <li><a routerLink="/favorites">Favorites</a></li>
+          <li><a routerLink="/profile">Profile</a></li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="footer-section">
+        <h5 class="footer-section-title">Support</h5>
+        <ul class="footer-list">
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="footer-section">
+        <h5 class="footer-section-title">Company</h5>
+        <ul class="footer-list">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Divider -->
+    <hr class="footer-divider">
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-copyright">
+        <p>&copy; {{ currentYear }} eCommerce. All rights reserved.</p>
+      </div>
+
+      <div class="footer-actions">
+        <button class="btn-scroll-top" (click)="scrollToTop()" title="Scroll to top">
+          <i class="bi bi-arrow-up"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+

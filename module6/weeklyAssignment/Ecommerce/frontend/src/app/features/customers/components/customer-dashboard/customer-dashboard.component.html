@@ -1,0 +1,48 @@
+<div class="customer-dashboard">
+  <div class="header">
+    <h1>Customers</h1>
+    <button *ngIf="canCreateCustomer()" class="btn-add" (click)="onAddCustomer()">+ Add Customer</button>
+  </div>
+
+  <app-search (search)="onSearch($event)"></app-search>
+
+  <app-loading [isLoading]="isLoading" message="Loading customers..."></app-loading>
+
+  <div class="table-container" *ngIf="!isLoading">
+    <table class="customers-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers">
+          <td>{{ customer.id ?? 'N/A' }}</td>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.address }}</td>
+          <td>{{ customer.createdAt | date:'short' }}</td>
+          <td class="actions">
+            <button class="btn-view" [disabled]="!customer.id" (click)="onViewCustomer(customer)">View</button>
+            <button *ngIf="canEditCustomer()" class="btn-edit" [disabled]="!customer.id" (click)="onEditCustomer(customer)">Edit</button>
+            <button *ngIf="canDeleteCustomer()" class="btn-delete" [disabled]="!customer.id" (click)="onDeleteCustomer(customer)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="customers.length === 0">
+          <td colspan="6" class="empty-state">No customers found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"
+  ></app-pagination>
+</div>

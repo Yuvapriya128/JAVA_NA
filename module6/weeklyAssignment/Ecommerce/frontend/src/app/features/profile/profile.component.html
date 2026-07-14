@@ -1,0 +1,181 @@
+<section class="profile-page">
+  <header class="profile-header">
+    <h1 class="app-page-title">My Profile</h1>
+    <p>View and manage your account details and password.</p>
+  </header>
+
+  <app-loading [isLoading]="isProfileLoading()" message="Loading profile..."></app-loading>
+
+  <div *ngIf="!isProfileLoading() && profileLoadError()" class="app-surface p-3">
+    <div class="alert alert-danger mb-0" role="alert">
+      <div class="fw-semibold mb-1">Unable to load profile</div>
+      <div>{{ profileLoadError() }}</div>
+      <button class="btn btn-outline-danger btn-sm mt-2" type="button" (click)="loadProfile()">
+        <i class="bi bi-arrow-clockwise me-2"></i>Try Again
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-grid" *ngIf="!isProfileLoading() && !profileLoadError()">
+    <article class="app-surface profile-info-card">
+      <div class="profile-avatar">{{ avatarInitials() }}</div>
+      <h2 class="profile-name">{{ displayName() }}</h2>
+      <p class="profile-email">{{ profileForm.get('email')?.value || '-' }}</p>
+      <span class="role-pill text-uppercase">{{ profileForm.get('role')?.value || '-' }}</span>
+
+      <div class="profile-meta">
+        <div class="meta-item">
+          <small>Customer ID</small>
+          <strong>#{{ profileForm.get('customerId')?.value || '-' }}</strong>
+        </div>
+        <div class="meta-item">
+          <small>Phone</small>
+          <strong>{{ profileForm.get('phoneNumber')?.value || '-' }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="app-surface form-card">
+      <div class="card-title-row">
+        <h3><i class="bi bi-person-vcard me-2"></i>{{ isEditMode() ? 'Edit Profile' : 'Profile Details' }}</h3>
+      </div>
+
+      <div *ngIf="!isEditMode()" class="profile-view-grid">
+        <div class="profile-view-item">
+          <small>First Name</small>
+          <strong>{{ profileForm.get('firstName')?.value || '-' }}</strong>
+        </div>
+        <div class="profile-view-item">
+          <small>Last Name</small>
+          <strong>{{ profileForm.get('lastName')?.value || '-' }}</strong>
+        </div>
+        <div class="profile-view-item">
+          <small>Email</small>
+          <strong>{{ profileForm.get('email')?.value || '-' }}</strong>
+        </div>
+        <div class="profile-view-item">
+          <small>Phone</small>
+          <strong>{{ profileForm.get('phoneNumber')?.value || '-' }}</strong>
+        </div>
+        <div class="profile-view-item profile-view-item-full">
+          <small>Address</small>
+          <strong>{{ profileForm.get('address')?.value || '-' }}</strong>
+        </div>
+      </div>
+
+      <div class="card-actions" *ngIf="!isEditMode()">
+        <button class="btn btn-outline-secondary" type="button" (click)="loadProfile()" [disabled]="isProfileLoading()">
+          <i class="bi bi-arrow-clockwise me-2"></i>Reload
+        </button>
+        <button class="btn btn-outline-primary" type="button" (click)="openPasswordMode()">
+          <i class="bi bi-shield-lock me-2"></i>Change Password
+        </button>
+        <button class="btn btn-primary" type="button" (click)="openEditMode()">
+          <i class="bi bi-pencil-square me-2"></i>Edit Profile
+        </button>
+      </div>
+
+      <form *ngIf="isEditMode()" [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" formControlName="firstName" />
+            <small class="text-danger" *ngIf="getControlError(profileForm, 'firstName')">{{ getControlError(profileForm, 'firstName') }}</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" formControlName="lastName" />
+            <small class="text-danger" *ngIf="getControlError(profileForm, 'lastName')">{{ getControlError(profileForm, 'lastName') }}</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-control" formControlName="phoneNumber" />
+            <small class="text-danger" *ngIf="getControlError(profileForm, 'phoneNumber')">{{ getControlError(profileForm, 'phoneNumber') }}</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email" [readonly]="!canEditEmail" />
+            <small class="text-danger" *ngIf="getControlError(profileForm, 'email')">{{ getControlError(profileForm, 'email') }}</small>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Role</label>
+            <input type="text" class="form-control" formControlName="role" readonly />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Customer ID</label>
+            <input type="text" class="form-control" formControlName="customerId" readonly />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Address</label>
+            <textarea rows="3" class="form-control" formControlName="address"></textarea>
+            <small class="text-danger" *ngIf="getControlError(profileForm, 'address')">{{ getControlError(profileForm, 'address') }}</small>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn btn-outline-secondary" type="button" (click)="cancelEditMode()" [disabled]="isProfileSaving()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" type="submit" [disabled]="profileForm.invalid || isProfileSaving() || isProfileLoading()">
+            <span *ngIf="isProfileSaving()" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isProfileSaving()" class="bi bi-check2-circle me-2"></i>
+            {{ isProfileSaving() ? 'Saving...' : 'Save Profile' }}
+          </button>
+        </div>
+      </form>
+    </article>
+  </div>
+
+  <article class="app-surface form-card password-card" *ngIf="!isProfileLoading() && !profileLoadError() && isPasswordMode()">
+    <div class="card-title-row">
+      <h3><i class="bi bi-shield-lock me-2"></i>Change Password</h3>
+    </div>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Current Password</label>
+          <input type="password" class="form-control" formControlName="currentPassword" />
+          <small class="text-danger" *ngIf="getControlError(passwordForm, 'currentPassword')">{{ getControlError(passwordForm, 'currentPassword') }}</small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">New Password</label>
+          <input type="password" class="form-control" formControlName="newPassword" />
+          <small class="text-danger" *ngIf="getControlError(passwordForm, 'newPassword')">{{ getControlError(passwordForm, 'newPassword') }}</small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" formControlName="confirmPassword" />
+          <small class="text-danger" *ngIf="getPasswordConfirmError()">{{ getPasswordConfirmError() }}</small>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-outline-secondary" type="button" (click)="cancelPasswordMode()" [disabled]="isPasswordSaving()">
+          Cancel
+        </button>
+        <button class="btn btn-primary" type="submit" [disabled]="passwordForm.invalid || isPasswordSaving()">
+          <span *ngIf="isPasswordSaving()" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <i *ngIf="!isPasswordSaving()" class="bi bi-key me-2"></i>
+          {{ isPasswordSaving() ? 'Updating...' : 'Change Password' }}
+        </button>
+      </div>
+    </form>
+  </article>
+
+  <app-toast
+    [show]="toastShow"
+    [title]="toastTitle"
+    [message]="toastMessage"
+    [variant]="toastVariant"
+    (closed)="toastShow = false">
+  </app-toast>
+</section>

@@ -1,0 +1,19 @@
+<div class="stat-card" [ngClass]="getColorClass()">
+  <div class="stat-icon">
+    <i [class]="'bi ' + stat.icon"></i>
+  </div>
+
+  <div class="stat-content">
+    <p class="stat-label">{{ stat.title }}</p>
+    <div class="stat-value">
+      <span class="value-number">{{ stat.value }}</span>
+      <span *ngIf="stat.unit" class="value-unit">{{ stat.unit }}</span>
+    </div>
+
+    <div *ngIf="stat.trend !== undefined" class="stat-trend" [class.trend-up]="isTrendPositive()" [class.trend-down]="!isTrendPositive()">
+      <i [class]="isTrendPositive() ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+      <span>{{ Math.abs(stat.trend) }}% {{ isTrendPositive() ? 'increase' : 'decrease' }}</span>
+    </div>
+  </div>
+</div>
+

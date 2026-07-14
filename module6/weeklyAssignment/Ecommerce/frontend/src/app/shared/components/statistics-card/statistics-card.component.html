@@ -1,0 +1,12 @@
+
+    <div class="statistics-card">
+      <div class="icon">{{ icon }}</div>
+      <div class="content">
+        <h3>{{ title }}</h3>
+        <p class="value">{{ value }}</p>
+        <p class="change" [ngClass]="{ positive: changePercent > 0, negative: changePercent < 0 }">
+          {{ changePercent > 0 ? '+' : '' }}{{ changePercent }}%
+        </p>
+      </div>
+    </div>
+  

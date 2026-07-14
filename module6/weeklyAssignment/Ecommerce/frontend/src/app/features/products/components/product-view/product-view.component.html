@@ -1,0 +1,188 @@
+r<div class="product-details-container py-4">
+  <div class="container-fluid">
+    <!-- Back Button -->
+    <button
+      class="btn btn-outline-secondary mb-4 d-flex align-items-center gap-2"
+      (click)="onBack()">
+      <i class="bi bi-arrow-left"></i>
+      Back to Products
+    </button>
+
+    <!-- Loading State -->
+    <app-loading [isLoading]="isLoading" message="Loading product details..."></app-loading>
+
+    <!-- Error State -->
+    <div
+      *ngIf="!isLoading && errorMessage"
+      class="alert alert-danger alert-dismissible fade show"
+      role="alert">
+      <i class="bi bi-exclamation-circle me-2"></i>
+      <strong>Error:</strong> {{ errorMessage }}
+      <button type="button" class="btn-close" (click)="onBack()"></button>
+    </div>
+
+    <!-- Product Details -->
+    <div *ngIf="!isLoading && product" class="row g-4 align-items-start details-wrap">
+      <!-- Left: Product Image Gallery -->
+      <div class="col-lg-5">
+        <div class="card shadow-sm product-media-card"><div class="product-image-gallery position-relative">
+            <img
+              src="https://placehold.co/520x520/F1F5F9/64748B?text=Product+Image"
+              [alt]="product?.name || 'Product image'"
+              class="product-main-image img-fluid w-100"
+              (error)="onImageError($event)">
+
+            <!-- Wishlist Button -->
+            <button
+              class="btn btn-light position-absolute bottom-0 end-0 m-3 rounded-circle product-wishlist-btn"
+              (click)="onToggleFavorite($event)"
+              [class.btn-primary]="isFavorite()">
+              <i [ngClass]="isFavorite() ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Product Info -->
+      <div class="col-lg-7">
+        <!-- Product Header -->
+        <div class="mb-3 d-flex flex-wrap gap-2">
+          <span class="badge bg-light text-dark">{{ product?.category }}</span>
+          <span class="badge bg-light text-dark">{{ product?.brand }}</span>
+          <span class="badge text-bg-success" *ngIf="product?.stock && product?.stock > 0">In Stock</span>
+        </div>
+
+         <h1 class="display-6 fw-bold mb-2">{{ product?.name }}</h1>
+         <div class="rating-line mb-3">
+          <i class="bi bi-star-fill" *ngFor="let _ of [1,2,3,4]"></i><i class="bi bi-star-half"></i>
+          <span class="text-muted ms-2">4.5 (128 reviews)</span>
+         </div>
+
+        <!-- Price Section -->
+        <div class="card bg-light p-4 mb-4 price-box">
+          <div class="row g-3">
+            <div class="col-6">
+              <p class="text-muted small mb-1">Current Price</p>
+              <h3 class="text-primary fw-bold">
+                <app-price [amount]="product?.cost"></app-price>
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Description -->
+        <div class="mb-3">
+          <h5 class="fw-bold mb-2">Description</h5>
+          <p class="text-muted">{{ product?.description || 'No description available' }}</p>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="card p-3 meta-card">
+              <p class="text-muted small mb-1">Brand</p>
+              <p class="fw-bold">{{ product?.brand }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card p-3 meta-card">
+              <p class="text-muted small mb-1">Category</p>
+              <p class="fw-bold">{{ product?.category }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card p-3 meta-card">
+              <p class="text-muted small mb-1">Stock</p>
+              <p class="fw-bold">
+                <span *ngIf="product?.stock && product?.stock > 0" class="badge bg-success">
+                  {{ product?.stock }} Available
+                </span>
+                <span *ngIf="!product?.stock || product?.stock <= 0" class="badge bg-danger">Out of Stock</span>
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card p-3 meta-card">
+              <p class="text-muted small mb-1">Created Date</p>
+              <p class="fw-bold">{{ product?.createdAt | date: 'MMM d, y' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-3 mb-4 specs-card">
+          <h6 class="fw-bold mb-2">Specifications</h6>
+          <ul class="mb-0 specs-list">
+            <li><span>Category:</span> {{ product?.category }}</li>
+            <li><span>Brand:</span> {{ product?.brand || 'N/A' }}</li>
+            <li><span>Availability:</span> {{ (product?.stock || 0) > 0 ? 'Ready to ship' : 'Out of stock' }}</li>
+          </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-3 mb-4">
+          <button
+            class="btn btn-primary flex-grow-1"
+            (click)="onAddToCart($event)">
+            <i class="bi bi-cart me-2"></i>
+            Add to Cart
+          </button>
+          <button class="btn btn-outline-danger" type="button" (click)="onToggleFavorite($event)">
+            <i class="bi" [ngClass]="isFavorite() ? 'bi-heart-fill' : 'bi-heart'"></i>
+          </button>
+          <button
+            class="btn btn-outline-secondary"
+            style="min-width: 48px;">
+            <i class="bi bi-share"></i>
+          </button>
+        </div>
+
+        <!-- Admin Actions (Show only if in admin context) -->
+        <div *ngIf="isAdmin()" class="d-flex gap-2">
+          <button
+            class="btn btn-outline-info flex-grow-1"
+            (click)="onEdit()">
+            <i class="bi bi-pencil me-1"></i> Edit Product
+          </button>
+          <button
+            class="btn btn-outline-danger flex-grow-1"
+            (click)="onDelete()">
+            <i class="bi bi-trash me-1"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section *ngIf="!isLoading && product" class="related-wrap mt-5">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="card p-4 section-card">
+            <h5 class="fw-bold mb-3">Related Products</h5>
+            <div class="mini-product" *ngFor="let _ of [1,2,3]">
+              <div class="mini-image-placeholder" aria-hidden="true">
+                <i class="bi bi-image"></i>
+              </div>
+              <div>
+                <p class="mb-1 fw-semibold">Similar {{ product?.category }} pick</p>
+                <small class="text-muted">Top-rated product from {{ product?.brand || 'brand' }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card p-4 section-card">
+            <h5 class="fw-bold mb-3">Frequently Bought Together</h5>
+            <div class="mini-product" *ngFor="let _ of [1,2]">
+              <div class="mini-image-placeholder" aria-hidden="true">
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div>
+                <p class="mb-1 fw-semibold">Bundle accessory</p>
+                <small class="text-muted">Complementary add-on for this product</small>
+              </div>
+            </div>
+            <button class="btn btn-primary mt-2" type="button"><i class="bi bi-bag-plus me-2"></i>Buy Bundle</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

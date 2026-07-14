@@ -1,0 +1,10 @@
+<div
+  *ngIf="isLoading"
+  class="loading-container"
+  [class.loading-fullscreen]="fullscreen"
+  role="status"
+  aria-live="polite"
+  aria-busy="true">
+  <div class="spinner-border text-primary" aria-hidden="true"></div>
+  <p class="text-muted mb-0 mt-3">{{ message }}</p>
+</div>
