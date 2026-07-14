@@ -44,7 +44,7 @@ class CustomerControllerTest {
 
         mockMvc.perform(get("/api/ecom/customer"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].customer_id").value(1))
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].name").value("Yuva"))
                 .andExpect(jsonPath("$[0].email").value("yuva@example.com"));
     }
@@ -65,8 +65,7 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.customer_id").value(2))
+                .andExpect(jsonPath("$.id").value(2))
                 .andExpect(jsonPath("$.name").value("Yuva"));
     }
 }
-

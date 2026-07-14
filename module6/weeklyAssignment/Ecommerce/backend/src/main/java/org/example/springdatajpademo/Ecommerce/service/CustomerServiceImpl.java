@@ -1,6 +1,8 @@
 package org.example.springdatajpademo.Ecommerce.service;
 
 import org.example.springdatajpademo.Ecommerce.DTO.AdminCustomerRequestDTO;
+import org.example.springdatajpademo.Ecommerce.DTO.ChangeCurrentPasswordDTO;
+import org.example.springdatajpademo.Ecommerce.DTO.CurrentCustomerUpdateDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerRequestDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerResponseDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerUpdateDTO;
@@ -9,13 +11,20 @@ import org.example.springdatajpademo.Ecommerce.model.Customer;
 import org.example.springdatajpademo.Ecommerce.model.Order;
 import org.example.springdatajpademo.Ecommerce.model.UserRole;
 import org.example.springdatajpademo.Ecommerce.repository.CustomerRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     @Autowired
     private CustomerRepo customerRepo;
@@ -87,6 +96,48 @@ public class CustomerServiceImpl implements CustomerService {
         Customer updatedCustomer = customerRepo.save(customer);
 
         return mapToResponse(updatedCustomer);
+    }
+
+    @Override
+    public CustomerResponseDTO getCurrentCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("Current authenticated username: {}", authentication != null ? authentication.getName() : "null");
+
+        Customer currentCustomer = getAuthenticatedCustomer();
+        logger.info("Fetched customer: id={}, email={}, role={}",
+                currentCustomer.getId(), currentCustomer.getEmail(), currentCustomer.getRole());
+
+        CustomerResponseDTO responseDTO = mapToResponse(currentCustomer);
+        logger.info("Returned DTO: {}", responseDTO);
+        return responseDTO;
+    }
+
+    @Override
+    public CustomerResponseDTO updateCurrentCustomer(CurrentCustomerUpdateDTO dto) {
+        Customer customer = getAuthenticatedCustomer();
+
+        String fullName = buildFullName(dto.getFirstName(), dto.getLastName());
+        customer.setName(fullName);
+        customer.setAddress(dto.getAddress());
+        customer.setPhoneNumber(dto.getPhoneNumber());
+
+        Customer updatedCustomer = customerRepo.save(customer);
+        return mapToResponse(updatedCustomer);
+    }
+
+    @Override
+    public void changeCurrentPassword(ChangeCurrentPasswordDTO requestDTO) {
+        if (!requestDTO.getNewPassword().equals(requestDTO.getConfirmPassword())) {
+            throw new IllegalArgumentException("New password and confirm password must match");
+        }
+
+        Customer customer = getAuthenticatedCustomer();
+        if (!passwordEncoder.matches(requestDTO.getCurrentPassword(), customer.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        customer.setPassword(passwordEncoder.encode(requestDTO.getNewPassword()));
+        customerRepo.save(customer);
     }
 
     @Override
@@ -170,5 +221,27 @@ public class CustomerServiceImpl implements CustomerService {
         dto.setUpdatedAt(customer.getUpdatedAt());
 
         return dto;
+    }
+
+    private Customer getAuthenticatedCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
+            throw new IllegalStateException("Authenticated customer not found in security context");
+        }
+
+        String email = authentication.getName();
+        if (email == null || email.isBlank()) {
+            throw new IllegalStateException("Authenticated customer email is missing");
+        }
+
+        return customerRepo.findByEmail(email)
+                .orElseThrow(() -> new CustomerNotFound("Customer not found"));
+    }
+
+    private String buildFullName(String firstName, String lastName) {
+        return (firstName.trim() + " " + lastName.trim()).trim();
     }
 }

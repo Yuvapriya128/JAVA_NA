@@ -2,7 +2,9 @@ package org.example.springdatajpademo.Ecommerce.controller;
 
 import jakarta.validation.Valid;
 import org.example.springdatajpademo.Ecommerce.DTO.AdminCustomerRequestDTO;
+import org.example.springdatajpademo.Ecommerce.DTO.ChangeCurrentPasswordDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.ChangeRoleRequestDTO;
+import org.example.springdatajpademo.Ecommerce.DTO.CurrentCustomerUpdateDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerRequestDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerResponseDTO;
 import org.example.springdatajpademo.Ecommerce.DTO.CustomerUpdateDTO;
@@ -14,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ecom/customer")
@@ -64,6 +67,28 @@ public class CustomerController {
         return ResponseEntity.ok(
                 customerService.updateCustomer(id, customerDTO)
         );
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CustomerResponseDTO> getCurrentCustomer() {
+        return ResponseEntity.ok(customerService.getCurrentCustomer());
+    }
+
+    @PutMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CustomerResponseDTO> updateCurrentCustomer(
+            @Valid @RequestBody CurrentCustomerUpdateDTO customerDTO) {
+        return ResponseEntity.ok(customerService.updateCurrentCustomer(customerDTO));
+    }
+
+    @PutMapping("/me/password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, String>> changeCurrentPassword(
+            @Valid @RequestBody ChangeCurrentPasswordDTO requestDTO) {
+
+        customerService.changeCurrentPassword(requestDTO);
+        return ResponseEntity.ok(Map.of("message", "Password changed successfully"));
     }
 
     @PutMapping("/{id}/role")

@@ -5,6 +5,7 @@ import org.example.springdatajpademo.Ecommerce.exceptions.OrderNotFound;
 import org.example.springdatajpademo.Ecommerce.exceptions.ProductNotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,6 +46,12 @@ public class EcommerceExceptionHandler {
     public ResponseEntity<Map<String,String>> handler5(IllegalArgumentException e){
         logger.error("Invalid argument provided", e);
         return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String,String>> handler7(AccessDeniedException e){
+        logger.warn("Access denied", e);
+        return ResponseEntity.status(403).body(Map.of("error", "Access is denied"));
     }
 
     @ExceptionHandler(RuntimeException.class)

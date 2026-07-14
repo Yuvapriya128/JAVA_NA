@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CustomerResponseDTO {
 
-    @JsonProperty("customer_id")
     private Integer id;
 
     @NotBlank(message = "Name is required")
@@ -33,6 +32,7 @@ public class CustomerResponseDTO {
     private String role;
 
     @Pattern(regexp = "^$|^\\+?[1-9]\\d{1,14}$", message = "Phone number must be valid or empty")
+    @JsonProperty("phone")
     private String phoneNumber;
 
     private LocalDateTime joinedDate;

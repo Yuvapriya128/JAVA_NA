@@ -57,7 +57,7 @@ class EcommerceEndToEndTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.customer_id").exists())
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.email").value(request.getEmail()));
     }
 
@@ -77,7 +77,87 @@ class EcommerceEndToEndTest {
         mockMvc.perform(get("/api/ecom/customer/{id}", auth.customerId)
                         .header("Authorization", auth.bearerToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customer_id").value(auth.customerId));
+                .andExpect(jsonPath("$.id").value(auth.customerId));
+    }
+
+    @Test
+    void testGetCurrentCustomerProfile() throws Exception {
+        AuthContext auth = registerAndLogin("customer-me-get");
+
+        mockMvc.perform(get("/api/ecom/customer/me")
+                        .header("Authorization", auth.bearerToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(auth.customerId))
+                .andExpect(jsonPath("$.email").value(auth.email));
+    }
+
+    @Test
+    void testUserCanUpdateOwnProfileUsingMeEndpoint() throws Exception {
+        AuthContext auth = registerAndLogin("customer-me-update");
+
+        Map<String, Object> profileUpdate = Map.of(
+                "firstName", "Updated",
+                "lastName", "User",
+                "address", "999 Updated Street",
+                "phoneNumber", "+919876543210"
+        );
+
+        mockMvc.perform(put("/api/ecom/customer/me")
+                        .header("Authorization", auth.bearerToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profileUpdate)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(auth.customerId))
+                .andExpect(jsonPath("$.name").value("Updated User"))
+                .andExpect(jsonPath("$.email").value(auth.email))
+                .andExpect(jsonPath("$.address").value("999 Updated Street"))
+                .andExpect(jsonPath("$.phone").value("+919876543210"))
+                .andExpect(jsonPath("$.role").value("USER"));
+    }
+
+    @Test
+    void testUserCanChangeOwnPasswordUsingMeEndpoint() throws Exception {
+        AuthContext auth = registerAndLogin("customer-me-password");
+
+        Map<String, Object> passwordChange = Map.of(
+                "currentPassword", auth.password,
+                "newPassword", "NewPass@123",
+                "confirmPassword", "NewPass@123"
+        );
+
+        mockMvc.perform(put("/api/ecom/customer/me/password")
+                        .header("Authorization", auth.bearerToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(passwordChange)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Password changed successfully"));
+
+        String newToken = login(auth.email, "NewPass@123");
+
+        mockMvc.perform(get("/api/ecom/customer/me")
+                        .header("Authorization", newToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(auth.email));
+    }
+
+    @Test
+    void testUserCannotUpdateAnotherCustomerUsingAdminEndpoint() throws Exception {
+        AuthContext user1 = registerAndLogin("customer-admin-update-denied-1");
+        AuthContext user2 = registerAndLogin("customer-admin-update-denied-2");
+
+        CustomerUpdateDTO updateDTO = new CustomerUpdateDTO(
+                user2.customerId,
+                "Illegal Update",
+                user2.email,
+                "No Access Address",
+                user2.password
+        );
+
+        mockMvc.perform(put("/api/ecom/customer/{id}", user2.customerId)
+                        .header("Authorization", user1.bearerToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDTO)))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -97,6 +177,28 @@ class EcommerceEndToEndTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testAdminCanUpdateAnyCustomer() throws Exception {
+        AuthContext user = registerAndLogin("customer-admin-update-allowed");
+        String adminToken = login("admin", "123");
+
+        CustomerUpdateDTO updateDTO = new CustomerUpdateDTO(
+                user.customerId,
+                "Admin Updated",
+                user.email,
+                "Admin Updated Address",
+                user.password
+        );
+
+        mockMvc.perform(put("/api/ecom/customer/{id}", user.customerId)
+                        .header("Authorization", adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(user.customerId))
+                .andExpect(jsonPath("$.name").value("Admin Updated"));
     }
 
     @Test
@@ -143,6 +245,53 @@ class EcommerceEndToEndTest {
         mockMvc.perform(get("/api/ecom/customer")
                         .header("Authorization", promotedAdminToken))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testAdminCanEditOwnProfileUsingMeEndpoint() throws Exception {
+        AuthContext admin = createAndLoginAdmin("admin-me-update", "AdminPass@123");
+
+        Map<String, Object> profileUpdate = Map.of(
+        "firstName", "Ops",
+        "lastName", "Lead",
+        "address", "Admin HQ",
+        "phoneNumber", "+14155550123"
+        );
+
+        mockMvc.perform(put("/api/ecom/customer/me")
+                .header("Authorization", admin.bearerToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(profileUpdate)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(admin.customerId))
+        .andExpect(jsonPath("$.name").value("Ops Lead"))
+        .andExpect(jsonPath("$.role").value("ADMIN"));
+    }
+
+    @Test
+    void testAdminCanChangeOwnPasswordUsingMeEndpoint() throws Exception {
+        AuthContext admin = createAndLoginAdmin("admin-me-password", "AdminPass@123");
+
+        Map<String, Object> passwordChange = Map.of(
+        "currentPassword", "AdminPass@123",
+        "newPassword", "AdminNew@123",
+        "confirmPassword", "AdminNew@123"
+        );
+
+        mockMvc.perform(put("/api/ecom/customer/me/password")
+                .header("Authorization", admin.bearerToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(passwordChange)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Password changed successfully"));
+
+        String newToken = login(admin.email, "AdminNew@123");
+
+        mockMvc.perform(get("/api/ecom/customer/me")
+                .header("Authorization", newToken))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.role").value("ADMIN"))
+        .andExpect(jsonPath("$.email").value(admin.email));
     }
 
     @Test
@@ -383,6 +532,35 @@ class EcommerceEndToEndTest {
         String bearerToken = login(request.getEmail(), request.getPassword());
 
         return new AuthContext(customer.getId(), request.getEmail(), request.getPassword(), bearerToken);
+    }
+
+    private AuthContext createAndLoginAdmin(String marker, String password) throws Exception {
+        String bootstrapAdminToken = login("admin", "123");
+        String unique = marker + "-" + System.nanoTime();
+        String email = unique + "@example.com";
+
+        Map<String, Object> request = Map.of(
+                "name", "Admin " + marker,
+                "email", email,
+                "address", "Admin Address",
+                "password", password,
+                "role", "ADMIN"
+        );
+
+        MvcResult createdAdminResult = mockMvc.perform(post("/api/ecom/customer/admin/create")
+                        .header("Authorization", bootstrapAdminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        CustomerResponseDTO createdAdmin = objectMapper.readValue(
+                createdAdminResult.getResponse().getContentAsString(),
+                CustomerResponseDTO.class
+        );
+
+        String adminBearerToken = login(email, password);
+        return new AuthContext(createdAdmin.getId(), email, password, adminBearerToken);
     }
 
     private String login(String email, String password) throws Exception {

@@ -1,3 +1,0 @@
-// Shared icons barrel.
-export {};
-
