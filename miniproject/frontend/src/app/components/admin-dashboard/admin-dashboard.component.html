@@ -1,0 +1,28 @@
+    <app-page-header title="Admin Dashboard" subtitle="Governance and Risk Control"></app-page-header>
+    @if (status().error) {
+      <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+    }
+    @if (status().loading) {
+      <div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading admin dashboard...</div>
+    }
+    <div class="row g-3">
+      <div class="col-md-3" *ngFor="let stat of stats()">
+        <div class="card border-0 shadow-soft h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">{{ stat.label }}</p>
+            <h4 class="mb-0">{{ stat.value }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card border-0 shadow-soft mt-3">
+      <div class="card-body">
+        <h6 class="mb-3">Admin Controls</h6>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-outline-danger btn-sm">Deactivate Customer</button>
+          <button class="btn btn-outline-danger btn-sm">Delete Loan</button>
+          <button class="btn btn-outline-primary btn-sm">Portfolio Audit Export</button>
+        </div>
+      </div>
+    </div>
+  

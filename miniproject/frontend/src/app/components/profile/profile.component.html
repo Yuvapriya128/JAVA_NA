@@ -1,0 +1,94 @@
+<app-page-header title="My Profile" subtitle="Profile and Security"></app-page-header>
+<section class="profile-page">
+  <div class="card border-0 shadow-soft banner mb-3">
+    <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <div>
+        <h5 class="mb-1">{{ sectionTitle() }}</h5>
+        <p class="text-muted mb-0">{{ sectionDescription() }}</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="openSection('password')">Change Password</button>
+      </div>
+    </div>
+  </div>
+
+  @if (status().error) {
+  <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+  }
+  @if (status().loading) {
+  <div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading profile...</div>
+  }
+  @if (section() === 'profile') {
+  <div class="card border-0 shadow-soft mb-3">
+    <div class="card-body">
+      @if (profile(); as item) {
+      <div class="row g-3">
+        <div class="col-md-6">
+          <small class="text-muted d-block">Email</small>
+          <p class="mb-0 detail-value">{{ item.email }}</p>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Credit Score</small>
+          <p class="mb-0 detail-value">{{ item.creditScore }}</p>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Name</small>
+          <p class="mb-0 detail-value">{{ item.customerName }}</p>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Phone</small>
+          <p class="mb-0 detail-value">{{ item.phoneNumber }}</p>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">City / Branch</small>
+          <p class="mb-0 detail-value">{{ item.city }}</p>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Status</small>
+          <p class="mb-0 detail-value">{{ item.active ? 'ACTIVE' : 'DEACTIVATED' }}</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  @if (section() === 'password') {
+  <div class="card border-0 shadow-soft mb-3">
+    <div class="card-body">
+      @if (passwordState().error) {
+      <div class="alert alert-danger mb-0" role="alert">{{ passwordState().error }}</div>
+      }
+      @if (passwordState().success) {
+      <div class="alert alert-success mb-0" role="alert">{{ passwordState().success }}</div>
+      }
+      <form class="row g-3 mt-2" [formGroup]="passwordForm" (ngSubmit)="submitPasswordChange()" novalidate>
+        <div class="col-md-4">
+          <label class="form-label small">Current Password</label>
+          <input type="password" class="form-control" formControlName="currentPassword" autocomplete="current-password" [class.is-invalid]="passwordControlInvalid('currentPassword')" [class.is-valid]="!passwordControlInvalid('currentPassword') && passwordForm.controls.currentPassword.value" />
+          @if (passwordControlInvalid('currentPassword')) { <div class="invalid-feedback d-block">Current password is required.</div> }
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small">New Password</label>
+          <input type="password" class="form-control" formControlName="newPassword" autocomplete="new-password" [class.is-invalid]="passwordControlInvalid('newPassword')" [class.is-valid]="!passwordControlInvalid('newPassword') && passwordForm.controls.newPassword.value" />
+          @if (passwordControlInvalid('newPassword')) { <div class="invalid-feedback d-block">New password must be at least 8 characters.</div> }
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small">Confirm New Password</label>
+          <input type="password" class="form-control" formControlName="confirmPassword" autocomplete="new-password" [class.is-invalid]="passwordControlInvalid('confirmPassword')" [class.is-valid]="!passwordControlInvalid('confirmPassword') && passwordForm.controls.confirmPassword.value" />
+          @if (passwordControlInvalid('confirmPassword')) { <div class="invalid-feedback d-block">Please confirm new password.</div> }
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" [disabled]="passwordState().loading || passwordForm.invalid">
+            @if (passwordState().loading) {
+            <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+            }
+            Update Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+</section>
+  

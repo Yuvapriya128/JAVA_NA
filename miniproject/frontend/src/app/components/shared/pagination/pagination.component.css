@@ -1,0 +1,5 @@
+.pagination .page-link {
+	border-radius: 10px !important;
+	margin: 0 2px;
+	font-size: 0.78rem;
+}

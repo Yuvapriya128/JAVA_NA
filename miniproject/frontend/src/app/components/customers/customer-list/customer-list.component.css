@@ -1,0 +1,82 @@
+.table-shell {
+	max-height: 64vh;
+	border: 1px solid var(--border);
+	border-radius: 18px;
+	background: var(--table-row);
+}
+
+.table-shell thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: var(--table-header);
+}
+
+.table-clickable {
+	cursor: pointer;
+}
+
+.table-clickable:hover {
+	background: var(--table-hover);
+}
+
+.avatar-pill {
+	width: 28px;
+	height: 28px;
+	display: grid;
+	place-items: center;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--primary), var(--secondary));
+	color: var(--text-on-brand);
+	font-size: 0.7rem;
+	font-weight: 700;
+}
+
+.stat-chip {
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	background: var(--surface);
+	padding: 0.7rem 0.9rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.stat-chip span {
+	color: var(--text-secondary);
+	font-size: 0.78rem;
+}
+
+.floating-add {
+	position: fixed;
+	right: 1.6rem;
+	bottom: 1.8rem;
+	z-index: 1022;
+	box-shadow: var(--shadow-brand);
+}
+
+.sort-controls .form-select {
+	min-width: 0;
+}
+
+.sort-controls .form-select:first-child {
+	flex: 1 1 auto;
+}
+
+.sort-direction {
+	flex: 0 0 44%;
+}
+
+.filter-chip {
+	border: 1px solid var(--border);
+	background: var(--surface);
+	color: var(--text-secondary);
+	border-radius: 999px;
+	padding: 0.28rem 0.8rem;
+}
+
+.filter-chip.active {
+	border-color: color-mix(in srgb, var(--primary) 45%, transparent);
+	background: color-mix(in srgb, var(--primary) 14%, transparent);
+	color: var(--primary);
+	font-weight: 600;
+}

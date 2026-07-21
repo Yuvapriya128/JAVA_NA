@@ -1,0 +1,16 @@
+    <div class="card border-0 shadow-soft">
+      <div class="card-body">
+        <h6>{{ title }}</h6>
+        <div class="d-grid gap-2 mt-3">
+          @for (item of actions; track item.label) {
+            @if (item.routerLink) {
+              <a [routerLink]="item.routerLink" [class]="item.className"><i class="bi me-2" [class]="item.icon"></i>{{ item.label }}</a>
+            } @else {
+              <button [class]="item.className"><i class="bi me-2" [class]="item.icon"></i>{{ item.label }}</button>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  
+

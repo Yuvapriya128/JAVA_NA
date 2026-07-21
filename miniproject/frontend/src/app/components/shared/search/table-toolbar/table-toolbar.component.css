@@ -1,0 +1,4 @@
+.toolbar-shell {
+	border-radius: 16px;
+	background: linear-gradient(180deg, var(--surface), var(--card-hover));
+}

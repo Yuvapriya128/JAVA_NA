@@ -1,0 +1,33 @@
+.filter-btn {
+	border: 1px solid var(--divider);
+	background: var(--surface);
+	color: var(--text-secondary);
+	border-radius: 999px;
+	padding: 0.3rem 0.7rem;
+	font-size: 0.78rem;
+	font-weight: 600;
+}
+
+.filter-btn.active {
+	background: var(--table-selected);
+	color: var(--primary);
+	border-color: color-mix(in srgb, var(--primary) 36%, var(--border));
+}
+
+.notification-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+}
+
+.notification-item {
+	border: 1px solid var(--divider);
+	border-radius: 12px;
+	background: var(--surface);
+	padding: 0.7rem;
+}
+
+.notification-item.unread {
+	background: color-mix(in srgb, var(--primary) 10%, var(--surface));
+}
+

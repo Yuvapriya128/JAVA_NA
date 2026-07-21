@@ -1,0 +1,89 @@
+<app-page-header title="Reports Center" subtitle="Portfolio analytics, risk heatmap and branch performance"></app-page-header>
+
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+@if (status().loading) {
+<div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading analytics...</div>
+}
+
+<div class="d-flex justify-content-end mb-3">
+  <button type="button" class="btn btn-outline-primary btn-sm" (click)="exportSnapshot()"><i class="bi bi-file-earmark-arrow-down me-1"></i>Export Snapshot</button>
+</div>
+
+<div class="row g-3 mb-3">
+  @for (kpi of kpis(); track kpi.label) {
+  <div class="col-md-6 col-xl-3">
+    <div class="kpi-card">
+      <small>{{ kpi.label }}</small>
+      <strong>{{ kpi.value }}</strong>
+      <span>{{ kpi.note }}</span>
+    </div>
+  </div>
+  }
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-soft h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Collection Trend</h6>
+        <div class="bars">
+          @for (item of collectionTrend(); track item) {
+          <div class="bar-item"><div class="bar" [style.height.%]="(item / maxTrendValue()) * 100"></div></div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card border-0 shadow-soft h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Risk Heatmap</h6>
+        @for (risk of riskHeatmap(); track risk.bucket) {
+        <div class="risk-row">
+          <span>{{ risk.bucket }}</span>
+          <strong>{{ risk.count }}</strong>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Branch Performance (City Buckets)</h6>
+    @if (branchMetrics().length === 0) {
+      <p class="text-muted mb-0">Branch performance metrics are unavailable.</p>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Branch</th>
+              <th>Portfolio Size</th>
+              <th>Collected Amount</th>
+              <th>Performance</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (branch of branchMetrics(); track branch.branch) {
+            <tr>
+              <td>{{ branch.branch }}</td>
+              <td>{{ branch.loans }}</td>
+              <td>INR {{ branch.collected.toLocaleString('en-IN') }}</td>
+              <td>
+                <div class="mini-progress">
+                  <div class="mini-progress-bar" [style.width.%]="(branch.collected / maxBranchCollected()) * 100"></div>
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
+

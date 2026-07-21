@@ -1,0 +1,80 @@
+
+.summary-card {
+	border: 1px solid var(--divider);
+	border-radius: 14px;
+	background: var(--card-hover);
+	padding: 0.8rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.summary-card small {
+	color: var(--text-secondary);
+}
+
+.history-timeline {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+.history-timeline-item {
+	display: flex;
+	gap: 0.65rem;
+}
+
+.history-dot {
+	width: 10px;
+	height: 10px;
+	background: var(--primary);
+	border-radius: 999px;
+	margin-top: 0.35rem;
+}
+
+.receipt-modal-backdrop {
+	position: fixed;
+	inset: 0;
+	background: var(--overlay-strong);
+	z-index: 1040;
+}
+
+.receipt-modal {
+	position: fixed;
+	top: 6%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: min(960px, 92vw);
+	max-height: 86vh;
+	overflow-y: auto;
+	z-index: 1050;
+	border-radius: 16px;
+	border: 1px solid var(--divider);
+	box-shadow: var(--shadow-lg);
+}
+
+.receipt-scroll {
+	max-height: 600px;
+	overflow-y: auto;
+}
+
+.table-shell {
+	max-height: 64vh;
+	border: 1px solid var(--divider);
+	border-radius: 14px;
+	background: var(--table-row);
+}
+
+.table-shell thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: var(--table-header);
+}
+
+.table-clickable {
+	cursor: pointer;
+}
+
+.table-clickable:hover {
+	background: var(--table-hover);
+}

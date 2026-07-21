@@ -1,0 +1,27 @@
+.profile-card {
+	border-radius: 20px;
+}
+
+.avatar {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: linear-gradient(135deg, var(--primary), var(--secondary));
+	color: var(--text-on-brand);
+	font-weight: 700;
+}
+
+:root[data-theme='dark'] .profile-card,
+:root[data-theme='dark'] .profile-card h6,
+:root[data-theme='dark'] .profile-card p,
+:root[data-theme='dark'] .profile-card small,
+:root[data-theme='dark'] .profile-card strong,
+:root[data-theme='dark'] .profile-card span {
+	color: var(--text-primary);
+}
+
+:root[data-theme='dark'] .profile-card .text-muted {
+	color: var(--text-primary) !important;
+}

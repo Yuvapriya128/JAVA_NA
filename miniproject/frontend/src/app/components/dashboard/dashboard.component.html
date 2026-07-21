@@ -1,0 +1,150 @@
+<section class="dashboard-page">
+  <app-page-header [title]="titleForRole()" [subtitle]="subtitleForRole()"></app-page-header>
+
+  @if (status().error) {
+  <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+  }
+  @if (status().loading) {
+  <div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading dashboard metrics...</div>
+  }
+
+  <div class="kpi-grid mb-4">
+    @for (item of metrics(); track item.label) {
+    <div class="kpi-item"><app-stat-card [title]="item.label" [value]="item.value" [icon]="item.icon" [tone]="item.tone"></app-stat-card></div>
+    }
+  </div>
+
+  <div class="row g-3 mb-4">
+    @for (stat of collections(); track stat.title) {
+    <div class="col-md-4">
+      <app-summary-card [title]="stat.title" [value]="stat.value" [growth]="stat.growth"></app-summary-card>
+    </div>
+    }
+  </div>
+
+  @if (canViewEmiInsights()) {
+  <div class="row g-3 mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-soft insight-shell">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0">EMI Insights (Backend)</h6>
+            @if (emiInsightsStatus().loading) {
+            <span class="small text-muted"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading</span>
+            } @else if (emiInsightsStatus().error) {
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="retryEmiInsights()">Retry</button>
+            }
+          </div>
+
+          @if (emiInsightsStatus().error) {
+          <div class="alert alert-warning py-2 mb-0" role="alert">{{ emiInsightsStatus().error }}</div>
+          } @else if (emiInsights(); as insight) {
+          <div class="row g-3">
+            <div class="col-md-4 col-xl-2"><small class="text-muted d-block">Highest EMI</small><strong>INR {{ insight.highestEmi | number: '1.0-2' }}</strong></div>
+            <div class="col-md-4 col-xl-2"><small class="text-muted d-block">Lowest EMI</small><strong>INR {{ insight.lowestEmi | number: '1.0-2' }}</strong></div>
+            <div class="col-md-4 col-xl-2"><small class="text-muted d-block">Average EMI</small><strong>INR {{ insight.averageEmi | number: '1.0-2' }}</strong></div>
+            <div class="col-md-6 col-xl-3"><small class="text-muted d-block">Total Monthly EMI Collection</small><strong>INR {{ insight.totalMonthlyEmiCollection | number: '1.0-2' }}</strong></div>
+            <div class="col-md-6 col-xl-3"><small class="text-muted d-block">Upcoming EMI Amount</small><strong>INR {{ insight.upcomingEmiAmount | number: '1.0-2' }}</strong></div>
+          </div>
+          } @else {
+          <div class="text-muted">EMI insights unavailable.</div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-soft chart-shell h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0">Loan Collection Trend</h6>
+            <span class="badge text-bg-light">Live Board</span>
+          </div>
+          <div class="chart-placeholder d-flex align-items-end gap-2" role="img" aria-label="Weekly collection trend chart container">
+            @for (value of collectionTrend(); track value) {
+            <div class="bar" [style.height.%]="(value / maxTrendValue()) * 100"></div>
+            }
+          </div>
+          <small class="text-muted">Weekly collection efficiency trend.</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-soft h-100 overdue-shell">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0">Overdue Distribution</h6>
+            <span class="badge text-bg-light">Realtime</span>
+          </div>
+          @for (item of overdueBreakup(); track item.label) {
+          <div class="mb-2">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>{{ item.label }}</span>
+              <strong>{{ item.value }}%</strong>
+            </div>
+            <div class="progress slim-progress">
+              <div class="progress-bar" role="progressbar" [style.width.%]="item.value"></div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-7"><app-activity-card title="Recent Activities" [activities]="activities()"></app-activity-card></div>
+    <div class="col-lg-5"><app-quick-action-card [title]="quickActionTitle()" [actions]="quickActions()"></app-quick-action-card></div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-soft h-100">
+        <div class="card-body">
+          <h6 class="mb-3">Upcoming Reminders</h6>
+          <div class="list-group list-group-flush">
+            @for (item of upcomingEmis(); track item.loanId) {
+            <div class="list-group-item px-0">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="fw-semibold">Loan #{{ item.loanId }} - {{ item.customer }}</div>
+                  <small class="text-muted">Due: {{ item.dueDate }}</small>
+                </div>
+                <strong>{{ item.amount }}</strong>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-soft h-100">
+        <div class="card-body">
+          <h6 class="mb-3">Risk Watchlist</h6>
+          <div class="list-group list-group-flush">
+            @for (item of topDefaulters(); track item.customer) {
+            <div class="list-group-item px-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">{{ item.customer }}</div>
+                  <small class="text-muted">Overdue EMIs: {{ item.overdueCount }}</small>
+                </div>
+                <span class="badge text-bg-danger-subtle text-danger-emphasis">{{ item.overdueAmount }}</span>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12"><app-notification-card title="Today's Highlights" [items]="keyHighlights()"></app-notification-card></div>
+  </div>
+</section>
+  

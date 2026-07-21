@@ -1,0 +1,105 @@
+<app-page-header title="Support Center" subtitle="Raise service tickets, track status and resolve faster"></app-page-header>
+
+@if (successMessage()) {
+<div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+}
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4"><div class="summary-card"><small>Active Loans</small><strong>{{ activeLoans() }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>Pending Items</small><strong>{{ pendingApplications() }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>Recent Payments</small><strong>{{ recentPayments() }}</strong></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-soft h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Raise a Ticket</h6>
+        <form [formGroup]="ticketForm" novalidate class="row g-2">
+          <div class="col-12">
+            <label class="form-label small mb-1">Subject</label>
+            <input class="form-control" formControlName="subject" placeholder="Issue summary" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small mb-1">Category</label>
+            <select class="form-select" formControlName="category">
+              <option value="PAYMENT">Payment</option>
+              <option value="APPLICATION">Application</option>
+              <option value="LOAN">Loan</option>
+              <option value="ACCOUNT">Account</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small mb-1">Priority</label>
+            <select class="form-select" formControlName="priority">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label small mb-1">Description</label>
+            <textarea rows="4" class="form-control" formControlName="description" placeholder="Describe the issue and include reference details"></textarea>
+          </div>
+          <div class="col-12">
+            <button type="button" class="btn btn-primary btn-sm" (click)="submitTicket()">Submit Ticket</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-soft h-100">
+      <div class="card-body">
+        <h6 class="mb-3">Self Help</h6>
+        @for (faq of faqItems; track faq.title) {
+        <div class="faq-item">
+          <p class="mb-1 fw-semibold">{{ faq.title }}</p>
+          <p class="mb-0 text-muted small">{{ faq.answer }}</p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-soft mt-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h6 class="mb-0">My Tickets</h6>
+      <div class="d-flex gap-2">
+        <button class="chip" [class.active]="selectedFilter() === 'ALL'" (click)="setFilter('ALL')">All</button>
+        <button class="chip" [class.active]="selectedFilter() === 'OPEN'" (click)="setFilter('OPEN')">Open</button>
+        <button class="chip" [class.active]="selectedFilter() === 'IN_PROGRESS'" (click)="setFilter('IN_PROGRESS')">In Progress</button>
+        <button class="chip" [class.active]="selectedFilter() === 'RESOLVED'" (click)="setFilter('RESOLVED')">Resolved</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Ticket ID</th>
+            <th>Subject</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of filteredTickets(); track row.id) {
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.subject }}</td>
+            <td>{{ row.category }}</td>
+            <td>{{ row.priority }}</td>
+            <td><span class="badge" [class]="'text-bg-' + statusClass(row.status)">{{ row.status }}</span></td>
+            <td>{{ row.createdAt }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

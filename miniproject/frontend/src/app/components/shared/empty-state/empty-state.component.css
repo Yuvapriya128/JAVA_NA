@@ -1,0 +1,17 @@
+
+
+.empty-state-shell {
+  border-radius: 22px;
+}
+
+.empty-state-icon {
+  width: 62px;
+  height: 62px;
+  margin: 0 auto;
+  border-radius: 15px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+}

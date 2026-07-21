@@ -1,0 +1,129 @@
+<div
+  class="quick-actions-backdrop"
+  [class.closing]="closing"
+  role="presentation"
+  (click)="onBackdropClick($event)"
+>
+  <section
+    class="quick-actions-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Quick actions command palette"
+    (click)="$event.stopPropagation()"
+    (keydown)="onKeydown($event)"
+  >
+    <header class="quick-actions-header">
+      <div class="search-shell">
+        <i class="bi bi-search search-icon" aria-hidden="true"></i>
+        <input
+          #searchInput
+          type="text"
+          class="form-control search-input"
+          placeholder="Search pages, customers, loans, actions..."
+          aria-label="Search commands"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+        />
+        <kbd class="shortcut-hint">Ctrl K</kbd>
+      </div>
+    </header>
+
+    @if (recentCommands().length > 0) {
+      <section class="quick-actions-section">
+        <h6 class="section-title">Recent Commands</h6>
+        <div class="command-grid">
+          @for (command of recentCommands(); track command.id) {
+            <button type="button" class="recent-chip" (click)="executeCommand(command)">
+              <i class="bi" [class]="command.icon"></i>
+              <span>{{ command.title }}</span>
+            </button>
+          }
+        </div>
+      </section>
+    }
+
+    <div class="command-scroll" role="listbox" aria-label="Available commands">
+      @if (pinnedCommands().length > 0) {
+        <section class="quick-actions-section">
+          <h6 class="section-title">Pinned</h6>
+          @for (command of pinnedCommands(); track command.id) {
+            <div class="command-row">
+              <button
+                #commandItem
+                type="button"
+                class="command-item"
+                [class.active]="commandIndex(command) === highlightedIndex"
+                role="option"
+                [attr.aria-selected]="commandIndex(command) === highlightedIndex"
+                (mouseenter)="highlightedIndex = commandIndex(command)"
+                (click)="executeCommand(command)"
+              >
+                <span class="command-icon"><i class="bi" [class]="command.icon"></i></span>
+                <span class="command-copy">
+                  <span class="command-title">{{ command.title }}</span>
+                  <span class="command-description">{{ command.description }}</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                class="star-btn"
+                [attr.aria-label]="isFavorite(command) ? 'Remove from favorites' : 'Add to favorites'"
+                (click)="toggleFavorite($event, command)"
+              >
+                <i class="bi" [class.bi-star-fill]="isFavorite(command)" [class.bi-star]="!isFavorite(command)"></i>
+              </button>
+            </div>
+          }
+        </section>
+      }
+
+      @for (group of groupOrder; track group) {
+        @if (groupedCommands(group).length > 0) {
+          <section class="quick-actions-section">
+            <h6 class="section-title">{{ group }}</h6>
+            @for (command of groupedCommands(group); track command.id) {
+              <div class="command-row">
+                <button
+                  #commandItem
+                  type="button"
+                  class="command-item"
+                  [class.active]="commandIndex(command) === highlightedIndex"
+                  role="option"
+                  [attr.aria-selected]="commandIndex(command) === highlightedIndex"
+                  (mouseenter)="highlightedIndex = commandIndex(command)"
+                  (click)="executeCommand(command)"
+                >
+                  <span class="command-icon"><i class="bi" [class]="command.icon"></i></span>
+                  <span class="command-copy">
+                    <span class="command-title">{{ command.title }}</span>
+                    <span class="command-description">{{ command.description }}</span>
+                  </span>
+                  <span class="command-meta">
+                    @if (command.shortcut) {
+                      <kbd>{{ command.shortcut }}</kbd>
+                    }
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  class="star-btn"
+                  [attr.aria-label]="isFavorite(command) ? 'Remove from favorites' : 'Add to favorites'"
+                  (click)="toggleFavorite($event, command)"
+                >
+                  <i class="bi" [class.bi-star-fill]="isFavorite(command)" [class.bi-star]="!isFavorite(command)"></i>
+                </button>
+              </div>
+            }
+          </section>
+        }
+      }
+
+      @if (!hasResults()) {
+        <div class="empty-state" aria-live="polite">
+          <i class="bi bi-emoji-neutral"></i>
+          <p>No matching commands</p>
+        </div>
+      }
+    </div>
+  </section>
+</div>

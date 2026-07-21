@@ -1,0 +1,27 @@
+.policy-page {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.scrollable-content {
+  max-height: 72vh;
+  overflow: auto;
+  padding-right: 0.35rem;
+}
+
+.policy-section {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  margin-bottom: 0.85rem;
+}
+
+.policy-section h5 {
+  margin-bottom: 0.45rem;
+}
+
+.policy-section p {
+  margin-bottom: 0;
+  color: var(--text-secondary);
+}

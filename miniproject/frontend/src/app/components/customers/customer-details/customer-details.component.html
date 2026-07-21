@@ -1,0 +1,241 @@
+    <app-page-header [title]="editMode() ? 'Edit Customer' : 'Customer Details'" [subtitle]="editMode() ? 'Update Customer Profile' : 'Customer Profile'"></app-page-header>
+    @if (status().success) {
+      <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+    }
+    @if (status().error) {
+      <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+    }
+    @if (status().loading) {
+      <div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading customer details...</div>
+    }
+    @if (editMode()) {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          @if (customer(); as item) {
+          <div class="row g-3" [formGroup]="form" novalidate>
+            <div class="col-md-6">
+              <label class="form-label">Customer Name</label>
+              <input type="text" class="form-control" formControlName="customerName" [class.is-invalid]="controlInvalid('customerName')" [class.is-valid]="!controlInvalid('customerName') && form.controls.customerName.value" />
+              @if (controlInvalid('customerName')) { <div class="invalid-feedback d-block">Name is required (3-50 alphabets only).</div> }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" formControlName="email" [class.is-invalid]="controlInvalid('email')" [class.is-valid]="!controlInvalid('email') && form.controls.email.value" />
+              @if (controlInvalid('email')) { <div class="invalid-feedback d-block">Valid email is required.</div> }
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Phone</label>
+              <input type="text" class="form-control" formControlName="phoneNumber" [class.is-invalid]="controlInvalid('phoneNumber')" [class.is-valid]="!controlInvalid('phoneNumber') && form.controls.phoneNumber.value" />
+              @if (controlInvalid('phoneNumber')) { <div class="invalid-feedback d-block">Phone number must be 10 digits.</div> }
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control" formControlName="city" [class.is-invalid]="controlInvalid('city')" [class.is-valid]="!controlInvalid('city') && form.controls.city.value" />
+              @if (controlInvalid('city')) { <div class="invalid-feedback d-block">City is required.</div> }
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Credit Score</label>
+              <input type="number" class="form-control" formControlName="creditScore" [class.is-invalid]="controlInvalid('creditScore')" [class.is-valid]="!controlInvalid('creditScore') && form.controls.creditScore.value" />
+              @if (controlInvalid('creditScore')) { <div class="invalid-feedback d-block">Credit score must be between 300 and 900.</div> }
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Role</label>
+              <select class="form-select" formControlName="role">
+                @for (role of roles; track role) {
+                  <option [value]="role">{{ role }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" formControlName="active" id="activeToggle" />
+                <label class="form-check-label" for="activeToggle">Active</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Customer ID</label>
+              <input type="text" class="form-control" [value]="item.customerId" disabled />
+            </div>
+            <div class="col-12 d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+              <button type="button" class="btn btn-primary" [disabled]="status().loading || form.invalid" (click)="saveChanges()">
+                @if (status().loading) {
+                  <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+                }
+                Save Changes
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="row g-2 mb-3">
+        <div class="col-md-3"><div class="summary-chip"><small>Total Loans</small><strong>{{ customerLoans().length }}</strong></div></div>
+        <div class="col-md-3"><div class="summary-chip"><small>Active Loans</small><strong>{{ activeLoansCount() }}</strong></div></div>
+        <div class="col-md-3"><div class="summary-chip"><small>Outstanding</small><strong>{{ formatCurrency(totalOutstanding()) }}</strong></div></div>
+        <div class="col-md-3"><div class="summary-chip"><small>Total Paid</small><strong>{{ formatCurrency(totalPaidAmount()) }}</strong></div></div>
+      </div>
+      <div class="card border-0 shadow-soft mb-3">
+        <div class="card-body d-flex flex-wrap gap-2">
+          <button type="button" class="tab-btn" [class.active]="activeTab() === 'overview'" (click)="setActiveTab('overview')">Overview</button>
+          <button type="button" class="tab-btn" [class.active]="activeTab() === 'loans'" (click)="setActiveTab('loans')">Loans</button>
+          <button type="button" class="tab-btn" [class.active]="activeTab() === 'applications'" (click)="setActiveTab('applications')">Applications</button>
+          <button type="button" class="tab-btn" [class.active]="activeTab() === 'payments'" (click)="setActiveTab('payments')">Payments</button>
+          <button type="button" class="tab-btn" [class.active]="activeTab() === 'notifications'" (click)="setActiveTab('notifications')">Notifications</button>
+          <button type="button" class="tab-btn" [class.active]="activeTab() === 'audit'" (click)="setActiveTab('audit')">Audit</button>
+        </div>
+      </div>
+
+      @if (activeTab() === 'overview') {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          <h6 class="mb-3">Customer Information</h6>
+          @if (customer(); as item) {
+          <div class="row g-3">
+            <div class="col-md-6"><small class="text-muted">Customer ID</small><p class="mb-0">#{{ item.customerId }}</p></div>
+            <div class="col-md-6"><small class="text-muted">Name</small><p class="mb-0">{{ item.customerName }}</p></div>
+            <div class="col-md-6"><small class="text-muted">Email</small><p class="mb-0">{{ item.email }}</p></div>
+            <div class="col-md-6"><small class="text-muted">Phone</small><p class="mb-0">{{ item.phoneNumber }}</p></div>
+            <div class="col-md-6"><small class="text-muted">City</small><p class="mb-0">{{ item.city }}</p></div>
+            <div class="col-md-6"><small class="text-muted">Role</small><p class="mb-0">{{ item.role }}</p></div>
+            <div class="col-md-6"><small class="text-muted">Credit Score</small><p class="mb-0">{{ item.creditScore }}</p></div>
+            <div class="col-md-6"><small class="text-muted">Status</small><p class="mb-0"><app-status-badge [label]="item.active ? 'ACTIVE' : 'DEACTIVATED'"></app-status-badge></p></div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      @if (activeTab() === 'loans') {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          <h6 class="mb-3">Customer Loans</h6>
+          @if (customerLoans().length === 0) {
+            <p class="text-muted mb-0">No loans mapped to this customer.</p>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Loan ID</th>
+                    <th>Type</th>
+                    <th>EMI</th>
+                    <th>Outstanding</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (loan of customerLoans(); track loan.loanId) {
+                  <tr>
+                    <td>#{{ loan.loanId }}</td>
+                    <td>{{ loan.loanType }}</td>
+                    <td>{{ formatCurrency(loan.emiAmount) }}</td>
+                    <td>{{ formatCurrency(loan.outstandingAmount || 0) }}</td>
+                    <td><app-status-badge [label]="loan.loanStatus"></app-status-badge></td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+      }
+
+      @if (activeTab() === 'applications') {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          <h6 class="mb-3">Loan Applications</h6>
+          @if (customerApplications().length === 0) {
+            <p class="text-muted mb-0">No loan applications found for this customer.</p>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Application ID</th>
+                    <th>Loan Type</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (application of customerApplications(); track application.applicationId) {
+                  <tr>
+                    <td>#{{ application.applicationId }}</td>
+                    <td>{{ application.loanType }}</td>
+                    <td>{{ formatCurrency(application.principalAmount) }}</td>
+                    <td>{{ application.applicationDate }}</td>
+                    <td><app-status-badge [label]="application.applicationStatus"></app-status-badge></td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+      }
+
+      @if (activeTab() === 'payments') {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          <h6 class="mb-3">Payment History</h6>
+          @if (customerPayments().length === 0) {
+            <p class="text-muted mb-0">No payment records found for this customer.</p>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>EMI ID</th>
+                    <th>Amount</th>
+                    <th>Mode</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (payment of customerPayments(); track payment.referenceNumber) {
+                  <tr>
+                    <td>#{{ payment.emiId }}</td>
+                    <td>{{ formatCurrency(payment.amountPaid) }}</td>
+                    <td>{{ payment.paymentMode }}</td>
+                    <td><app-status-badge [label]="payment.status"></app-status-badge></td>
+                    <td>{{ payment.paymentDate }}</td>
+                    <td>{{ payment.referenceNumber }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+      }
+
+      @if (activeTab() === 'notifications') {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          <h6 class="mb-2">Notifications</h6>
+          <p class="text-muted mb-0">Notification timeline is ready for integration with existing notification service/events.</p>
+        </div>
+      </div>
+      }
+
+      @if (activeTab() === 'audit') {
+      <div class="card border-0 shadow-soft">
+        <div class="card-body">
+          <h6 class="mb-2">Audit Trail</h6>
+          <p class="mb-1"><strong>Profile loaded:</strong> Yes</p>
+          <p class="mb-1"><strong>Loans loaded:</strong> {{ customerLoans().length }}</p>
+          <p class="mb-1"><strong>Applications loaded:</strong> {{ customerApplications().length }}</p>
+          <p class="mb-0"><strong>Payments loaded:</strong> {{ customerPayments().length }}</p>
+        </div>
+      </div>
+      }
+    }
+  

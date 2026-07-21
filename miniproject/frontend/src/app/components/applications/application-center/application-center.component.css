@@ -1,0 +1,105 @@
+.wizard-stepper {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+}
+
+.step {
+	font-size: 0.77rem;
+	padding: 0.28rem 0.62rem;
+	border-radius: 999px;
+	border: 1px solid var(--divider);
+	background: var(--surface);
+	color: var(--text-secondary);
+}
+
+.step.active {
+	border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+	background: var(--table-selected);
+	color: var(--primary);
+}
+
+.review-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.6rem;
+}
+
+.review-grid > div {
+	border: 1px solid var(--divider);
+	border-radius: 10px;
+	padding: 0.55rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.review-grid small {
+	color: var(--text-secondary);
+}
+
+.review-grid strong {
+	font-size: 0.86rem;
+}
+
+.success-shell {
+	display: flex;
+	gap: 0.65rem;
+	align-items: center;
+	margin-bottom: 0.8rem;
+}
+
+.success-shell i {
+	color: var(--success);
+	font-size: 1.3rem;
+}
+
+.timeline-card {
+	border: 1px solid var(--divider);
+	border-radius: 12px;
+	padding: 0.7rem;
+	margin-bottom: 0.7rem;
+	background: var(--card-hover);
+}
+
+.timeline-steps {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+}
+
+.timeline-chip {
+	font-size: 0.7rem;
+	padding: 0.12rem 0.46rem;
+	border-radius: 999px;
+	border: 1px solid var(--divider);
+	background: var(--surface-variant);
+	color: var(--text-secondary);
+}
+
+.timeline-chip.done {
+	background: var(--success-soft);
+	color: var(--success);
+}
+
+.timeline-chip.current {
+	background: var(--table-selected);
+	color: var(--primary);
+}
+
+.kpi-card {
+	border: 1px solid var(--divider);
+	border-radius: 14px;
+	background: var(--card-hover);
+	padding: 0.8rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.kpi-card small {
+	color: var(--text-secondary);
+}
+
+.kpi-card strong {
+	font-size: 1.2rem;
+}
+

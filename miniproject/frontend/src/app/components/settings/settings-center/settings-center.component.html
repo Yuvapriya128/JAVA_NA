@@ -1,0 +1,87 @@
+<app-page-header title="Settings Center" subtitle="Preferences, notifications, and security"></app-page-header>
+
+@if (successMessage()) {
+<div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+}
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body d-flex flex-wrap gap-2">
+    <button class="tab-btn" [class.active]="activeTab() === 'preferences'" (click)="setTab('preferences')">Preferences</button>
+    <button class="tab-btn" [class.active]="activeTab() === 'notifications'" (click)="setTab('notifications')">Notifications</button>
+    <button class="tab-btn" [class.active]="activeTab() === 'security'" (click)="setTab('security')">Security</button>
+  </div>
+</div>
+
+@if (activeTab() === 'preferences' || activeTab() === 'notifications') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">User Preferences</h6>
+    <form [formGroup]="form" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label small mb-1">Default Landing Page</label>
+        <select class="form-select" formControlName="defaultLanding">
+          <option value="dashboard">Dashboard</option>
+          <option value="applications">Applications</option>
+          <option value="payments">Payments</option>
+          <option value="loans">Loans</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label small mb-1">Due Reminder (days before due date)</label>
+        <input type="number" class="form-control" formControlName="dueReminderDays" />
+      </div>
+      <div class="col-md-4">
+        <div class="form-check mt-2">
+          <input id="emailAlerts" class="form-check-input" type="checkbox" formControlName="emailAlerts" />
+          <label class="form-check-label" for="emailAlerts">Email Alerts</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-check mt-2">
+          <input id="smsAlerts" class="form-check-input" type="checkbox" formControlName="smsAlerts" />
+          <label class="form-check-label" for="smsAlerts">SMS Alerts</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-check mt-2">
+          <input id="compactTables" class="form-check-input" type="checkbox" formControlName="compactTables" />
+          <label class="form-check-label" for="compactTables">Compact Tables</label>
+        </div>
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button type="button" class="btn btn-primary btn-sm" (click)="savePreferences()">Save Preferences</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="resetPreferences()">Reset Defaults</button>
+      </div>
+    </form>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'security') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Security</h6>
+    <form [formGroup]="securityForm" class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label small mb-1">Current Password</label>
+        <input type="password" class="form-control" formControlName="currentPassword" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small mb-1">New Password</label>
+        <input type="password" class="form-control" formControlName="newPassword" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small mb-1">Confirm Password</label>
+        <input type="password" class="form-control" formControlName="confirmPassword" />
+      </div>
+      <div class="col-12">
+        <button type="button" class="btn btn-primary btn-sm" (click)="updatePassword()">Update Password</button>
+      </div>
+    </form>
+  </div>
+</div>
+}
+

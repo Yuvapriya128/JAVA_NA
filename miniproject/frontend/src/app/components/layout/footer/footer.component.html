@@ -1,0 +1,15 @@
+<footer class="footer mt-4 py-3 px-3 px-lg-4">
+  <div class="d-flex flex-wrap justify-content-center align-items-center gap-3 text-center">
+    <small><a routerLink="/about">About Us</a></small>
+    <small><a routerLink="/contact">Contact Us</a></small>
+    <small><a routerLink="/privacy">Privacy Policy</a></small>
+    <small><a routerLink="/terms">Terms of Service</a></small>
+    <small><a [href]="supportLink"><i class="bi bi-question-circle me-1"></i>Help</a></small>
+    <small><a [href]="supportLink"><i class="bi bi-life-preserver me-1"></i>Support</a></small>
+    <small>&copy; {{ year }} {{ organization }}</small>
+    <small>Version {{ appVersion }}</small>
+    <small>{{ environmentLabel }}</small>
+    <small class="d-none d-xl-inline"><i class="bi bi-clock-history me-1"></i>{{ lastSyncTime() }}</small>
+  </div>
+</footer>
+  

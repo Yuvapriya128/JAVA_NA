@@ -1,0 +1,182 @@
+<app-page-header title="Loan Details" subtitle="Overview, EMI Schedule, Payments and Support"></app-page-header>
+@if (status().success) {
+<div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+}
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+@if (status().loading) {
+<div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading loan details...</div>
+}
+
+@if (loan(); as item) {
+<div class="row g-3 mb-3">
+  <div class="col-md-6 col-xl-3"><div class="summary-card"><small>Total Loan</small><strong>{{ formatCurrency(item.principalAmount) }}</strong></div></div>
+  <div class="col-md-6 col-xl-3"><div class="summary-card"><small>Outstanding Balance</small><strong>{{ formatOptionalCurrency(item.outstandingAmount) }}</strong></div></div>
+  <div class="col-md-6 col-xl-3"><div class="summary-card"><small>Loan Progress</small><strong>{{ paidPercent() }}%</strong><span>{{ paidEmiCount() }} / {{ emiSchedules().length }} EMIs</span></div></div>
+  <div class="col-md-6 col-xl-3"><div class="summary-card"><small>Loan Health</small><strong>{{ loanHealthLabel() }}</strong><span>{{ overdueEmiCount() }} overdue EMIs</span></div></div>
+</div>
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body d-flex flex-wrap gap-2">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'overview'" (click)="setActiveTab('overview')">Overview</button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'emi'" (click)="setActiveTab('emi')">EMI Schedule</button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'payments'" (click)="setActiveTab('payments')">Payments</button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'documents'" (click)="setActiveTab('documents')">Documents</button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'timeline'" (click)="setActiveTab('timeline')">Timeline</button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'support'" (click)="setActiveTab('support')">Support</button>
+  </div>
+</div>
+
+@if (activeTab() === 'overview') {
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-soft">
+      <div class="card-body">
+        <h6 class="mb-3">Loan Snapshot</h6>
+        <div class="row g-3">
+          <div class="col-md-6"><small class="text-muted">Loan ID</small><p class="mb-0">#{{ item.loanId }}</p></div>
+          <div class="col-md-6"><small class="text-muted">Type</small><p class="mb-0">{{ item.loanType }}</p></div>
+          <div class="col-md-6"><small class="text-muted">Principal Amount</small><p class="mb-0">{{ formatCurrency(item.principalAmount) }}</p></div>
+          <div class="col-md-6"><small class="text-muted">Interest Rate</small><p class="mb-0">{{ item.annualInterestRate }}%</p></div>
+          <div class="col-md-6"><small class="text-muted">Tenure</small><p class="mb-0">{{ item.tenureMonths }} months</p></div>
+          <div class="col-md-6"><small class="text-muted">Monthly EMI</small><p class="mb-0">{{ formatCurrency(item.emiAmount) }}</p></div>
+          <div class="col-md-6"><small class="text-muted">Total Interest</small><p class="mb-0">{{ formatOptionalCurrency(item.totalInterest) }}</p></div>
+          <div class="col-md-6"><small class="text-muted">Total Repayment</small><p class="mb-0">{{ formatOptionalCurrency(item.totalRepayment) }}</p></div>
+          <div class="col-md-6"><small class="text-muted">Status</small><p class="mb-0"><app-status-badge [label]="item.loanStatus"></app-status-badge></p></div>
+          <div class="col-md-6"><small class="text-muted">Remaining Balance</small><p class="mb-0">{{ formatCurrency(remainingBalance()) }}</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-soft h-100">
+      <div class="card-body">
+        <h6>Repayment Summary</h6>
+        <p class="mb-1"><strong>Principal Paid:</strong> {{ formatCurrency(totalPrincipalPaid()) }}</p>
+        <p class="mb-1"><strong>Interest Paid:</strong> {{ formatCurrency(totalInterestPaid()) }}</p>
+        <p class="mb-1"><strong>Penalty Paid:</strong> {{ formatCurrency(totalPenaltyPaid()) }}</p>
+        <p class="mb-3"><strong>Total Paid:</strong> {{ formatCurrency(totalAmountPaid()) }}</p>
+        @if (canManageLoan()) {
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-primary" (click)="edit()">Update Interest Rate</button>
+          <button class="btn btn-outline-danger" (click)="delete()">Delete Loan</button>
+        </div>
+        } @else {
+        <a class="btn btn-outline-primary btn-sm" routerLink="/payments">Open Payment History</a>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'emi') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">EMI Schedule</h6>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Installment</th>
+            <th>Due Date</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Penalty</th>
+            <th>Amount Due</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (emi of emiSchedules(); track emi.emiId) {
+          <tr>
+            <td>#{{ emi.installmentNumber }}</td>
+            <td>{{ formatDate(emi.dueDate) }}</td>
+            <td>{{ formatCurrency(emi.principalComponent) }}</td>
+            <td>{{ formatCurrency(emi.interestComponent) }}</td>
+            <td>{{ formatCurrency(emi.penaltyAmount) }}</td>
+            <td>{{ formatCurrency(emi.amountDue) }}</td>
+            <td><app-status-badge [label]="scheduleBadge(emi.status)"></app-status-badge></td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'payments') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Payment Timeline</h6>
+    @if (paymentRows().length === 0) {
+    <p class="text-muted mb-0">No payment history available for this loan yet.</p>
+    } @else {
+    <div class="timeline-list">
+      @for (row of paymentRows(); track row.referenceNumber) {
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <p class="mb-1 fw-semibold">{{ formatDate(row.paymentDate) }} - {{ formatCurrency(row.amountPaid) }}</p>
+          <p class="mb-0 text-muted small">EMI #{{ row.emiId }} | {{ row.paymentMode }} | Ref {{ row.referenceNumber }}</p>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+}
+
+@if (activeTab() === 'documents') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-2">Documents</h6>
+    <p class="text-muted mb-0">Document management UI is ready. Existing backend document APIs can be wired here without changing current loan APIs.</p>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'timeline') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Loan Lifecycle</h6>
+    <div class="timeline-list">
+      <div class="timeline-item">
+        <div class="timeline-marker done"></div>
+        <div class="timeline-content"><p class="mb-0 fw-semibold">Application Approved</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker done"></div>
+        <div class="timeline-content"><p class="mb-0 fw-semibold">Loan Created</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker" [class.done]="item.loanStatus !== 'PENDING'"></div>
+        <div class="timeline-content"><p class="mb-0 fw-semibold">Disbursed</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker" [class.done]="item.loanStatus === 'CLOSED'"></div>
+        <div class="timeline-content"><p class="mb-0 fw-semibold">Repayment Completion</p></div>
+      </div>
+    </div>
+    <p class="small text-muted mb-0 mt-2">{{ timelineRemarks() }}</p>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'support') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-2">Support</h6>
+    <p class="mb-2 text-muted">Need help with this loan? Reach support with contextual loan data.</p>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-primary btn-sm" routerLink="/support">Raise Support Request</a>
+      <a class="btn btn-outline-secondary btn-sm" routerLink="/loans/foreclosure">Open Foreclosure Center</a>
+    </div>
+  </div>
+</div>
+}
+}
+  

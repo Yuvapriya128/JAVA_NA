@@ -1,0 +1,47 @@
+<app-page-header title="Notification Center" subtitle="Operational alerts, payment updates and risk notifications"></app-page-header>
+
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+@if (status().loading) {
+<div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading notifications...</div>
+}
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div class="d-flex flex-wrap gap-2">
+      <button class="filter-btn" [class.active]="filter() === 'ALL'" (click)="setFilter('ALL')">All</button>
+      <button class="filter-btn" [class.active]="filter() === 'Loan Due'" (click)="setFilter('Loan Due')">Loan Due</button>
+      <button class="filter-btn" [class.active]="filter() === 'Overdue'" (click)="setFilter('Overdue')">Overdue</button>
+      <button class="filter-btn" [class.active]="filter() === 'Payment'" (click)="setFilter('Payment')">Payment</button>
+      <button class="filter-btn" [class.active]="filter() === 'Application'" (click)="setFilter('Application')">Application</button>
+      <button class="filter-btn" [class.active]="filter() === 'Risk'" (click)="setFilter('Risk')">Risk</button>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="small text-muted">Unread: {{ unreadCount() }}</span>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="markAllRead()">Mark all read</button>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    @if (filteredRows().length === 0) {
+    <p class="text-muted mb-0">No notifications available for selected filter.</p>
+    } @else {
+    <div class="notification-list">
+      @for (row of filteredRows(); track row.title + row.time) {
+      <div class="notification-item" [class.unread]="row.unread">
+        <div class="d-flex justify-content-between gap-2 mb-1">
+          <strong>{{ row.title }}</strong>
+          <span class="badge text-bg-light">{{ row.category }}</span>
+        </div>
+        <p class="mb-1 text-muted">{{ row.message }}</p>
+        <small class="text-muted">{{ row.time }}</small>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+

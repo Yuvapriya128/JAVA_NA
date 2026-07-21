@@ -1,0 +1,33 @@
+.dashboard-page .kpi-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 0.9rem;
+}
+
+.insight-shell {
+	background: linear-gradient(130deg, var(--surface) 0%, color-mix(in srgb, var(--primary) 10%, var(--surface)) 100%);
+}
+
+.chart-shell {
+	background: linear-gradient(180deg, var(--surface), var(--card-hover));
+}
+
+.overdue-shell {
+	background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--warning) 12%, var(--surface)));
+}
+
+.chart-placeholder {
+	height: 240px;
+	padding: 1rem 0.5rem 0;
+	border-bottom: 1px solid var(--divider);
+}
+
+.bar {
+	flex: 1;
+	background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 50%, var(--surface)), var(--primary));
+	border-radius: 12px 12px 0 0;
+}
+
+.slim-progress {
+	height: 8px;
+}

@@ -1,0 +1,34 @@
+<aside class="sidebar" [class.collapsed]="collapsed">
+  <div class="brand px-3 py-2">
+    <div class="brand-mark"><i class="bi bi-layers-half"></i></div>
+    <div class="brand-copy" *ngIf="!collapsed">
+      <h6 class="mb-0">Nova Lending Console</h6>
+    </div>
+  </div>
+
+  <nav class="menu-wrap px-2 pb-3">
+    @for (section of sectionGroups(); track section.title) {
+    <section class="menu-section">
+      <p class="section-label" *ngIf="!collapsed">{{ section.title }}</p>
+      @for (item of section.items; track item.label) {
+      <a
+        class="menu-link"
+        [routerLink]="item.route"
+        [queryParams]="item.queryParams"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+        [attr.title]="collapsed ? item.label : null">
+        <i [class]="item.icon"></i>
+        <span class="menu-text" *ngIf="!collapsed">{{ item.label }}</span>
+        @if (getBadgeValue(item.badgeKey) > 0) {
+        <span class="menu-badge" [class.collapsed-badge]="collapsed">
+          {{ displayBadge(getBadgeValue(item.badgeKey)) }}
+        </span>
+        }
+      </a>
+      }
+    </section>
+    }
+  </nav>
+</aside>
+  

@@ -1,0 +1,18 @@
+<div class="toast-stack position-fixed top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
+  @for (toast of toastService.messages(); track toast.id) {
+    <div class="modern-toast alert alert-{{ toast.variant }} alert-dismissible fade show shadow-sm mb-2" role="alert" tabindex="0">
+      <div class="d-flex align-items-start gap-2">
+        <i class="{{ iconClass(toast.variant) }} toast-icon" aria-hidden="true"></i>
+        <div class="flex-grow-1">
+          <div class="toast-message">{{ toast.message }}</div>
+          @if (toast.actionLabel) {
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2" (click)="toastService.runAction(toast.id)">
+              {{ toast.actionLabel }}
+            </button>
+          }
+        </div>
+      </div>
+      <button type="button" class="btn-close" aria-label="Close notification" (click)="dismiss(toast.id)"></button>
+    </div>
+  }
+</div>

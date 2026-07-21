@@ -1,0 +1,7 @@
+.stat-card { border-radius: 16px; border: 1px solid var(--divider); }
+.icon-badge { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 1rem; }
+.tone-primary { background: var(--primary-soft); color: var(--primary); }
+.tone-success { background: var(--success-soft); color: var(--success); }
+.tone-warning { background: var(--warning-soft); color: var(--warning); }
+.tone-danger { background: var(--danger-soft); color: var(--danger); }
+.tone-info { background: var(--info-soft); color: var(--info); }

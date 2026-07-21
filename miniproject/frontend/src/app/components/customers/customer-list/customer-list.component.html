@@ -1,0 +1,142 @@
+    <app-page-header title="Customer Management Hub" subtitle="Relationship Intelligence Grid" buttonLabel="Add Customer" buttonRoute="/create-customer"></app-page-header>
+    @if (status().success) {
+      <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+    }
+    @if (status().error) {
+      <div class="alert alert-danger d-flex justify-content-between align-items-center flex-wrap gap-2" role="alert">
+        <span>{{ status().error }}</span>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="refresh()">Try Again</button>
+      </div>
+    }
+    <app-table-toolbar placeholder="Search by customer name, email, city" [term]="searchTerm()" (termChange)="searchTerm.set($event)" (search)="onSearch()"></app-table-toolbar>
+    <div class="row g-2 mb-3">
+      <div class="col-md-3"><div class="stat-chip"><span>Total</span><strong>{{ totalCustomersCount() }}</strong></div></div>
+      <div class="col-md-3"><div class="stat-chip"><span>Active</span><strong>{{ activeCustomersCount() }}</strong></div></div>
+      <div class="col-md-3"><div class="stat-chip"><span>Managers</span><strong>{{ managerCustomersCount() }}</strong></div></div>
+      <div class="col-md-3"><div class="stat-chip"><span>Admins</span><strong>{{ adminCustomersCount() }}</strong></div></div>
+    </div>
+    @if (isAdminView()) {
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button type="button" class="btn btn-sm filter-chip" [class.active]="approvalFilter() === 'ALL'" (click)="setApprovalFilter('ALL')">All</button>
+        <button type="button" class="btn btn-sm filter-chip" [class.active]="approvalFilter() === 'PENDING'" (click)="setApprovalFilter('PENDING')">Pending Approval</button>
+        <button type="button" class="btn btn-sm filter-chip" [class.active]="approvalFilter() === 'ACTIVE'" (click)="setApprovalFilter('ACTIVE')">Active</button>
+      </div>
+    }
+    <div class="card border-0 shadow-soft mb-3">
+      <div class="card-body py-3">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Role</label>
+            <select class="form-select form-select-sm" [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event); onFilterChange()">
+              <option value="ALL">All Roles</option>
+              <option value="USER">User</option>
+              <option value="MANAGER">Manager</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Status</label>
+            <select class="form-select form-select-sm" [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event); onFilterChange()">
+              <option value="ALL">All Statuses</option>
+              <option value="ACTIVE">Active</option>
+              <option value="DEACTIVATED">Pending Approval</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">City</label>
+            <select class="form-select form-select-sm" [ngModel]="cityFilter()" (ngModelChange)="cityFilter.set($event); onFilterChange()">
+              <option value="ALL">All Cities</option>
+              @for (city of availableCities(); track city) {
+                <option [value]="city">{{ city }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small mb-1">Sort</label>
+            <div class="d-flex gap-2 sort-controls">
+              <select class="form-select form-select-sm" [ngModel]="sortBy()" (ngModelChange)="onSortFieldChange($event)">
+                <option value="customerId">Customer ID</option>
+                <option value="customerName">Customer Name</option>
+                <option value="city">City</option>
+                <option value="creditScore">Credit Score</option>
+              </select>
+              <select class="form-select form-select-sm sort-direction" [ngModel]="sortDirection()" (ngModelChange)="onSortDirectionChange($event)">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-soft">
+      <div class="card-body">
+        <div class="table-responsive table-shell">
+          <table class="table table-hover align-middle">
+            <thead class="table-light sticky-top">
+              <tr>
+                <th>Customer ID <i class="bi bi-arrow-down-up ms-1"></i></th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Credit Score</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (customer of customerRows(); track customer.customerId) {
+              <tr class="table-clickable" (click)="openCustomer(customer.customerId)">
+                <td>#{{ customer.customerId }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="avatar-pill">{{ initials(customer.customerName) }}</span>
+                    <span>{{ customer.customerName }}</span>
+                  </div>
+                </td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.phoneNumber }}</td>
+                <td>{{ customer.city }}</td>
+                <td>{{ customer.creditScore }}</td>
+                <td><app-status-badge [label]="roleLabel(customer.role)"></app-status-badge></td>
+                <td><app-status-badge [label]="customerStatusLabel(customer)"></app-status-badge></td>
+                <td>
+                  <div class="d-flex align-items-center gap-2 flex-wrap" (click)="$event.stopPropagation()">
+                    @if (isAdminView()) {
+                      <button type="button" class="btn btn-sm btn-outline-success" [disabled]="!canApprove(customer)" (click)="approve(customer)">Approve</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger" [disabled]="!canReject(customer)" (click)="reject(customer)">Reject</button>
+                    }
+                    <app-table-action-buttons [actions]="isAdminView() ? adminRowActions : rowActions" (actionClick)="onAction($event, customer.customerId)"></app-table-action-buttons>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (status().loading) {
+          <div class="mt-3"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading customers...</div>
+        }
+        @if (!status().loading && customerRows().length === 0) {
+          <app-empty-state
+            title="No customers found"
+            subtitle="Try adjusting filters or create a new customer record."
+            iconClass="bi bi-people"
+            actionLabel="Add Customer"
+            actionRoute="/create-customer"></app-empty-state>
+        }
+        <app-pagination
+          [currentPage]="page()"
+          [totalPages]="totalPages()"
+          [totalRecords]="totalElements()"
+          [pageSize]="size()"
+          [pageSizes]="pageSizeOptions"
+          (pageChange)="onPageChange($event)"
+          (pageSizeChange)="onPageSizeChange($event)"></app-pagination>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary floating-add" routerLink="/create-customer"><i class="bi bi-plus-lg me-1"></i>Add Customer</button>
+  

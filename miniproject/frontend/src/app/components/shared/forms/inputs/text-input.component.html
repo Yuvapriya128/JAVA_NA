@@ -1,0 +1,6 @@
+    <div [class]="colClass + ' form-floating'">
+      <input [id]="id" [name]="id" [type]="type" class="form-control" [placeholder]="placeholder" [ngModel]="model" (ngModelChange)="modelChange.emit($event)" />
+      <label [for]="id">{{ label }}</label>
+    </div>
+  
+

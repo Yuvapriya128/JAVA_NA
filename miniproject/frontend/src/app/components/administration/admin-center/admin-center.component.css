@@ -1,0 +1,61 @@
+.stat-card {
+	border: 1px solid var(--divider);
+	border-radius: 12px;
+	background: var(--card-hover);
+	padding: 0.7rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.stat-card small {
+	color: var(--text-secondary);
+}
+
+.tab-btn {
+	border: 1px solid var(--divider);
+	background: var(--surface);
+	color: var(--text-secondary);
+	border-radius: 999px;
+	padding: 0.34rem 0.72rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+}
+
+.tab-btn.active {
+	background: var(--table-selected);
+	color: var(--primary);
+	border-color: color-mix(in srgb, var(--primary) 38%, var(--border));
+}
+
+.role-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.55rem;
+}
+
+.role-item {
+	border: 1px solid var(--divider);
+	border-radius: 10px;
+	padding: 0.6rem;
+	background: var(--surface);
+	display: flex;
+	flex-direction: column;
+}
+
+.role-item small {
+	color: var(--text-secondary);
+}
+
+.policy-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+}
+
+.policy-item {
+	border: 1px solid var(--divider);
+	border-radius: 10px;
+	background: var(--surface);
+	padding: 0.65rem;
+}
+

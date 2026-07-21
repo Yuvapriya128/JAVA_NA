@@ -1,0 +1,344 @@
+    <app-page-header [title]="pageTitle()" [subtitle]="pageSubtitle()"></app-page-header>
+    @if (status().success) {
+      <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+    }
+    @if (shouldShowPrimaryError()) {
+      <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+    }
+    @if (status().loading) {
+      <div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading loan products...</div>
+    }
+    @if (showMyRequestsSection()) {
+      <div class="alert alert-primary" role="alert">
+        Product requests are routed to manager/admin for approval. You can track real-time status in <strong>My Product Requests</strong> below.
+      </div>
+    }
+    @if (canDirectCreateLoan()) {
+      <div class="alert alert-info" role="alert">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <span>Review pending product requests from users and approve/reject them from the review queue below.</span>
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleAdminCatalog()">
+            {{ showProductCatalog() ? 'Hide Product Catalog' : 'Show Product Catalog' }}
+          </button>
+        </div>
+      </div>
+    }
+    @if (showProductCatalog()) {
+    <div class="row g-3">
+      <div class="col-md-6 col-xl-4" *ngFor="let product of products()">
+        <div class="card border-0 shadow-soft h-100 product-card">
+          <div class="card-body d-flex flex-column">
+            <span class="badge text-bg-light align-self-start mb-2">{{ product.code }}</span>
+            <h5>{{ product.displayName }}</h5>
+            <p class="text-primary fw-semibold mb-2">Interest Rate: {{ product.defaultRate }}%</p>
+            <div class="product-meta mb-3">
+              <p class="small mb-1"><strong>Eligibility:</strong> {{ profileFor(product).eligibility }}</p>
+              <p class="small mb-1"><strong>Tenure:</strong> {{ profileFor(product).tenure }}</p>
+              <p class="small mb-0"><strong>Maximum Amount:</strong> {{ profileFor(product).maxAmount }}</p>
+            </div>
+
+            <div class="mb-3">
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleCalculator(product)">
+                {{ calculatorFor(product).expanded ? 'Hide EMI Calculator' : 'EMI Calculator' }}
+              </button>
+            </div>
+
+            @if (calculatorFor(product).expanded) {
+              <div class="border rounded p-2 mb-3">
+                <p class="small mb-2"><strong>Estimator</strong> (Rate: {{ product.defaultRate }}%)</p>
+                <div class="mb-2">
+                  <label class="form-label small mb-1">Principal Amount</label>
+                  <input
+                    type="number"
+                    class="form-control form-control-sm"
+                    [ngModel]="calculatorFor(product).principalAmount"
+                    (ngModelChange)="onCalculatorPrincipalChange(product, +$event)" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small mb-1">Tenure (Months)</label>
+                  <input
+                    type="number"
+                    class="form-control form-control-sm"
+                    [ngModel]="calculatorFor(product).tenureMonths"
+                    (ngModelChange)="onCalculatorTenureChange(product, +$event)" />
+                </div>
+                <button type="button" class="btn btn-sm btn-primary" [disabled]="calculatorFor(product).loading" (click)="calculateProductEmi(product)">
+                  @if (calculatorFor(product).loading) {
+                    <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+                  }
+                  Calculate EMI
+                </button>
+
+                @if (calculatorFor(product).error) {
+                  <div class="alert alert-danger py-2 mt-2 mb-0 small">{{ calculatorFor(product).error }}</div>
+                }
+
+                @if (calculatorFor(product).result; as result) {
+                  <div class="mt-2 small">
+                    <div><strong>Monthly EMI:</strong> {{ formatCurrency(result.emiAmount) }}</div>
+                    <div><strong>Total Interest:</strong> {{ formatCurrency(result.totalInterest) }}</div>
+                    <div><strong>Total Repayment:</strong> {{ formatCurrency(result.totalPayment) }}</div>
+                  </div>
+                }
+              </div>
+            }
+
+            <button
+              class="btn btn-outline-primary mt-auto"
+              [disabled]="isProductApplying(product) || (!canDirectCreateLoan() && isProductRequested(product))"
+              (click)="applyProduct(product)">
+              @if (canDirectCreateLoan()) {
+                Create Loan
+              } @else if (isProductApplying(product)) {
+                Requesting...
+              } @else if (isProductRequested(product)) {
+                Requested
+              } @else {
+                Request Product
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+
+    @if (showMyRequestsSection()) {
+      <div class="card border-0 shadow-soft mt-4">
+        <div class="card-body">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <h6 class="mb-0">My Product Requests</h6>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary" (click)="refreshMyApplications()">Refresh Status</button>
+            </div>
+          </div>
+
+          <div class="request-counter-strip mb-3">
+            <button type="button" class="counter-chip" [class.active]="myApplicationFilter() === 'ALL'" (click)="setMyApplicationFilter('ALL')">
+              <span class="chip-label">All</span>
+              <span class="chip-value">{{ requestCountByStatus('ALL') }}</span>
+            </button>
+            <button type="button" class="counter-chip" [class.active]="myApplicationFilter() === 'PENDING'" (click)="setMyApplicationFilter('PENDING')">
+              <span class="chip-label">Pending</span>
+              <span class="chip-value">{{ requestCountByStatus('PENDING') }}</span>
+            </button>
+            <button type="button" class="counter-chip" [class.active]="myApplicationFilter() === 'UNDER_REVIEW'" (click)="setMyApplicationFilter('UNDER_REVIEW')">
+              <span class="chip-label">Under Review</span>
+              <span class="chip-value">{{ requestCountByStatus('UNDER_REVIEW') }}</span>
+            </button>
+            <button type="button" class="counter-chip" [class.active]="myApplicationFilter() === 'APPROVED'" (click)="setMyApplicationFilter('APPROVED')">
+              <span class="chip-label">Approved</span>
+              <span class="chip-value">{{ requestCountByStatus('APPROVED') }}</span>
+            </button>
+            <button type="button" class="counter-chip" [class.active]="myApplicationFilter() === 'REJECTED'" (click)="setMyApplicationFilter('REJECTED')">
+              <span class="chip-label">Rejected</span>
+              <span class="chip-value">{{ requestCountByStatus('REJECTED') }}</span>
+            </button>
+          </div>
+
+          @if (myApplicationsState().error) {
+            <div class="alert alert-warning" role="alert">{{ myApplicationsState().error }}</div>
+          }
+
+          @if (myApplicationsState().loading) {
+            <div class="text-muted"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading your requests...</div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-sm align-middle requests-table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Application</th>
+                    <th>Loan Type</th>
+                    <th>Requested On</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Next Step</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (application of filteredMyApplications(); track application.applicationId) {
+                    <tr [id]="'request-row-' + application.applicationId" [class.latest-row]="isLatestSubmitted(application.applicationId)">
+                      <td data-label="Application">#{{ application.applicationId }}</td>
+                      <td data-label="Loan Type">{{ application.loanType }}</td>
+                      <td data-label="Requested On">{{ formatDate(application.applicationDate) }}</td>
+                      <td data-label="Status"><app-status-badge [label]="application.applicationStatus"></app-status-badge></td>
+                      <td data-label="Progress">
+                        <div class="timeline-compact">
+                          <span class="timeline-step" [ngClass]="timelineStepClass(application, 'submitted')">Submitted</span>
+                          <span class="timeline-step" [ngClass]="timelineStepClass(application, 'review')">Review</span>
+                          <span class="timeline-step" [ngClass]="timelineStepClass(application, 'decision')">{{ timelineDecisionLabel(application) }}</span>
+                        </div>
+                      </td>
+                      <td data-label="Next Step">
+                        <span class="small">{{ applicationNextStep(application) }}</span>
+                        @if (canReapplyForRejected(application)) {
+                          <div class="small text-muted mt-2">How to improve for next submission:</div>
+                          <ul class="small mb-0 ps-3 mt-1">
+                            @for (tip of rejectedImprovementTips(application); track tip) {
+                              <li>{{ tip }}</li>
+                            }
+                          </ul>
+                        }
+                      </td>
+                      <td data-label="Action">
+                        @if (canReapplyForRejected(application)) {
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-primary"
+                          (click)="reapplyForRejected(application)">
+                          Re-apply
+                        </button>
+                        } @else {
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-secondary"
+                          disabled
+                          title="Re-apply is available only when status is Rejected.">
+                          Not Available
+                        </button>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            @if (filteredMyApplications().length === 0) {
+              <div class="text-muted small">No applications found for the selected status.</div>
+            }
+
+            <app-pagination
+              [currentPage]="myPage()"
+              [totalPages]="myTotalPages()"
+              [totalRecords]="myTotalRecords()"
+              [pageSize]="myPageSize()"
+              [pageSizes]="myPageSizeOptions"
+              (pageChange)="onMyPageChange($event)"
+              (pageSizeChange)="onMyPageSizeChange($event)"></app-pagination>
+          }
+        </div>
+      </div>
+    }
+
+    @if (canDirectCreateLoan()) {
+      <div class="card border-0 shadow-soft mt-4">
+        <div class="card-body">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <h6 class="mb-0">Product Request Review Queue</h6>
+              <p class="text-muted small mb-0">Pending requests: {{ pendingReviewCount() }}</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <label class="small text-muted mb-0">Status</label>
+              <select class="form-select form-select-sm" [ngModel]="reviewFilter()" (ngModelChange)="onReviewFilterChange($event)">
+                <option value="PENDING">Pending</option>
+                <option value="UNDER_REVIEW">Under Review</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="ALL">All</option>
+              </select>
+            </div>
+          </div>
+
+          @if (reviewQueueState().success) {
+            <div class="alert alert-success" role="alert">{{ reviewQueueState().success }}</div>
+          }
+          @if (reviewQueueState().error) {
+            <div class="alert alert-warning" role="alert">{{ reviewQueueState().error }}</div>
+          }
+
+          @if (reviewQueueState().loading) {
+            <div class="text-muted"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading review queue...</div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Application</th>
+                    <th>Customer</th>
+                    <th>Loan Type</th>
+                    <th>Requested On</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (application of filteredReviewApplications(); track application.applicationId) {
+                    <tr>
+                      <td>#{{ application.applicationId }}</td>
+                      <td>{{ application.customerName }} (#{{ application.customerId }})</td>
+                      <td>{{ application.loanType }}</td>
+                      <td>{{ formatDate(application.applicationDate) }}</td>
+                      <td><app-status-badge [label]="application.applicationStatus"></app-status-badge></td>
+                      <td>
+                        <div class="d-flex gap-2">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-success"
+                            [disabled]="!canReview(application) || isReviewProcessing(application.applicationId)"
+                            (click)="approveApplication(application)">
+                            Approve
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            [disabled]="!canReview(application) || isReviewProcessing(application.applicationId)"
+                            (click)="rejectApplication(application)">
+                            Reject
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            @if (filteredReviewApplications().length === 0) {
+              <div class="text-muted small">No applications in this queue filter.</div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    @if (approvalDrawerOpen() && selectedReviewApplication(); as selectedReview) {
+      <div class="approval-drawer-backdrop" (click)="closeApprovalDrawer()"></div>
+      <aside class="approval-drawer card border-0 shadow-soft">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0">Approval Center</h6>
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="closeApprovalDrawer()">Close</button>
+          </div>
+          <p class="small text-muted mb-2">Application #{{ selectedReview.applicationId }}</p>
+          <p class="mb-1"><strong>Customer:</strong> {{ selectedReview.customerName }} (#{{ selectedReview.customerId }})</p>
+          <p class="mb-1"><strong>Loan Type:</strong> {{ selectedReview.loanType }}</p>
+          <p class="mb-1"><strong>Requested Amount:</strong> {{ formatCurrency(selectedReview.principalAmount) }}</p>
+          <p class="mb-3"><strong>Requested On:</strong> {{ formatDate(selectedReview.applicationDate) }}</p>
+
+          <label class="form-label small mb-1">Decision</label>
+          <select class="form-select form-select-sm mb-3" [ngModel]="approvalAction()" (ngModelChange)="approvalAction.set($event)">
+            <option value="APPROVED">Approve</option>
+            <option value="REJECTED">Reject</option>
+            <option value="UNDER_REVIEW">Need More Documents</option>
+          </select>
+
+          <label class="form-label small mb-1">Remarks</label>
+          <textarea rows="4" class="form-control form-control-sm mb-3" placeholder="Enter review remarks or rejection reason" [ngModel]="approvalRemark()" (ngModelChange)="approvalRemark.set($event)"></textarea>
+
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="closeApprovalDrawer()">Cancel</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="submitApprovalDecision()">Submit Decision</button>
+          </div>
+        </div>
+      </aside>
+    }
+
+    @if (selectedProduct() && showProductCatalog()) {
+      <div class="alert alert-info mt-3" role="alert">
+        Selected product: <strong>{{ selectedProduct()?.displayName }}</strong> ({{ selectedProduct()?.code }})
+      </div>
+    }
+  

@@ -1,0 +1,16 @@
+    <app-navbar [isSidebarOpen]="!isCollapsed" (toggleSidebar)="toggleSidebar()"></app-navbar>
+    <section class="layout-wrap d-flex">
+      <app-sidebar [collapsed]="isCollapsed" class="d-none d-lg-block"></app-sidebar>
+
+      <div class="mobile-menu d-lg-none" *ngIf="showMobileMenu">
+        <app-sidebar [collapsed]="false"></app-sidebar>
+      </div>
+
+      <main class="content flex-grow-1 p-3 p-lg-4">
+        <app-breadcrumb [current]="currentTitle"></app-breadcrumb>
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
+      </main>
+    </section>
+  
+

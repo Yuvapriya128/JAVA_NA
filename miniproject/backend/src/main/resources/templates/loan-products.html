@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Products - Loan EMI Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        .page-header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .loan-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .loan-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .loan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loan-card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .loan-card-header h3 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .loan-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .loan-card-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .loan-details {
+            margin-bottom: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .interest-rate {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        
+        .select-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .select-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .select-btn.selected {
+            background: #28a745;
+            border: 2px solid #28a745;
+        }
+        
+        .select-btn.selected::before {
+            content: "✓ ";
+        }
+        
+        .loan-type-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+        }
+        
+        .form-section h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        
+        .selected-loan-info {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .selected-loan-info.show {
+            display: block;
+        }
+        
+        .alert-info {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            color: #004085;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .emi-calculator {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .emi-result {
+            font-size: 1.3rem;
+            color: #667eea;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .feature-list li::before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .loan-cards-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="page-header">
+            <h1><i class="fas fa-money-bill-wave"></i> Loan Products</h1>
+            <p>Choose your perfect loan product and apply today</p>
+        </div>
+
+        <!-- Alert Message -->
+        <div class="alert-info">
+            <i class="fas fa-info-circle"></i> <strong>Tip:</strong> Click on the "Select" button to choose a loan product. The form below will be pre-filled with default interest rates.
+        </div>
+
+        <!-- Loan Cards Grid -->
+        <div class="loan-cards-container" id="loanCardsContainer">
+            <!-- Cards will be populated by JavaScript -->
+            <div class="text-center" style="grid-column: 1/-1; color: white;">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Application Form -->
+        <div class="form-section">
+            <h2><i class="fas fa-file-alt"></i> Loan Application Form</h2>
+            
+            <!-- Selected Loan Info -->
+            <div class="selected-loan-info" id="selectedLoanInfo">
+                <strong>Selected Loan Product:</strong> <span id="selectedLoanName"></span>
+            </div>
+
+            <form id="loanApplicationForm" onsubmit="submitLoanApplication(event)">
+                <!-- Loan Product Selection -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="loanType">Loan Product <span style="color: red;">*</span></label>
+                        <select class="form-control" id="loanType" name="loanType" required>
+                            <option value="">-- Select a Loan Product --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerId">Customer ID <span style="color: red;">*</span></label>
+                        <input type="number" class="form-control" id="customerId" name="customerId" placeholder="Enter Customer ID" required>
+                    </div>
+                </div>
+
+                <!-- Principal Amount -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="principalAmount">Principal Amount (₹) <span style="color: red;">*</span></label>
+                        <input type="number" class="form-control" id="principalAmount" name="principalAmount" placeholder="e.g., 100000" step="1000" min="10000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="annualInterestRate">Annual Interest Rate (%) <span style="color: red;">*</span></label>
+                        <input type="number" class="form-control" id="annualInterestRate" name="annualInterestRate" placeholder="e.g., 8.5" step="0.1" min="0.1" max="100" required>
+                    </div>
+                </div>
+
+                <!-- Tenure -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tenureMonths">Loan Tenure (Months) <span style="color: red;">*</span></label>
+                        <input type="number" class="form-control" id="tenureMonths" name="tenureMonths" placeholder="e.g., 60" step="1" min="6" max="360" required>
+                    </div>
+                </div>
+
+                <!-- EMI Calculator Preview -->
+                <div class="emi-calculator">
+                    <label>EMI Preview:</label>
+                    <div class="emi-result" id="emiPreview">-</div>
+                    <small style="color: #999;">Updates as you change the values above</small>
+                </div>
+
+                <!-- Features List -->
+                <ul class="feature-list">
+                    <li>Flexible repayment options</li>
+                    <li>Quick approval process</li>
+                    <li>Competitive interest rates</li>
+                    <li>24/7 customer support</li>
+                </ul>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-check-circle"></i> Apply for Loan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load loan products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLoanProducts();
+            setupFormListeners();
+        });
+
+        // Fetch and display loan products
+        function loadLoanProducts() {
+            fetch('/api/loan-products')
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load loan products');
+                    return response.json();
+                })
+                .then(products => {
+                    displayLoanProducts(products);
+                    populateLoanDropdown(products);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('loanCardsContainer').innerHTML = 
+                        '<div class="alert alert-danger">Failed to load loan products</div>';
+                });
+        }
+
+        // Display loan products as cards
+        function displayLoanProducts(products) {
+            const container = document.getElementById('loanCardsContainer');
+            container.innerHTML = '';
+
+            const iconMap = {
+                'PERSONAL': 'fa-user',
+                'HOME': 'fa-home',
+                'AUTO': 'fa-car',
+                'EDUCATION': 'fa-graduation-cap',
+                'BUSINESS': 'fa-briefcase',
+                'GOLD': 'fa-ring',
+                'SECURED': 'fa-lock',
+                'UNSECURED': 'fa-unlock'
+            };
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'loan-card';
+                card.innerHTML = `
+                    <div class="loan-card-header">
+                        <i class="fas ${iconMap[product.code]} loan-card-icon"></i>
+                        <h3>${product.displayName}</h3>
+                    </div>
+                    <div class="loan-card-body">
+                        <span class="loan-type-badge">${product.code}</span>
+                        <div class="loan-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Interest Rate:</span>
+                                <span class="detail-value interest-rate">${(product.defaultRate * 100).toFixed(2)}% p.a.</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Loan Type:</span>
+                                <span class="detail-value">${product.code.charAt(0).toUpperCase() + product.code.slice(1).toLowerCase()}</span>
+                            </div>
+                        </div>
+                        <button type="button" class="select-btn" onclick="selectLoanProduct('${product.code}', '${product.displayName}', ${product.defaultRate * 100})">
+                            Select
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Populate dropdown with loan products
+        function populateLoanDropdown(products) {
+            const dropdown = document.getElementById('loanType');
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.code;
+                option.textContent = product.displayName;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Handle loan product selection
+        function selectLoanProduct(code, name, rate) {
+            document.getElementById('loanType').value = code;
+            document.getElementById('annualInterestRate').value = rate.toFixed(2);
+            document.getElementById('selectedLoanName').textContent = name;
+            document.getElementById('selectedLoanInfo').classList.add('show');
+            
+            // Scroll to form
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+            
+            calculateEMI();
+        }
+
+        // Setup form listeners for EMI calculation
+        function setupFormListeners() {
+            ['principalAmount', 'annualInterestRate', 'tenureMonths'].forEach(id => {
+                document.getElementById(id).addEventListener('change', calculateEMI);
+                document.getElementById(id).addEventListener('input', calculateEMI);
+            });
+        }
+
+        // Calculate and display EMI
+        function calculateEMI() {
+            const principal = parseFloat(document.getElementById('principalAmount').value) || 0;
+            const rate = parseFloat(document.getElementById('annualInterestRate').value) || 0;
+            const tenure = parseInt(document.getElementById('tenureMonths').value) || 0;
+
+            if (principal <= 0 || rate < 0 || tenure <= 0) {
+                document.getElementById('emiPreview').textContent = '-';
+                return;
+            }
+
+            const monthlyRate = rate / (12 * 100);
+            let emi;
+
+            if (monthlyRate === 0) {
+                emi = principal / tenure;
+            } else {
+                const factor = Math.pow(1 + monthlyRate, tenure);
+                emi = (principal * monthlyRate * factor) / (factor - 1);
+            }
+
+            document.getElementById('emiPreview').textContent = '₹ ' + emi.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Handle form submission
+        function submitLoanApplication(event) {
+            event.preventDefault();
+
+            const formData = {
+                loanType: document.getElementById('loanType').value,
+                customerId: parseInt(document.getElementById('customerId').value),
+                principalAmount: parseFloat(document.getElementById('principalAmount').value),
+                annualInterestRate: parseFloat(document.getElementById('annualInterestRate').value),
+                tenureMonths: parseInt(document.getElementById('tenureMonths').value)
+            };
+
+            // Validate form
+            if (!formData.loanType || !formData.customerId || formData.principalAmount <= 0 || 
+                formData.annualInterestRate < 0 || formData.tenureMonths <= 0) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+
+            // Submit the application
+            fetch('/api/loans', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to create loan');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Loan application submitted successfully!\nLoan ID: ' + data.loanId);
+                document.getElementById('loanApplicationForm').reset();
+                document.getElementById('selectedLoanInfo').classList.remove('show');
+                document.getElementById('emiPreview').textContent = '-';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting loan application. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

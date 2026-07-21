@@ -1,0 +1,91 @@
+<app-page-header title="Administration Center" subtitle="User management, policy controls and audit visibility"></app-page-header>
+
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+
+<div class="row g-3 mb-3">
+  <div class="col-md-3"><div class="stat-card"><small>Total Users</small><strong>{{ totalUsers() }}</strong></div></div>
+  <div class="col-md-3"><div class="stat-card"><small>Active Users</small><strong>{{ activeUsers() }}</strong></div></div>
+  <div class="col-md-3"><div class="stat-card"><small>Managers/Admins</small><strong>{{ managerCount() + adminCount() }}</strong></div></div>
+  <div class="col-md-3"><div class="stat-card"><small>Customers</small><strong>{{ userCount() }}</strong></div></div>
+</div>
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body d-flex flex-wrap gap-2">
+    <button class="tab-btn" [class.active]="activeTab() === 'users'" (click)="setTab('users')">User Management</button>
+    <button class="tab-btn" [class.active]="activeTab() === 'policies'" (click)="setTab('policies')">Interest Policies</button>
+    <button class="tab-btn" [class.active]="activeTab() === 'audit'" (click)="setTab('audit')">Audit Logs</button>
+  </div>
+</div>
+
+@if (activeTab() === 'users') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Role Distribution</h6>
+    <div class="role-grid">
+      <div class="role-item"><small>Admins</small><strong>{{ adminCount() }}</strong></div>
+      <div class="role-item"><small>Managers</small><strong>{{ managerCount() }}</strong></div>
+      <div class="role-item"><small>Users</small><strong>{{ userCount() }}</strong></div>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <a class="btn btn-primary btn-sm" routerLink="/customers">Open Customers</a>
+      <a class="btn btn-outline-secondary btn-sm" routerLink="/create-customer">Create Customer</a>
+    </div>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'policies') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Policy Controls</h6>
+    <div class="policy-list">
+      <div class="policy-item">
+        <p class="mb-1 fw-semibold">Interest Policy Governance</p>
+        <p class="mb-0 text-muted small">Update and version interest rules without backend contract change.</p>
+      </div>
+      <div class="policy-item">
+        <p class="mb-1 fw-semibold">Approval Thresholds</p>
+        <p class="mb-0 text-muted small">Use manager/admin approval center for high-value application controls.</p>
+      </div>
+      <div class="policy-item">
+        <p class="mb-1 fw-semibold">Risk Escalation Rules</p>
+        <p class="mb-0 text-muted small">Overdue and NPA alerts routed through dashboard and notifications.</p>
+      </div>
+    </div>
+    <a class="btn btn-primary btn-sm mt-3" routerLink="/update-interest">Manage Interest Policies</a>
+  </div>
+</div>
+}
+
+@if (activeTab() === 'audit') {
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Audit Timeline</h6>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Timestamp</th>
+            <th>Event</th>
+            <th>Actor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of auditRows(); track row.timestamp + row.event) {
+          <tr>
+            <td>{{ row.timestamp }}</td>
+            <td>{{ row.event }}</td>
+            <td>{{ row.actor }}</td>
+            <td>{{ row.status }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+}
+

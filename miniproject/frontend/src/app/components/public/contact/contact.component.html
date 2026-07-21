@@ -1,0 +1,116 @@
+<section class="public-page">
+  <div class="container py-5">
+    <div class="hero card border-0 mb-3">
+      <div class="card-body p-4 p-lg-5">
+        <p class="eyebrow mb-2"><i class="bi bi-envelope-open-heart me-2"></i>Contact Us</p>
+        <h1 class="mb-2">We are here to help your lending team succeed.</h1>
+        <p class="lead mb-0">Reach out for product support, partnerships, onboarding help, or enterprise consultations.</p>
+      </div>
+    </div>
+
+    @if (submitted()) {
+    <div class="alert alert-success" role="status">
+      <i class="bi bi-check-circle me-2"></i>Your message has been submitted. Our team will reach out soon.
+    </div>
+    }
+
+    <div class="row g-3">
+      <div class="col-lg-5">
+        <div class="card border-0 h-100">
+          <div class="card-body">
+            <h5 class="mb-3"><i class="bi bi-building me-2"></i>Company Information</h5>
+            <p class="mb-2"><i class="bi bi-geo-alt me-2"></i>Nova Lending, 7th Floor, Orion Tech Park, Bengaluru, India</p>
+            <p class="mb-2"><i class="bi bi-telephone me-2"></i>+91 98765 43210</p>
+            <p class="mb-2"><i class="bi bi-envelope me-2"></i>support@novalending.io</p>
+            <p class="mb-3"><i class="bi bi-clock me-2"></i>Mon - Fri, 9:00 AM to 6:00 PM IST</p>
+            <div class="d-flex gap-2 mb-3">
+              <span class="social-chip"><i class="bi bi-linkedin"></i></span>
+              <span class="social-chip"><i class="bi bi-twitter-x"></i></span>
+              <span class="social-chip"><i class="bi bi-github"></i></span>
+            </div>
+            <div class="map-placeholder">
+              <i class="bi bi-map"></i>
+              <span>Google Maps placeholder</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="card border-0">
+          <div class="card-body">
+            <form [formGroup]="contactForm" (ngSubmit)="submit()" novalidate class="row g-3">
+              <div class="col-md-6">
+                <label for="name" class="form-label">Name <span aria-hidden="true">*</span></label>
+                <input id="name" class="form-control" type="text" formControlName="name" [class.is-invalid]="control('name').invalid && (control('name').dirty || control('name').touched)" [class.is-valid]="control('name').valid && (control('name').dirty || control('name').touched)" />
+                @if (control('name').errors?.['required'] && (control('name').dirty || control('name').touched)) { <div class="invalid-feedback d-block">Name is required.</div> }
+                @if (control('name').errors?.['minlength'] && (control('name').dirty || control('name').touched)) { <div class="invalid-feedback d-block">Minimum 3 characters required.</div> }
+                @if (control('name').errors?.['maxlength'] && (control('name').dirty || control('name').touched)) { <div class="invalid-feedback d-block">Maximum 50 characters allowed.</div> }
+                @if (control('name').errors?.['pattern'] && (control('name').dirty || control('name').touched)) { <div class="invalid-feedback d-block">Only alphabets are allowed.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email <span aria-hidden="true">*</span></label>
+                <input id="email" class="form-control" type="email" formControlName="email" [class.is-invalid]="control('email').invalid && (control('email').dirty || control('email').touched)" [class.is-valid]="control('email').valid && (control('email').dirty || control('email').touched)" />
+                @if (control('email').errors?.['required'] && (control('email').dirty || control('email').touched)) { <div class="invalid-feedback d-block">Email is required.</div> }
+                @if (control('email').errors?.['email'] && (control('email').dirty || control('email').touched)) { <div class="invalid-feedback d-block">Enter a valid email address.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Phone <span aria-hidden="true">*</span></label>
+                <input id="phone" class="form-control" type="text" formControlName="phone" [class.is-invalid]="control('phone').invalid && (control('phone').dirty || control('phone').touched)" [class.is-valid]="control('phone').valid && (control('phone').dirty || control('phone').touched)" />
+                @if (control('phone').errors?.['required'] && (control('phone').dirty || control('phone').touched)) { <div class="invalid-feedback d-block">Phone number is required.</div> }
+                @if (control('phone').errors?.['pattern'] && (control('phone').dirty || control('phone').touched)) { <div class="invalid-feedback d-block">Phone number must be 10 digits.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="subject" class="form-label">Subject <span aria-hidden="true">*</span></label>
+                <input id="subject" class="form-control" type="text" formControlName="subject" [class.is-invalid]="control('subject').invalid && (control('subject').dirty || control('subject').touched)" [class.is-valid]="control('subject').valid && (control('subject').dirty || control('subject').touched)" />
+                @if (control('subject').errors?.['required'] && (control('subject').dirty || control('subject').touched)) { <div class="invalid-feedback d-block">Subject is required.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="category" class="form-label">Category <span aria-hidden="true">*</span></label>
+                <select id="category" class="form-select" formControlName="category" [class.is-invalid]="control('category').invalid && (control('category').dirty || control('category').touched)" [class.is-valid]="control('category').valid && (control('category').dirty || control('category').touched)">
+                  <option value="">Select category</option>
+                  @for (category of categories; track category) {
+                  <option [value]="category">{{ category }}</option>
+                  }
+                </select>
+                @if (control('category').errors?.['required'] && (control('category').dirty || control('category').touched)) { <div class="invalid-feedback d-block">Category is required.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="preferredContactMethod" class="form-label">Preferred Contact Method <span aria-hidden="true">*</span></label>
+                <select id="preferredContactMethod" class="form-select" formControlName="preferredContactMethod" [class.is-invalid]="control('preferredContactMethod').invalid && (control('preferredContactMethod').dirty || control('preferredContactMethod').touched)" [class.is-valid]="control('preferredContactMethod').valid && (control('preferredContactMethod').dirty || control('preferredContactMethod').touched)">
+                  <option value="">Select method</option>
+                  @for (method of contactMethods; track method) {
+                  <option [value]="method">{{ method }}</option>
+                  }
+                </select>
+                @if (control('preferredContactMethod').errors?.['required'] && (control('preferredContactMethod').dirty || control('preferredContactMethod').touched)) { <div class="invalid-feedback d-block">Preferred contact method is required.</div> }
+              </div>
+              <div class="col-12">
+                <label for="message" class="form-label">Message <span aria-hidden="true">*</span></label>
+                <textarea id="message" rows="5" class="form-control" formControlName="message" [class.is-invalid]="control('message').invalid && (control('message').dirty || control('message').touched)" [class.is-valid]="control('message').valid && (control('message').dirty || control('message').touched)"></textarea>
+                @if (control('message').errors?.['required'] && (control('message').dirty || control('message').touched)) { <div class="invalid-feedback d-block">Message is required.</div> }
+                @if (control('message').errors?.['minlength'] && (control('message').dirty || control('message').touched)) { <div class="invalid-feedback d-block">Message must have at least 20 characters.</div> }
+                @if (control('message').errors?.['maxlength'] && (control('message').dirty || control('message').touched)) { <div class="invalid-feedback d-block">Message cannot exceed 500 characters.</div> }
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input id="agreedToPrivacy" class="form-check-input" type="checkbox" formControlName="agreedToPrivacy" />
+                  <label for="agreedToPrivacy" class="form-check-label">
+                    I agree to the <a routerLink="/privacy">Privacy Policy</a>
+                  </label>
+                </div>
+                @if (control('agreedToPrivacy').errors?.['required'] && (control('agreedToPrivacy').dirty || control('agreedToPrivacy').touched)) {
+                <div class="invalid-feedback d-block">You must accept the Privacy Policy.</div>
+                }
+              </div>
+              <div class="col-12 d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="contactForm.invalid"><i class="bi bi-send me-2"></i>Submit</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="reset()">Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

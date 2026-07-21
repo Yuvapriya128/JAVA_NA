@@ -1,0 +1,12 @@
+    <div class="card border-0 shadow-soft h-100">
+      <div class="card-body">
+        <h6>{{ title }}</h6>
+        <ul class="list-unstyled mb-0">
+          @for (item of items; track item) {
+            <li class="mb-2"><i class="bi bi-dot"></i> {{ item }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  
+

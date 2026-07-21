@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.denied-card {
+	border-radius: 28px;
+}
+
+.display-icon {
+	width: 72px;
+	height: 72px;
+	display: grid;
+	place-items: center;
+	margin: 0 auto 1rem;
+	border-radius: 18px;
+	background: var(--danger-soft);
+	color: var(--danger);
+	font-size: 1.7rem;
+}

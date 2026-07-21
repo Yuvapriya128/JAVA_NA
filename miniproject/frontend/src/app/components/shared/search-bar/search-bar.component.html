@@ -1,0 +1,7 @@
+    <div class="input-group search-wrap">
+      <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+      <input class="form-control border-start-0" [placeholder]="placeholder" [ngModel]="term" (ngModelChange)="termChange.emit($event)" (keyup.enter)="search.emit()" />
+      <button class="btn btn-outline-secondary" type="button" (click)="search.emit()"><i class="bi bi-funnel"></i> Filter</button>
+    </div>
+  
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMI - Lendora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+    <div class="container">
+        <a class="navbar-brand" href="dashboard.html"><i class="fa-solid fa-hand-holding-dollar me-2"></i>Lendora</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ms-auto gap-lg-2">
+                <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="customers.html">Customers</a></li>
+                <li class="nav-item"><a class="nav-link" href="loans.html">Loans</a></li>
+                <li class="nav-item"><a class="nav-link active" href="emi.html">EMI</a></li>
+                <li class="nav-item d-flex align-items-center mt-2 mt-lg-0"><span id="roleBadge" class="role-badge role-user">USER</span></li>
+                <li class="nav-item"><button class="btn btn-sm btn-light mt-2 mt-lg-0" id="logoutBtn">Logout</button></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="page-wrap">
+    <div class="container">
+        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+            <h1 class="section-title mb-0">EMI Management</h1>
+            <div class="d-flex gap-2">
+                <input type="number" id="emiLoanId" class="form-control search-box" placeholder="Enter Loan ID (e.g., 1001)">
+                <button class="btn btn-outline-primary" id="loadEmiBtn"><i class="fa-solid fa-rotate me-1"></i>Load EMI</button>
+            </div>
+        </div>
+
+        <div id="emiAlert" class="alert d-none"></div>
+        <div class="access-panel p-3 mb-3">
+            <div class="fw-bold mb-2">What you can do here</div>
+            <div id="emiRoleHelpText" class="text-muted"></div>
+        </div>
+
+        <div class="table-wrap">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead>
+                    <tr>
+                        <th>Installment Number</th>
+                        <th>Due Date</th>
+                        <th>Amount Due</th>
+                        <th>Principal Component</th>
+                        <th>Interest Component</th>
+                        <th>Penalty</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="emiBody">
+                    <tr><td colspan="8" class="empty-state">Enter a Loan ID (e.g., 1001) and click Load EMI to view the schedule.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="payEmiModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pay EMI</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="payEmiForm" novalidate>
+                <div class="modal-body">
+                    <input type="hidden" id="payEmiId">
+                    <div class="mb-3">
+                        <label for="payAmount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="payAmount" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="payMode" class="form-label">Payment Mode</label>
+                        <select id="payMode" class="form-select" required>
+                            <option value="">Choose...</option>
+                            <option value="UPI">UPI</option>
+                            <option value="NET_BANKING">NET BANKING</option>
+                            <option value="DEBIT_CARD">DEBIT CARD</option>
+                            <option value="CASH">CASH</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="referenceNumber" class="form-label">Reference Number</label>
+                        <input type="text" class="form-control" id="referenceNumber" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Pay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app-data.js"></script>
+<script src="js/emi.js"></script>
+</body>
+</html>

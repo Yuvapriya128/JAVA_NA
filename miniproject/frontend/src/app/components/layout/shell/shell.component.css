@@ -1,0 +1,4 @@
+.layout-wrap { background: linear-gradient(180deg, var(--background) 0%, color-mix(in srgb, var(--surface-variant) 75%, var(--background)) 100%); min-height: calc(100vh - 70px); }
+.content { min-width: 0; }
+.mobile-menu { position: fixed; inset: 70px 0 0 0; z-index: 1030; background: var(--overlay); backdrop-filter: blur(2px); }
+.mobile-menu app-sidebar { max-width: 280px; display: block; height: 100%; }

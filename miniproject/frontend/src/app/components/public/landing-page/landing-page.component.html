@@ -1,0 +1,87 @@
+<section class="landing-page">
+  <header class="landing-header">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="brand-link" routerLink="/">
+        <i class="bi bi-origami"></i>
+        <span>Nova Lending</span>
+      </a>
+      <div class="d-flex gap-2">
+        <a class="btn btn-sm btn-outline-primary" routerLink="/login">Login</a>
+        <a class="btn btn-sm btn-primary" routerLink="/register">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero container">
+    <div class="hero-grid">
+      <div>
+        <p class="hero-chip">Enterprise Loan Platform</p>
+        <h1 class="hero-title">Modern lending operations for high-growth teams.</h1>
+        <p class="hero-subtitle">From customer onboarding to portfolio analytics, run your full credit lifecycle with speed, control, and clarity.</p>
+        <div class="hero-actions d-flex align-items-center gap-3 flex-wrap">
+          <a class="btn btn-hero" routerLink="/login"><i class="bi bi-box-arrow-in-right me-2"></i>Open Workspace</a>
+          <a class="btn btn-hero-outline" routerLink="/register"><i class="bi bi-person-plus-fill me-2"></i>Create Account</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="floating-card">
+          <h6 class="mb-1">Portfolio Health</h6>
+          <p class="small text-muted mb-2">Real-time confidence index</p>
+          <h2>94.2%</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-strip">
+    <div class="container">
+      <div class="row g-3 text-center">
+        @for (item of stats; track item.label) {
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="stat-value">{{ item.value }}</div>
+            <div class="stat-label">{{ item.label }}</div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="features container py-5">
+    <div class="row g-3">
+      <div class="col-md-4"><div class="feature-card"><i class="bi bi-speedometer2"></i><h6>Realtime Analytics</h6><p>Track disbursals, collections, and delinquency with live KPI views.</p></div></div>
+      <div class="col-md-4"><div class="feature-card"><i class="bi bi-shield-lock"></i><h6>Role-Based Security</h6><p>Built-in controls for admin, manager, and customer experiences.</p></div></div>
+      <div class="col-md-4"><div class="feature-card"><i class="bi bi-stars"></i><h6>Experience First UI</h6><p>Designed for clarity, speed, and operational confidence at scale.</p></div></div>
+    </div>
+  </section>
+
+  <section class="testimonials container pb-5">
+    <div class="card border-0 quote-card">
+      <div class="card-body">
+        <p class="mb-2"><i class="bi bi-quote me-2"></i>“Nova Lending Console transformed our branch operations with one unified view.”</p>
+        <small class="text-muted">Head of Lending Operations</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq container pb-5">
+    <h5 class="mb-3">FAQ</h5>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="faq-item"><strong>How fast is onboarding?</strong><p class="mb-0">Most users are productive in under 15 minutes.</p></div></div>
+      <div class="col-md-4"><div class="faq-item"><strong>Is data secure?</strong><p class="mb-0">Yes, with role-based guards and tokenized sessions.</p></div></div>
+      <div class="col-md-4"><div class="faq-item"><strong>Can we export reports?</strong><p class="mb-0">Yes, reports and payment history exports are available.</p></div></div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="container text-center">
+      <p class="mb-2">&copy; {{ year }} Nova Lending</p>
+      <div class="d-flex justify-content-center gap-4 flex-wrap">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+</section>

@@ -1,0 +1,53 @@
+    <app-page-header title="Add Customer" subtitle="Customer Onboarding"></app-page-header>
+    @if (status().success) {
+      <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+    }
+    @if (status().error) {
+      <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+    }
+    <div class="card border-0 shadow-soft">
+      <div class="card-body">
+        <form class="row g-3" [formGroup]="customerForm" novalidate>
+          <div class="col-md-6">
+            <label class="form-label" for="name">Customer Name *</label>
+            <input id="name" class="form-control" type="text" formControlName="customerName" [class.is-invalid]="controlInvalid('customerName')" [class.is-valid]="!controlInvalid('customerName') && customerForm.controls.customerName.value" />
+            @if (controlInvalid('customerName')) { <div class="invalid-feedback d-block">Name is required (3-50 alphabets only).</div> }
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="email">Email *</label>
+            <input id="email" class="form-control" type="email" formControlName="email" [class.is-invalid]="controlInvalid('email')" [class.is-valid]="!controlInvalid('email') && customerForm.controls.email.value" />
+            @if (controlInvalid('email')) { <div class="invalid-feedback d-block">Valid email is required.</div> }
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="password">Password *</label>
+            <input id="password" class="form-control" type="password" formControlName="password" [class.is-invalid]="controlInvalid('password')" [class.is-valid]="!controlInvalid('password') && customerForm.controls.password.value" />
+            @if (controlInvalid('password')) { <div class="invalid-feedback d-block">Password must be at least 8 characters.</div> }
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="phone">Phone Number *</label>
+            <input id="phone" class="form-control" type="text" formControlName="phoneNumber" [class.is-invalid]="controlInvalid('phoneNumber')" [class.is-valid]="!controlInvalid('phoneNumber') && customerForm.controls.phoneNumber.value" />
+            @if (controlInvalid('phoneNumber')) { <div class="invalid-feedback d-block">Phone number must be exactly 10 digits.</div> }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="city">City *</label>
+            <input id="city" class="form-control" type="text" formControlName="city" [class.is-invalid]="controlInvalid('city')" [class.is-valid]="!controlInvalid('city') && customerForm.controls.city.value" />
+            @if (controlInvalid('city')) { <div class="invalid-feedback d-block">City is required.</div> }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="score">Credit Score *</label>
+            <input id="score" class="form-control" type="number" formControlName="creditScore" [class.is-invalid]="controlInvalid('creditScore')" [class.is-valid]="!controlInvalid('creditScore') && customerForm.controls.creditScore.value" />
+            @if (controlInvalid('creditScore')) { <div class="invalid-feedback d-block">Credit score must be between 300 and 900.</div> }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="role">Role *</label>
+            <select id="role" class="form-select" formControlName="role" [class.is-invalid]="controlInvalid('role')" [class.is-valid]="!controlInvalid('role') && customerForm.controls.role.value">
+              @for (role of roles; track role) {
+              <option [value]="role">{{ role }}</option>
+              }
+            </select>
+          </div>
+          <app-form-action-buttons submitLabel="Submit" submitClass="btn btn-primary" [loading]="status().loading" [disableSubmit]="customerForm.invalid" (resetClick)="reset()" (cancelClick)="reset()" (submitClick)="submit()"></app-form-action-buttons>
+        </form>
+      </div>
+    </div>
+  

@@ -1,0 +1,76 @@
+<app-page-header title="Foreclosure Center" subtitle="Generate foreclosure quote and close active loan"></app-page-header>
+
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+@if (status().loading) {
+<div class="alert alert-info" role="alert"><img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />Loading foreclosure data...</div>
+}
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-6">
+        <label class="form-label small mb-1">Select Active Loan</label>
+        <select class="form-select" [ngModel]="selectedLoanId()" (ngModelChange)="onLoanChange($event)">
+          <option [ngValue]="null">Select loan</option>
+          @for (loan of loans(); track loan.loanId) {
+          <option [ngValue]="loan.loanId">#{{ loan.loanId }} - {{ loan.loanType }} - {{ loan.customerName }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-md-6 d-flex gap-2">
+        <button type="button" class="btn btn-primary btn-sm" [disabled]="!selectedLoanId()" (click)="generateQuote()">Generate Quote</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" [disabled]="!quote()" (click)="resetQuote()">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (quote(); as data) {
+<div class="row g-3 mb-3">
+  <div class="col-md-4"><div class="summary-card"><small>Outstanding Principal</small><strong>{{ formatCurrency(data.outstandingPrincipal) }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>Accrued Interest</small><strong>{{ formatCurrency(data.accruedInterest) }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>Future Interest Savings</small><strong>{{ formatCurrency(data.futureInterestSavings) }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>Foreclosure Charges</small><strong>{{ formatCurrency(data.foreclosureCharges) }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>Processing Charges</small><strong>{{ formatCurrency(data.processingCharges) }}</strong></div></div>
+  <div class="col-md-4"><div class="summary-card"><small>GST</small><strong>{{ formatCurrency(data.gst) }}</strong></div></div>
+</div>
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body">
+    <h6 class="mb-3">Before vs After Foreclosure</h6>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="comparison before">
+          <small>Before Foreclosure</small>
+          <p class="mb-1">Outstanding Principal: <strong>{{ formatCurrency(data.outstandingPrincipal) }}</strong></p>
+          <p class="mb-0">Interest Payable: <strong>{{ formatCurrency(data.accruedInterest) }}</strong></p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="comparison after">
+          <small>After Foreclosure</small>
+          <p class="mb-1">Total Closure Amount: <strong>{{ formatCurrency(data.totalForeclosureAmount) }}</strong></p>
+          <p class="mb-0">Loan Status: <strong>CLOSED</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-2">Quote Summary</h6>
+    <p class="mb-1"><strong>Quote Reference:</strong> {{ quoteReference() }}</p>
+    <p class="mb-1"><strong>Generated At:</strong> {{ quoteGeneratedAt() }}</p>
+    <p class="mb-3"><strong>Total Foreclosure Amount:</strong> {{ formatCurrency(data.totalForeclosureAmount) }}</p>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-success btn-sm" (click)="proceedToPayment()">Proceed to Payment</button>
+      <a class="btn btn-outline-primary btn-sm" routerLink="/loans">Back to Loans</a>
+    </div>
+    <small class="d-block text-muted mt-2">Foreclosure API is not changed. This quote uses current loan and EMI schedule data from existing APIs.</small>
+  </div>
+</div>
+}
+

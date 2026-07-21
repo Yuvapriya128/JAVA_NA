@@ -1,0 +1,90 @@
+.wizard-steps {
+	display: flex;
+	gap: 0.55rem;
+	flex-wrap: wrap;
+}
+
+.wizard-steps span {
+	padding: 0.35rem 0.65rem;
+	border-radius: 999px;
+	border: 1px solid var(--border);
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+}
+
+.wizard-steps span.active {
+	background: var(--hover);
+	border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+	color: var(--primary);
+	font-weight: 700;
+}
+
+.loan-card,
+.emi-card {
+	border: 1px solid var(--divider);
+	border-radius: 12px;
+	padding: 0.75rem;
+	background: var(--card-hover);
+}
+
+.emi-card.muted {
+	display: grid;
+	place-items: center;
+	min-height: 100%;
+	color: var(--text-secondary);
+}
+
+.progress-ring-shell {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.progress-ring {
+	width: 58px;
+	height: 58px;
+}
+
+.ring-bg,
+.ring-progress {
+	fill: none;
+	stroke-width: 3.4;
+}
+
+.ring-bg {
+	stroke: var(--divider);
+}
+
+.ring-progress {
+	stroke: var(--primary);
+	stroke-linecap: round;
+}
+
+.summary-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.55rem;
+}
+
+.summary-item {
+	border: 1px solid var(--divider);
+	border-radius: 10px;
+	padding: 0.55rem;
+	background: var(--surface);
+	display: flex;
+	flex-direction: column;
+}
+
+.summary-item small {
+	color: var(--text-secondary);
+}
+
+.summary-item strong {
+	font-size: 0.84rem;
+}
+
+.payment-success {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+}

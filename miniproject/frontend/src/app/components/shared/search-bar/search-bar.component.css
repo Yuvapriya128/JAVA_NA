@@ -1,0 +1,28 @@
+.search-wrap .form-control,
+.search-wrap .input-group-text,
+.search-wrap .btn {
+	border-color: var(--input-border);
+}
+
+.search-wrap .input-group-text {
+	background: var(--input-bg);
+	color: var(--text-secondary);
+}
+
+.search-wrap .btn {
+	background: var(--sidebar-hover);
+	color: var(--primary);
+	border-radius: 10px;
+	font-weight: 600;
+}
+
+.search-wrap .btn:hover {
+	background: var(--table-hover);
+	color: color-mix(in srgb, var(--primary) 82%, var(--text-primary));
+}
+
+.search-wrap .form-control:focus {
+	box-shadow: none;
+	border-color: var(--input-focus);
+}
+  

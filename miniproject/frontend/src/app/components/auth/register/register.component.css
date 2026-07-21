@@ -1,0 +1,133 @@
+.register-page {
+	min-height: 100vh;
+	padding: 2rem;
+	background: radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--primary) 12%, transparent) 0%, var(--background) 50%, color-mix(in srgb, var(--secondary) 10%, transparent) 100%);
+}
+
+.register-shell {
+	max-width: 1320px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 0.85fr 1.15fr;
+	gap: 1.5rem;
+}
+
+.register-art {
+	display: flex;
+}
+
+.art-card {
+	border-radius: 30px;
+	padding: 2rem;
+	width: 100%;
+	color: var(--text-on-brand);
+	background: linear-gradient(145deg, var(--primary), var(--secondary) 58%, var(--accent));
+	box-shadow: var(--shadow-brand);
+}
+
+.art-card h2 {
+	color: var(--text-on-brand);
+}
+
+.step-chip {
+	display: inline-flex;
+	padding: 0.35rem 0.72rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--text-on-brand) 20%, transparent);
+	font-size: 0.78rem;
+	border: 1px solid color-mix(in srgb, var(--text-on-brand) 26%, transparent);
+}
+
+.art-card ul {
+	margin-top: 1.2rem;
+	padding-left: 0;
+	list-style: none;
+}
+
+.art-card li {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	margin-bottom: 0.7rem;
+}
+
+.register-card {
+	border-radius: 28px;
+	border: 1px solid var(--border);
+	box-shadow: var(--shadow-md);
+}
+
+.pill-status {
+	background: var(--hover);
+	color: var(--primary);
+	font-size: 0.74rem;
+	font-weight: 700;
+	padding: 0.3rem 0.62rem;
+	border-radius: 999px;
+}
+
+.password-rules {
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.4rem 0.85rem;
+}
+
+.password-rules li {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.8rem;
+	color: var(--text-secondary);
+}
+
+.password-rules li i {
+	color: var(--text-secondary);
+}
+
+.password-rules li.rule-valid {
+	color: var(--success);
+}
+
+.password-rules li.rule-valid i {
+	color: var(--success);
+}
+
+.field-error {
+	color: var(--danger);
+	font-size: 0.83rem;
+	font-weight: 500;
+}
+
+.form-check .form-check-input {
+	width: 1.55rem;
+	height: 1.55rem;
+	border: 2px solid #111827;
+	border-radius: 0.45rem;
+	background-color: #ffffff;
+	cursor: pointer;
+}
+
+.form-check .form-check-input:focus {
+	border-color: #111827;
+	box-shadow: 0 0 0 0.2rem rgba(17, 24, 39, 0.18);
+}
+
+.form-check .form-check-input:checked {
+	border-color: #111827;
+	background-color: #5b4ce6;
+}
+
+@media (max-width: 991.98px) {
+	.register-page {
+		padding: 1rem;
+	}
+
+	.register-shell {
+		grid-template-columns: 1fr;
+	}
+
+	.password-rules {
+		grid-template-columns: 1fr;
+	}
+}

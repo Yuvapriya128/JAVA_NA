@@ -1,0 +1,160 @@
+    <app-page-header title="EMI Payment Journey" subtitle="Loan Card → EMI Card → Summary → Confirm"></app-page-header>
+    @if (status().success) {
+      <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+    }
+    @if (status().error) {
+      <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+    }
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-soft">
+          <div class="card-body">
+            <div class="wizard-steps mb-3">
+              <span class="active">1. Select Account</span>
+              <span>2. Confirm EMI</span>
+              <span>3. Complete Payment</span>
+            </div>
+            <form class="row g-3" [formGroup]="paymentForm" novalidate>
+              @if (canSelectCustomer()) {
+                <div class="col-md-6">
+                  <label for="customerSelect" class="form-label">Customer *</label>
+                  <select id="customerSelect" class="form-select" formControlName="customerOption" (change)="onCustomerChange(paymentForm.controls.customerOption.value || '')" [class.is-invalid]="controlInvalid('customerOption')" [class.is-valid]="!controlInvalid('customerOption') && paymentForm.controls.customerOption.value">
+                    <option value="">Select customer</option>
+                    @for (option of customerOptions(); track option) {
+                      <option [value]="option">{{ option }}</option>
+                    }
+                  </select>
+                  @if (controlInvalid('customerOption')) { <div class="invalid-feedback d-block">Customer is required.</div> }
+                </div>
+              }
+
+              <div [class.col-md-6]="canSelectCustomer()" [class.col-12]="!canSelectCustomer()">
+                <label for="loanSelect" class="form-label">Loan *</label>
+                <select id="loanSelect" class="form-select" formControlName="loanOption" (change)="onLoanChange(paymentForm.controls.loanOption.value || '')" [class.is-invalid]="controlInvalid('loanOption')" [class.is-valid]="!controlInvalid('loanOption') && paymentForm.controls.loanOption.value">
+                  <option value="">Select loan</option>
+                  @for (option of loanOptions(); track option) {
+                    <option [value]="option">{{ option }}</option>
+                  }
+                </select>
+                @if (controlInvalid('loanOption')) { <div class="invalid-feedback d-block">Loan is required.</div> }
+              </div>
+
+              @if (selectedLoan(); as loan) {
+              <div class="col-12">
+                <div class="loan-card">
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                    <div>
+                      <p class="small text-muted mb-1">Selected Loan</p>
+                      <h6 class="mb-1">#{{ loan.loanId }} - {{ loan.loanType }}</h6>
+                      <p class="small mb-0 text-muted">Status: {{ loan.loanStatus }} | EMI: INR {{ loan.emiAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
+                    </div>
+                    <span class="badge text-bg-light">Customer #{{ loan.customerId }}</span>
+                  </div>
+                </div>
+              </div>
+              }
+
+              <div class="col-md-6">
+                <label for="pendingEmiSelect" class="form-label">Pending EMI *</label>
+                <select id="pendingEmiSelect" class="form-select" formControlName="pendingEmiOption" (change)="onPendingEmiChange(paymentForm.controls.pendingEmiOption.value || '')" [class.is-invalid]="controlInvalid('pendingEmiOption')" [class.is-valid]="!controlInvalid('pendingEmiOption') && paymentForm.controls.pendingEmiOption.value">
+                  <option value="">Select pending EMI</option>
+                  @for (emi of pendingEmis(); track emi.emiId) {
+                    <option [value]="emi.emiId">
+                      {{ pendingEmiLabel(emi) }}
+                    </option>
+                  }
+                </select>
+                @if (controlInvalid('pendingEmiOption')) { <div class="invalid-feedback d-block">Pending EMI selection is required.</div> }
+              </div>
+              <div class="col-md-6">
+                @if (selectedPendingEmi(); as selectedEmi) {
+                <div class="emi-card">
+                  <p class="small text-muted mb-1">Selected EMI Card</p>
+                  <p class="mb-1 fw-semibold">Installment {{ selectedEmi.installmentNumber }} | EMI #{{ selectedEmi.emiId }}</p>
+                  <p class="small mb-1">Due Date: {{ selectedEmi.dueDate }}</p>
+                  <p class="small mb-1">Amount: INR {{ selectedEmi.amountDue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
+                  <p class="small mb-0">Penalty: INR {{ selectedEmi.penaltyAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
+                </div>
+                } @else {
+                <div class="emi-card muted">
+                  <p class="small mb-0">Select a pending EMI to preview installment details.</p>
+                </div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label for="emiId" class="form-label">EMI ID (Auto-filled)</label>
+                <input id="emiId" class="form-control" type="number" formControlName="emiId" readonly [class.is-invalid]="controlInvalid('emiId')" [class.is-valid]="!controlInvalid('emiId') && paymentForm.controls.emiId.value" />
+                @if (controlInvalid('emiId')) { <div class="invalid-feedback d-block">EMI ID must be valid.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="amount" class="form-label">Amount (Auto-filled)</label>
+                <input id="amount" class="form-control" type="number" formControlName="amount" readonly [class.is-invalid]="controlInvalid('amount')" [class.is-valid]="!controlInvalid('amount') && paymentForm.controls.amount.value" />
+                @if (controlInvalid('amount')) { <div class="invalid-feedback d-block">Amount must be greater than 0.</div> }
+              </div>
+              <div class="col-md-6">
+                <label for="mode" class="form-label">Payment Mode *</label>
+                <select id="mode" class="form-select" formControlName="paymentMode" [class.is-invalid]="controlInvalid('paymentMode')" [class.is-valid]="!controlInvalid('paymentMode') && paymentForm.controls.paymentMode.value">
+                  @for (mode of paymentModes; track mode) {
+                    <option [value]="mode">{{ mode }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="ref" class="form-label">Reference Number *</label>
+                <input id="ref" class="form-control" type="text" formControlName="referenceNumber" [class.is-invalid]="controlInvalid('referenceNumber')" [class.is-valid]="!controlInvalid('referenceNumber') && paymentForm.controls.referenceNumber.value" />
+                @if (controlInvalid('referenceNumber')) { <div class="invalid-feedback d-block">Reference number is required.</div> }
+              </div>
+              <app-form-action-buttons submitLabel="Submit Payment" submitClass="btn btn-success" [loading]="status().loading" [disableSubmit]="paymentForm.invalid" (resetClick)="reset()" (cancelClick)="reset()" (submitClick)="submit()"></app-form-action-buttons>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="card border-0 shadow-soft h-100">
+          <div class="card-body">
+            <h6>Loan Payment Summary</h6>
+            <ol class="small text-muted ps-3 mb-3">
+              <li>{{ canSelectCustomer() ? 'Select Customer and Loan' : 'Select Loan' }}</li>
+              <li>Pick Pending EMI</li>
+              <li>Verify auto-filled details</li>
+              <li>Submit payment</li>
+            </ol>
+            <div class="progress-ring-shell mb-3">
+              <svg viewBox="0 0 36 36" class="progress-ring">
+                <path class="ring-bg" pathLength="100" d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31"></path>
+                <path class="ring-progress" pathLength="100" d="M18 2.5 a 15.5 15.5 0 0 1 0 31 a 15.5 15.5 0 0 1 0 -31" [attr.stroke-dasharray]="loanInsights().progressPercent + ', 100'"></path>
+              </svg>
+              <div>
+                <p class="mb-0 fw-semibold">Loan Progress {{ loanInsights().progressPercent }}%</p>
+                <small class="text-muted">{{ loanInsights().completedEmis }} of {{ loanInsights().totalEmis }} EMIs completed</small>
+              </div>
+            </div>
+            <div class="summary-grid mb-3">
+              <div class="summary-item"><small>Next EMI Date</small><strong>{{ loanInsights().nextEmiDate }}</strong></div>
+              <div class="summary-item"><small>Next EMI Amount</small><strong>INR {{ loanInsights().nextEmiAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+              <div class="summary-item"><small>Overdue Amount</small><strong>INR {{ loanInsights().overdueAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+              <div class="summary-item"><small>Penalty Amount</small><strong>INR {{ loanInsights().penaltyAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+              <div class="summary-item"><small>Interest Paid</small><strong>INR {{ loanInsights().interestPaid.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+              <div class="summary-item"><small>Principal Paid</small><strong>INR {{ loanInsights().principalPaid.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+              <div class="summary-item"><small>Remaining Balance</small><strong>INR {{ loanInsights().remainingBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+              <div class="summary-item"><small>Outstanding Principal</small><strong>INR {{ loanInsights().outstandingPrincipal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong></div>
+            </div>
+            @if (status().success) {
+            <div class="alert alert-success mt-3 mb-2 payment-success">
+              <i class="bi bi-check-circle-fill me-2"></i>
+              <div>
+                <div class="fw-semibold">Payment Successful</div>
+                <small>Transaction reference: {{ paymentForm.controls.referenceNumber.value || 'N/A' }}</small>
+              </div>
+            </div>
+            }
+            <p class="mb-1"><strong>Selected EMI Type:</strong> {{ selectedPendingEmi()?.type === 'OVERDUE' ? 'Overdue EMI' : (selectedPendingEmi() ? 'Next EMI' : 'Not selected') }}</p>
+            <p class="mb-1"><strong>EMI ID:</strong> {{ paymentResponse()?.emiId || paymentForm.controls.emiId.value || 'N/A' }}</p>
+            <p class="mb-1"><strong>Status:</strong> {{ paymentResponse()?.status || 'Not submitted' }}</p>
+            <p class="mb-0"><strong>Receipt No:</strong> {{ paymentResponse() ? (paymentForm.controls.referenceNumber.value || 'N/A') : 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  

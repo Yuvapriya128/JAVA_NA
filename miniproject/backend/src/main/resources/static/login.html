@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Lendora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        body.login-page {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 50%, #004085 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        body.login-page::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            max-width: 450px;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .login-row {
+            display: block;
+        }
+
+        .login-form-section {
+            width: 100%;
+        }
+
+        .login-card {
+            background: white;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 50px !important;
+            animation: slideUp 0.8s ease-out;
+            text-align: center;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card h1 {
+            color: #0d6efd;
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .login-card .text-muted {
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 8px;
+        }
+
+        .input-group-text {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            color: #0d6efd;
+        }
+
+        .form-control {
+            border: 1px solid #e9ecef;
+            padding: 12px 15px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+        .btn-login {
+            padding: 12px 25px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            border: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .demo-card {
+            display: none;
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+            padding: 12px 20px;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .login-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .login-card {
+                padding: 30px !important;
+            }
+
+            .login-card h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="login-page">
+<div class="login-container">
+    <div class="login-row">
+        <!-- Login Form Section -->
+        <div class="login-form-section">
+            <div class="login-card">
+                <div class="logo-circle"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                <h1 class="h2 fw-bold mb-2">Lendora</h1>
+                <p class="text-muted fs-5 mb-4">Your Trusted Lending Partner</p>
+
+                <div id="loginAlert" class="alert d-none" role="alert"></div>
+
+                <form id="loginForm" novalidate>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" placeholder="name@company.com" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-login w-100" id="loginBtn">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>Login
+                    </button>
+                </form>
+
+                <div class="back-link">
+                    <a href="index.html"><i class="fa-solid fa-arrow-left me-2"></i>Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

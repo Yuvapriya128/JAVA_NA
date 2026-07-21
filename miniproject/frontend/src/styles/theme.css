@@ -1,0 +1,128 @@
+:root,
+:root[data-theme='light'] {
+  --primary: #4f46e5;
+  --secondary: #7c3aed;
+  --accent: #06b6d4;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+
+  --background: #f5f7fb;
+  --surface: #ffffff;
+  --surface-variant: #f8fafc;
+  --card: #ffffff;
+  --card-hover: #f8fbff;
+  --navbar: #ffffff;
+  --sidebar: #ffffff;
+  --sidebar-hover: #eef2ff;
+  --hover: #eef2ff;
+
+  --border: #e5e7eb;
+  --divider: #e2e8f0;
+  --input-bg: #ffffff;
+  --input-border: #dbe2ef;
+  --input-focus: #a5b4fc;
+  --input-hover: #94a3b8;
+
+  --table-header: #f8fafc;
+  --table-row: #ffffff;
+  --table-hover: #eef2ff;
+  --table-selected: #e8efff;
+
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #94a3b8;
+  --text-placeholder: #94a3b8;
+  --text-disabled: #cbd5e1;
+  --text-heading-1: #111827;
+  --text-heading-2: #1f2937;
+  --text-heading-3: #374151;
+  --text-section-title: #1f2937;
+  --text-card-title: #374151;
+  --text-subtitle: #6b7280;
+  --text-on-brand: #ffffff;
+  --link: #4f46e5;
+  --icon: #64748b;
+
+  --primary-soft: rgba(79, 70, 229, 0.14);
+  --secondary-soft: rgba(124, 58, 237, 0.14);
+  --accent-soft: rgba(6, 182, 212, 0.14);
+  --success-soft: rgba(34, 197, 94, 0.15);
+  --warning-soft: rgba(245, 158, 11, 0.18);
+  --danger-soft: rgba(239, 68, 68, 0.16);
+  --info-soft: rgba(59, 130, 246, 0.14);
+
+  --overlay: rgba(15, 23, 42, 0.45);
+  --overlay-strong: rgba(15, 23, 42, 0.55);
+  --glass: rgba(255, 255, 255, 0.78);
+
+  --shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 16px 44px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 24px 54px rgba(15, 23, 42, 0.18);
+  --shadow-brand: 0 16px 34px rgba(79, 70, 229, 0.28);
+}
+
+:root[data-theme='dark'] {
+  --primary: #818cf8;
+  --secondary: #a78bfa;
+  --accent: #22d3ee;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
+
+  --background: #0f172a;
+  --surface: #111827;
+  --surface-variant: #1e293b;
+  --card: #1e293b;
+  --card-hover: #273449;
+  --navbar: #1e293b;
+  --sidebar: #111827;
+  --sidebar-hover: #273449;
+  --hover: #273449;
+
+  --border: #ffffff;
+  --divider: #ffffff;
+  --input-bg: #1e293b;
+  --input-border: #ffffff;
+  --input-focus: #818cf8;
+  --input-hover: #ffffff;
+
+  --table-header: #273449;
+  --table-row: #1e293b;
+  --table-hover: #273449;
+  --table-selected: #25385a;
+
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-muted: #ffffff;
+  --text-placeholder: #ffffff;
+  --text-disabled: #ffffff;
+  --text-heading-1: #ffffff;
+  --text-heading-2: #ffffff;
+  --text-heading-3: #ffffff;
+  --text-section-title: #ffffff;
+  --text-card-title: #ffffff;
+  --text-subtitle: #ffffff;
+  --text-on-brand: #f8fafc;
+  --link: #ffffff;
+  --icon: #ffffff;
+
+  --primary-soft: rgba(129, 140, 248, 0.22);
+  --secondary-soft: rgba(167, 139, 250, 0.22);
+  --accent-soft: rgba(34, 211, 238, 0.2);
+  --success-soft: rgba(74, 222, 128, 0.2);
+  --warning-soft: rgba(251, 191, 36, 0.22);
+  --danger-soft: rgba(248, 113, 113, 0.22);
+  --info-soft: rgba(96, 165, 250, 0.22);
+
+  --overlay: rgba(2, 6, 23, 0.55);
+  --overlay-strong: rgba(2, 6, 23, 0.72);
+  --glass: rgba(30, 41, 59, 0.78);
+
+  --shadow-sm: 0 8px 24px rgba(2, 6, 23, 0.45);
+  --shadow-md: 0 16px 42px rgba(2, 6, 23, 0.55);
+  --shadow-lg: 0 22px 54px rgba(2, 6, 23, 0.65);
+  --shadow-brand: 0 16px 34px rgba(129, 140, 248, 0.25);
+}

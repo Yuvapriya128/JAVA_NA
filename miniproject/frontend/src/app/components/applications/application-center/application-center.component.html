@@ -1,0 +1,153 @@
+<app-page-header title="Applications" subtitle="Guided application journey and real-time tracking"></app-page-header>
+
+@if (status().success && successMessage()) {
+<div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+}
+@if (status().error) {
+<div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+
+@if (isEndUserFlow()) {
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body">
+    <div class="wizard-stepper">
+      <span class="step" [class.active]="wizardStep() === 1">1. Eligibility</span>
+      <span class="step" [class.active]="wizardStep() === 2">2. Product</span>
+      <span class="step" [class.active]="wizardStep() === 3">3. Amount</span>
+      <span class="step" [class.active]="wizardStep() === 4">4. EMI</span>
+      <span class="step" [class.active]="wizardStep() === 5">5. Review</span>
+      <span class="step" [class.active]="wizardStep() === 6">6. Submit</span>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-soft mb-3">
+  <div class="card-body">
+    @if (wizardStep() === 1) {
+    <h6>Eligibility Check</h6>
+    <p class="text-muted mb-3">Complete your profile and maintain a healthy credit profile for faster approvals.</p>
+    <ul class="small mb-3">
+      <li>Valid KYC and contact details</li>
+      <li>Stable income records</li>
+      <li>Credit score verification</li>
+    </ul>
+    <button class="btn btn-primary btn-sm" (click)="nextStep()">Continue</button>
+    }
+
+    @if (wizardStep() === 2) {
+    <h6>Choose Product</h6>
+    <div class="row g-2">
+      <div class="col-md-6">
+        <label class="form-label small mb-1">Loan Product</label>
+        <select class="form-select" [formControl]="wizardForm.controls.productCode" (change)="onProductChange()">
+          @for (item of products(); track item.code) {
+            <option [value]="item.code">{{ item.displayName }} ({{ item.defaultRate }}%)</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <button class="btn btn-outline-secondary btn-sm" (click)="prevStep()">Back</button>
+      <button class="btn btn-primary btn-sm" (click)="nextStep()">Continue</button>
+    </div>
+    }
+
+    @if (wizardStep() === 3) {
+    <h6>Loan Amount & Tenure</h6>
+    <div class="row g-2">
+      <div class="col-md-6">
+        <label class="form-label small mb-1">Principal Amount</label>
+        <input type="number" class="form-control" [formControl]="wizardForm.controls.principalAmount" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label small mb-1">Tenure (Months)</label>
+        <input type="number" class="form-control" [formControl]="wizardForm.controls.tenureMonths" />
+      </div>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <button class="btn btn-outline-secondary btn-sm" (click)="prevStep()">Back</button>
+      <button class="btn btn-primary btn-sm" (click)="nextStep()">Continue</button>
+    </div>
+    }
+
+    @if (wizardStep() === 4) {
+    <h6>EMI Calculator</h6>
+    <p class="text-muted small mb-3">Calculate repayment before submission.</p>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary btn-sm" (click)="prevStep()">Back</button>
+      <button class="btn btn-primary btn-sm" [disabled]="status().loading" (click)="calculateEmi()">Calculate EMI</button>
+    </div>
+    }
+
+    @if (wizardStep() === 5) {
+    <h6>Review Application</h6>
+    <div class="review-grid">
+      <div><small>Product</small><strong>{{ selectedProduct()?.displayName || 'N/A' }}</strong></div>
+      <div><small>Amount</small><strong>INR {{ (wizardForm.controls.principalAmount.value || 0).toLocaleString('en-IN') }}</strong></div>
+      <div><small>Tenure</small><strong>{{ wizardForm.controls.tenureMonths.value || 0 }} months</strong></div>
+      <div><small>Rate</small><strong>{{ selectedProduct()?.defaultRate || 0 }}%</strong></div>
+      <div><small>Monthly EMI</small><strong>INR {{ emiPreview()?.emiAmount?.toLocaleString('en-IN', { maximumFractionDigits: 2 }) || '0' }}</strong></div>
+      <div><small>Total Repayment</small><strong>INR {{ emiPreview()?.totalPayment?.toLocaleString('en-IN', { maximumFractionDigits: 2 }) || '0' }}</strong></div>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <button class="btn btn-outline-secondary btn-sm" (click)="setWizardStep(4)">Back</button>
+      <button class="btn btn-success btn-sm" [disabled]="status().loading" (click)="submitApplication()">Submit Application</button>
+    </div>
+    }
+
+    @if (wizardStep() === 6) {
+    <div class="success-shell">
+      <i class="bi bi-check-circle-fill"></i>
+      <div>
+        <h6 class="mb-1">Application Submitted</h6>
+        <p class="mb-2 text-muted">{{ successMessage() || 'Your application has been submitted successfully.' }}</p>
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary btn-sm" (click)="setWizardStep(1)">Start New Application</button>
+      <button class="btn btn-primary btn-sm" (click)="setWizardStep(6)">Track Timeline Below</button>
+    </div>
+    }
+  </div>
+</div>
+
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-3">Application Timeline</h6>
+    @if (myApplications().length === 0) {
+    <p class="text-muted mb-0">No applications yet. Submit a new application to start tracking.</p>
+    } @else {
+      @for (application of myApplications(); track application.applicationId) {
+      <div class="timeline-card">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <strong>#{{ application.applicationId }}</strong>
+            <small class="text-muted ms-2">{{ application.loanType }}</small>
+          </div>
+          <app-status-badge [label]="application.applicationStatus"></app-status-badge>
+        </div>
+        <div class="timeline-steps">
+          @for (step of timelineStages(application); track step.label) {
+            <span class="timeline-chip" [class.done]="step.state === 'done'" [class.current]="step.state === 'current'">{{ step.label }}</span>
+          }
+        </div>
+      </div>
+      }
+    }
+  </div>
+</div>
+} @else {
+<div class="row g-3 mb-3">
+  <div class="col-md-4"><div class="kpi-card"><small>Pending Applications</small><strong>{{ pendingCount() }}</strong></div></div>
+  <div class="col-md-4"><div class="kpi-card"><small>Under Review</small><strong>{{ reviewCount() }}</strong></div></div>
+  <div class="col-md-4"><div class="kpi-card"><small>Approved</small><strong>{{ approvedCount() }}</strong></div></div>
+</div>
+<div class="card border-0 shadow-soft">
+  <div class="card-body">
+    <h6 class="mb-2">Manager/Admin Application Operations</h6>
+    <p class="text-muted mb-3">Use Approval Center for drawer-based decision workflow.</p>
+    <a class="btn btn-primary btn-sm" routerLink="/loan-products">Open Approval Center</a>
+  </div>
+</div>
+}
+

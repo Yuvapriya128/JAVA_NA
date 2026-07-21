@@ -1,0 +1,95 @@
+<header class="topbar glass d-flex align-items-center justify-content-between gap-3 px-3 px-lg-4" (click)="closeMenus()">
+  <div class="d-flex align-items-center gap-3 left-cluster">
+    <button class="btn menu-btn" (click)="toggleSidebar.emit()" aria-label="Toggle sidebar">
+      <i class="bi bi-layout-sidebar-inset fs-5"></i>
+    </button>
+    <div class="brand-block">
+      <span class="brand-logo" aria-hidden="true"><i class="bi bi-origami"></i></span>
+      <div class="brand-title">Nova Lending Console</div>
+    </div>
+  </div>
+
+  <div class="flex-grow-1"></div>
+
+  <div class="d-flex align-items-center gap-2 right-cluster" (click)="$event.stopPropagation()">
+    <a class="quick-link d-none d-xl-inline-flex" routerLink="/about">About</a>
+    <a class="quick-link d-none d-xl-inline-flex" routerLink="/contact">Contact</a>
+    <a class="quick-link d-none d-xxl-inline-flex" routerLink="/profile">Profile</a>
+    <button class="quick-link quick-link-btn d-none d-xxl-inline-flex" type="button" (click)="confirmLogout()">Logout</button>
+    <button class="btn icon-btn quick-actions-trigger" type="button" aria-label="Open quick actions" (click)="openQuickActions()">
+      <i class="bi bi-lightning-charge"></i>
+    </button>
+    <button class="btn icon-btn" type="button" (click)="toggleTheme()" [attr.aria-label]="currentTheme() === 'dark' ? 'Enable light mode' : 'Enable dark mode'">
+      <i class="bi" [class.bi-sun]="currentTheme() === 'dark'" [class.bi-moon-stars]="currentTheme() !== 'dark'"></i>
+    </button>
+    <div class="position-relative">
+      <button class="btn icon-btn position-relative" (click)="toggleNotifications()" aria-label="Notifications">
+        <i class="bi bi-bell"></i>
+        <span class="badge rounded-pill notif-dot">{{ notificationCount() }}</span>
+      </button>
+      @if (showNotifications) {
+      <div class="position-absolute end-0 mt-2 p-2 notification-panel">
+        <div class="d-flex justify-content-between align-items-center px-2 py-1 border-bottom">
+          <strong>Notifications</strong>
+          <button type="button" class="btn btn-link btn-sm text-decoration-none" (click)="markAllAsRead()">Mark all read</button>
+        </div>
+        @for (group of groupedNotifications(); track group.category) {
+        <div class="notification-category">{{ group.category }}</div>
+        @for (item of group.items; track item.title) {
+        <button type="button" class="notification-item text-start" [class.unread]="item.unread" (click)="openNotification(item)">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi mt-1" [class]="item.icon"></i>
+            <div class="flex-grow-1">
+              <div class="fw-semibold small">{{ item.title }}</div>
+              <div class="text-muted small">{{ item.message }}</div>
+              <div class="notification-time small">{{ item.time }}</div>
+            </div>
+          </div>
+        </button>
+        }
+        }
+        @if (notificationItems().length === 0) {
+        <div class="px-2 py-3 text-muted small">No notifications right now.</div>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="position-relative">
+      <button class="btn profile-btn dropdown-toggle" type="button" (click)="toggleProfileMenu()">
+        <span class="avatar-circle"><i class="bi bi-person"></i></span>
+        <span class="d-none d-lg-inline">Profile</span>
+      </button>
+      @if (showProfileMenu) {
+      <ul class="list-unstyled position-absolute end-0 mt-2 py-2 profile-menu">
+        <li><span class="dropdown-item-text small px-3 profile-menu-role">Signed in as {{ getUserRole() }}</span></li>
+        <li><hr class="dropdown-divider my-1" /></li>
+        <li>
+          <a class="dropdown-item profile-menu-item" routerLink="/profile" [queryParams]="{ section: 'profile' }" (click)="closeMenus()">
+            <i class="bi bi-person-badge"></i>
+            <span>View Details</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item profile-menu-item" routerLink="/profile" [queryParams]="{ section: 'password' }" (click)="closeMenus()">
+            <i class="bi bi-key"></i>
+            <span>Change Password</span>
+          </a>
+        </li>
+        <li><hr class="dropdown-divider my-1" /></li>
+        <li>
+          <button type="button" class="dropdown-item profile-menu-item text-danger" (click)="confirmLogout()">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+          </button>
+        </li>
+      </ul>
+      }
+    </div>
+  </div>
+</header>
+
+@if (showQuickActions) {
+<app-quick-actions (closed)="closeQuickActions()"></app-quick-actions>
+}
+  

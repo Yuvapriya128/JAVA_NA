@@ -1,0 +1,6 @@
+<div class="card border-0 shadow-soft mb-3 toolbar-shell">
+  <div class="card-body">
+    <app-search-bar [placeholder]="placeholder" [term]="term" (termChange)="termChange.emit($event)" (search)="search.emit()"></app-search-bar>
+  </div>
+</div>
+  

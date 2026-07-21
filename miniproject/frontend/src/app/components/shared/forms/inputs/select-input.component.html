@@ -1,0 +1,10 @@
+    <div [class]="colClass + ' form-floating'">
+      <select [id]="id" [name]="id" class="form-select" [ngModel]="model" (ngModelChange)="modelChange.emit($event)">
+        @for (option of options; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+      <label [for]="id">{{ label }}</label>
+    </div>
+  
+

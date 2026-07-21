@@ -1,0 +1,47 @@
+.table-shell {
+	max-height: 64vh;
+	border: 1px solid var(--border);
+	border-radius: 18px;
+	background: var(--table-row);
+}
+
+.table-shell thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: var(--table-header);
+}
+
+.table-clickable {
+	cursor: pointer;
+}
+
+.table-clickable:hover {
+	background: var(--table-hover);
+}
+
+.loan-chip {
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	background: linear-gradient(180deg, var(--surface), var(--card-hover));
+	padding: 0.7rem 0.9rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.loan-chip span {
+	font-size: 0.78rem;
+	color: var(--text-secondary);
+}
+
+.sort-controls .form-select {
+	min-width: 0;
+}
+
+.sort-controls .form-select:first-child {
+	flex: 1 1 auto;
+}
+
+.sort-direction {
+	flex: 0 0 44%;
+}

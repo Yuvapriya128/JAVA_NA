@@ -1,0 +1,36 @@
+.summary-card {
+	border: 1px solid var(--divider);
+	border-radius: 12px;
+	background: var(--card-hover);
+	padding: 0.7rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.summary-card small {
+	color: var(--text-secondary);
+}
+
+.faq-item {
+	border: 1px solid var(--divider);
+	border-radius: 10px;
+	padding: 0.65rem;
+	background: var(--surface);
+	margin-bottom: 0.55rem;
+}
+
+.chip {
+	border: 1px solid var(--divider);
+	background: var(--surface);
+	color: var(--text-secondary);
+	border-radius: 999px;
+	padding: 0.2rem 0.62rem;
+	font-size: 0.75rem;
+}
+
+.chip.active {
+	background: var(--table-selected);
+	color: var(--primary);
+	border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+

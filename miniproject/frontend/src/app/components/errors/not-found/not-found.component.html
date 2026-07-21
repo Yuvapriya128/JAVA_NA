@@ -1,0 +1,27 @@
+<div class="container py-5">
+  <div class="card border-0 shadow-soft notfound-card">
+    <div class="card-body p-5 text-center">
+      <div class="display-icon"><i class="bi bi-signpost-split"></i></div>
+      <h3 class="mb-2">404 · Page not found</h3>
+      <p class="text-muted mb-3">The page you requested does not exist or may have moved.</p>
+
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          placeholder="Search by loans, customers, payments..." />
+        <button type="button" class="btn btn-outline-primary" (click)="searchRoute()">Find</button>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+        <a class="btn btn-sm btn-outline-secondary" routerLink="/dashboard">Dashboard</a>
+        <a class="btn btn-sm btn-outline-secondary" routerLink="/loan-products">Loan Products</a>
+        <a class="btn btn-sm btn-outline-secondary" routerLink="/profile">My Profile</a>
+      </div>
+
+      <a class="btn btn-primary" routerLink="/">Go to Home</a>
+    </div>
+  </div>
+</div>

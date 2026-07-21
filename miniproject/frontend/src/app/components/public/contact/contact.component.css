@@ -1,0 +1,38 @@
+.public-page {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+.hero {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 14%, transparent), color-mix(in srgb, var(--secondary) 12%, transparent));
+}
+
+.eyebrow {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.social-chip {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--hover);
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.map-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 130px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}

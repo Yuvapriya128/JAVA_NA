@@ -1,0 +1,119 @@
+<section class="register-page">
+  <div class="register-shell">
+    <div class="register-art">
+      <div class="art-card">
+        <p class="step-chip">Step 1 of 1 · Account Setup</p>
+        <h2>Create your Nova Lending profile</h2>
+        <p>Set up your secure account to request products, track approvals, and manage EMI activities.</p>
+        <ul>
+          <li><i class="bi bi-shield-lock"></i> Enterprise-grade security</li>
+          <li><i class="bi bi-diagram-3"></i> Unified customer and loan workspace</li>
+          <li><i class="bi bi-lightning-charge"></i> Fast onboarding in minutes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="register-form-wrap">
+      <div class="card border-0 register-card">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Create account</h3>
+            <span class="pill-status">New User</span>
+          </div>
+
+          @if (status().success) {
+          <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+          }
+          @if (status().error) {
+          <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+          }
+
+          <form [formGroup]="registerForm" (ngSubmit)="submit()" class="row g-3" novalidate>
+            <div class="col-md-6 form-floating">
+              <input type="text" class="form-control" id="customerName" placeholder="Full name" formControlName="customerName" [class.is-invalid]="controlInvalid('customerName')" [class.is-valid]="!controlInvalid('customerName') && registerForm.controls.customerName.value" />
+              <label for="customerName"><i class="bi bi-person me-2"></i>Full Name</label>
+              @if (controlInvalid('customerName')) {
+              <div class="invalid-feedback d-block">Name is required (3-50 alphabets only).</div>
+              }
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email" [class.is-invalid]="controlInvalid('email')" [class.is-valid]="!controlInvalid('email') && registerForm.controls.email.value" />
+              <label for="email"><i class="bi bi-envelope me-2"></i>Email Address</label>
+              @if (controlInvalid('email')) {
+              <div class="invalid-feedback d-block">Valid email is required.</div>
+              }
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="text" class="form-control" id="phoneNumber" placeholder="Phone number" formControlName="phoneNumber" [class.is-invalid]="controlInvalid('phoneNumber')" [class.is-valid]="!controlInvalid('phoneNumber') && registerForm.controls.phoneNumber.value" />
+              <label for="phoneNumber"><i class="bi bi-telephone me-2"></i>Phone Number</label>
+              @if (controlInvalid('phoneNumber')) {
+              <div class="invalid-feedback d-block">Phone number must be 10 digits.</div>
+              }
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="text" class="form-control" id="city" placeholder="Address / City" formControlName="city" [class.is-invalid]="controlInvalid('city')" [class.is-valid]="!controlInvalid('city') && registerForm.controls.city.value" />
+              <label for="city"><i class="bi bi-geo-alt me-2"></i>Address / City</label>
+              @if (controlInvalid('city')) {
+              <div class="invalid-feedback d-block">Address is required.</div>
+              }
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password" [class.is-invalid]="controlInvalid('password')" [class.is-valid]="!controlInvalid('password') && registerForm.controls.password.value" />
+              <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" formControlName="confirmPassword" [class.is-invalid]="controlInvalid('confirmPassword') || hasConfirmPasswordMismatch()" [class.is-valid]="!controlInvalid('confirmPassword') && !hasConfirmPasswordMismatch() && registerForm.controls.confirmPassword.value" />
+              <label for="confirmPassword"><i class="bi bi-shield-check me-2"></i>Confirm Password</label>
+            </div>
+
+            @if (showPasswordValidation()) {
+            <div class="col-12">
+              <ul class="password-rules mt-1 mb-0 ps-0">
+                <li [class.rule-valid]="hasMinLength()"><i class="bi" [class.bi-check-circle-fill]="hasMinLength()" [class.bi-circle]="!hasMinLength()"></i> Minimum 8 characters</li>
+                <li [class.rule-valid]="hasUppercase()"><i class="bi" [class.bi-check-circle-fill]="hasUppercase()" [class.bi-circle]="!hasUppercase()"></i> Uppercase letter</li>
+                <li [class.rule-valid]="hasLowercase()"><i class="bi" [class.bi-check-circle-fill]="hasLowercase()" [class.bi-circle]="!hasLowercase()"></i> Lowercase letter</li>
+                <li [class.rule-valid]="hasDigit()"><i class="bi" [class.bi-check-circle-fill]="hasDigit()" [class.bi-circle]="!hasDigit()"></i> Numeric character</li>
+                <li [class.rule-valid]="hasSpecialCharacter()"><i class="bi" [class.bi-check-circle-fill]="hasSpecialCharacter()" [class.bi-circle]="!hasSpecialCharacter()"></i> Special character</li>
+              </ul>
+            </div>
+            }
+            @if (hasConfirmPasswordMismatch()) {
+            <div class="col-12 field-error"><i class="bi bi-exclamation-circle me-1"></i> Re-entered password does not match.</div>
+            }
+            @if (controlInvalid('confirmPassword') && registerForm.controls.confirmPassword.errors?.['required']) {
+            <div class="col-12 field-error"><i class="bi bi-exclamation-circle me-1"></i> Confirm password is required.</div>
+            }
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="acceptTerms" formControlName="acceptTerms" />
+                <label class="form-check-label small" for="acceptTerms">
+                  I agree to the <a routerLink="/terms">Terms of Service</a> and <a routerLink="/privacy">Privacy Policy</a>.
+                </label>
+              </div>
+              @if (controlInvalid('acceptTerms') || (registerForm.controls.acceptTerms.touched && registerForm.controls.acceptTerms.errors?.['required'])) {
+              <div class="field-error mt-1">You must accept the Terms and Privacy Policy.</div>
+              }
+            </div>
+
+            <div class="col-12 d-flex align-items-center justify-content-between mt-2">
+              <p class="small text-muted mb-0">Already have an account? <a routerLink="/login" class="fw-semibold">Login</a></p>
+              <button type="submit" class="btn btn-primary px-4" [disabled]="status().loading || registerForm.invalid">
+                @if (status().loading) {
+                <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+                } @else {
+                <i class="bi bi-person-check-fill me-2"></i>
+                }
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div class="d-flex align-items-center gap-3 text-muted small">
+        <span>Total Records: <strong>{{ totalRecords }}</strong></span>
+        <label class="d-flex align-items-center gap-2 mb-0">
+          <span>Page Size</span>
+          <select class="form-select form-select-sm" style="width: 92px" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange(+$event)">
+            @for (size of pageSizes; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm mb-0 justify-content-end">
+          <li class="page-item" [class.disabled]="currentPage <= 0">
+            <button type="button" class="page-link" (click)="goToPage(currentPage - 1)">Previous</button>
+          </li>
+          @for (page of pageNumbers; track page) {
+            <li class="page-item" [class.active]="page === currentPage">
+              <button type="button" class="page-link" (click)="goToPage(page)">{{ page + 1 }}</button>
+            </li>
+          }
+          <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+            <button type="button" class="page-link" (click)="goToPage(currentPage + 1)">Next</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  
+

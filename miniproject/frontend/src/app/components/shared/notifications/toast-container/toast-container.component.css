@@ -1,0 +1,39 @@
+.toast-stack {
+  z-index: 1080;
+  max-width: 420px;
+  width: min(100%, 420px);
+}
+
+.modern-toast {
+  position: relative;
+  border-radius: 16px;
+  border-width: 1px;
+  animation: toast-enter 0.25s ease;
+  padding: 0.8rem 2.3rem 0.8rem 0.9rem;
+}
+
+.toast-icon {
+  margin-top: 0.1rem;
+}
+
+.toast-message {
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.modern-toast .btn-close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+}
+
+@keyframes toast-enter {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

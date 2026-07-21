@@ -1,0 +1,8 @@
+@if (loadingState.isLoading()) {
+  <div class="global-loading-backdrop" role="status" aria-live="polite" aria-busy="true">
+    <div class="global-loading-card shadow-soft">
+      <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+      <span>{{ loadingState.message() }}</span>
+    </div>
+  </div>
+}

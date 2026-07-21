@@ -1,0 +1,111 @@
+    <app-page-header title="Interest Rate Management" subtitle="Portfolio And Loan-Level Interest Controls"></app-page-header>
+    @if (status().success) {
+      <div class="alert alert-success" role="alert"><i class="bi bi-check-circle me-2"></i>{{ successMessage() }}</div>
+    }
+    @if (status().error) {
+      <div class="alert alert-danger" role="alert"><i class="bi bi-exclamation-triangle me-2"></i>{{ status().error }}</div>
+    }
+
+    <div class="row g-3 mb-3">
+      <div class="col-xl-8">
+        <div class="card border-0 shadow-soft h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Bulk Interest Revision</h5>
+              <span class="badge text-bg-light">Step 1</span>
+            </div>
+
+            <p class="text-muted mb-2">Select one or more loan categories to revise annual interest.</p>
+            <div class="loan-type-grid mb-3">
+              @for (item of bulkLoanTypes; track item.code) {
+                <button
+                  type="button"
+                  class="loan-type-chip"
+                  [class.active]="isLoanTypeSelected(item.code)"
+                  (click)="toggleLoanType(item.code)">
+                  <i class="bi me-2" [class]="item.icon"></i>{{ item.label }}
+                </button>
+              }
+            </div>
+
+            <form class="row g-3" [formGroup]="bulkForm" novalidate>
+              <div class="col-md-6">
+                <label class="form-label" for="bulkRate">Bulk Annual Interest Rate (%)</label>
+                <input id="bulkRate" class="form-control" type="number" formControlName="bulkRate" [class.is-invalid]="bulkInvalid('bulkRate')" [class.is-valid]="!bulkInvalid('bulkRate') && bulkForm.controls.bulkRate.value" />
+                @if (bulkInvalid('bulkRate')) { <div class="invalid-feedback d-block">Enter a valid rate between 0 and 100.</div> }
+              </div>
+
+              <div class="col-12 d-flex gap-2 justify-content-end">
+                <button type="button" class="btn btn-outline-secondary" (click)="reset()">Reset</button>
+                <button type="button" class="btn btn-primary" [disabled]="bulkForm.invalid || selectedLoanTypes.length === 0" (click)="submitBulkPreview()">
+                  <i class="bi bi-eye me-2"></i>Preview Revision
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-4">
+        <div class="card border-0 shadow-soft h-100 preview-card">
+          <div class="card-body">
+            <h6 class="mb-3">Impact Preview</h6>
+            <p class="mb-2"><i class="bi bi-speedometer2 me-2 text-secondary"></i>{{ currentRateLabel() }}</p>
+            <p class="mb-2"><i class="bi bi-arrow-up-right-circle me-2 text-primary"></i>{{ newRateLabel() }}</p>
+            <p class="mb-2"><i class="bi bi-people me-2 text-warning"></i>{{ affectedLoansLabel() }}</p>
+            <p class="mb-2"><i class="bi bi-diagram-3 me-2 text-primary"></i>{{ projectedImpactLabel() }}</p>
+            <p class="mb-0"><i class="bi bi-graph-up-arrow me-2 text-success"></i>{{ projectedDeltaLabel() }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-soft mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">Individual Loan Override</h5>
+          <span class="badge text-bg-light">Step 2</span>
+        </div>
+
+        <form class="row g-3" [formGroup]="individualForm" novalidate>
+          <div class="col-md-6">
+            <label class="form-label" for="loanId">Loan ID</label>
+            <input id="loanId" class="form-control" type="number" formControlName="loanId" [class.is-invalid]="individualInvalid('loanId')" [class.is-valid]="!individualInvalid('loanId') && individualForm.controls.loanId.value" />
+            @if (individualInvalid('loanId')) { <div class="invalid-feedback d-block">Loan ID must be greater than 0.</div> }
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" for="loanRate">New Annual Interest Rate (%)</label>
+            <input id="loanRate" class="form-control" type="number" formControlName="loanRate" [class.is-invalid]="individualInvalid('loanRate')" [class.is-valid]="!individualInvalid('loanRate') && individualForm.controls.loanRate.value" />
+            @if (individualInvalid('loanRate')) { <div class="invalid-feedback d-block">Rate must be between 0 and 100.</div> }
+          </div>
+
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <button type="button" class="btn btn-outline-secondary" (click)="reset()">Reset</button>
+            <button type="button" class="btn btn-warning" [disabled]="status().loading || individualForm.invalid" (click)="submitIndividualUpdate()">
+              @if (status().loading) {
+                <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+              }
+              <i class="bi bi-arrow-repeat me-2"></i>Update Interest
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    @if (showConfirmModal()) {
+      <div class="confirm-backdrop" (click)="closeConfirmModal()"></div>
+      <div class="confirm-modal card border-0 shadow-soft">
+        <div class="card-body">
+          <h5>Confirm Bulk Revision</h5>
+          <p class="text-muted">{{ confirmMessage() }}</p>
+          <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline-secondary" (click)="closeConfirmModal()">Cancel</button>
+            <button class="btn btn-danger" (click)="submitBulkUpdate()">
+              <i class="bi bi-check2-circle me-2"></i>Confirm Update
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  

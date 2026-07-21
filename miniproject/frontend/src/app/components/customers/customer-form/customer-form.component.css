@@ -1,0 +1,5 @@
+.card-body form {
+	background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--surface) 84%, var(--hover)));
+	border-radius: 16px;
+	padding: 1rem;
+}

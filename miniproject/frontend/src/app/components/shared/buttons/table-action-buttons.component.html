@@ -1,0 +1,24 @@
+    <div class="btn-group btn-group-sm">
+      @for (action of actions; track action.key) {
+        @if (action.routerLink) {
+          <a
+            [routerLink]="action.routerLink"
+            [class]="action.className"
+            [attr.title]="action.tooltip || action.label || action.key"
+            [attr.aria-label]="action.label || action.key">
+            <i class="bi" [class]="action.icon"></i>
+          </a>
+        } @else {
+          <button
+            [class]="action.className"
+            type="button"
+            [attr.title]="action.tooltip || action.label || action.key"
+            [attr.aria-label]="action.label || action.key"
+            (click)="actionClick.emit(action.key)">
+            <i class="bi" [class]="action.icon"></i>
+          </button>
+        }
+      }
+    </div>
+  
+

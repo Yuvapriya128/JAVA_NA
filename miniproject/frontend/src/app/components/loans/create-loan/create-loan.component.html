@@ -1,0 +1,82 @@
+<app-page-header title="Create Loan" subtitle="Loan Origination Form"></app-page-header>
+@if (status().success) {
+  <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+}
+@if (status().error) {
+  <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+}
+@if (sourceApplicationId()) {
+  <div class="alert alert-info" role="alert">
+    Creating loan from approved product request <strong>#{{ sourceApplicationId() }}</strong>. Form fields are prefilled for review.
+  </div>
+}
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-soft">
+      <div class="card-body">
+        <form class="row g-3" [formGroup]="loanForm" novalidate>
+          <div class="col-md-6">
+            <label class="form-label" for="loanType">Loan Type *</label>
+            <select id="loanType" class="form-select" formControlName="loanType" [class.is-invalid]="controlInvalid('loanType')" [class.is-valid]="!controlInvalid('loanType') && loanForm.controls.loanType.value">
+              @for (type of loanTypes; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="customerId">Customer ID *</label>
+            <input id="customerId" class="form-control" type="number" formControlName="customerId" [class.is-invalid]="controlInvalid('customerId')" [class.is-valid]="!controlInvalid('customerId') && loanForm.controls.customerId.value" />
+            @if (controlInvalid('customerId')) { <div class="invalid-feedback d-block">Enter a valid customer ID.</div> }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="principal">Principal Amount *</label>
+            <input id="principal" class="form-control" type="number" formControlName="principalAmount" [class.is-invalid]="controlInvalid('principalAmount')" [class.is-valid]="!controlInvalid('principalAmount') && loanForm.controls.principalAmount.value" />
+            @if (controlInvalid('principalAmount')) { <div class="invalid-feedback d-block">Principal amount must be greater than 0.</div> }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="rate">Interest Rate *</label>
+            <input id="rate" class="form-control" type="number" formControlName="annualInterestRate" [class.is-invalid]="controlInvalid('annualInterestRate')" [class.is-valid]="!controlInvalid('annualInterestRate') && loanForm.controls.annualInterestRate.value" />
+            @if (controlInvalid('annualInterestRate')) { <div class="invalid-feedback d-block">Rate must be between 0 and 100.</div> }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="tenure">Tenure (Months) *</label>
+            <input id="tenure" class="form-control" type="number" formControlName="tenureMonths" [class.is-invalid]="controlInvalid('tenureMonths')" [class.is-valid]="!controlInvalid('tenureMonths') && loanForm.controls.tenureMonths.value" />
+            @if (controlInvalid('tenureMonths')) { <div class="invalid-feedback d-block">Tenure must be greater than 0.</div> }
+          </div>
+          <div class="col-12 d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-primary" [disabled]="emiPreview().loading || loanForm.controls.principalAmount.invalid || loanForm.controls.annualInterestRate.invalid || loanForm.controls.tenureMonths.invalid" (click)="calculateEmi()">
+              @if (emiPreview().loading) {
+                <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+              }
+              Calculate EMI
+            </button>
+          </div>
+          <app-form-action-buttons submitLabel="Create Loan" submitClass="btn btn-primary" [loading]="status().loading" [disableSubmit]="loanForm.invalid" (resetClick)="reset()" (cancelClick)="reset()" (submitClick)="submit()"></app-form-action-buttons>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-soft h-100 preview-panel">
+      <div class="card-body">
+        <h6>Preview Panel</h6>
+        @if (emiPreview().loading) {
+          <div class="d-flex align-items-center text-muted">
+            <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+            Calculating EMI from backend...
+          </div>
+        } @else if (emiPreview().error) {
+          <div class="alert alert-danger py-2 mb-0" role="alert">{{ emiPreview().error }}</div>
+        } @else if (emiPreview().data) {
+          <p class="text-muted mb-1">Monthly EMI</p>
+          <h4>{{ formatCurrency(emiPreview().data!.emiAmount) }}</h4>
+          <hr>
+          <p class="mb-1"><strong>Total Interest:</strong> {{ formatCurrency(emiPreview().data!.totalInterest) }}</p>
+          <p class="mb-0"><strong>Total Repayment:</strong> {{ formatCurrency(emiPreview().data!.totalPayment) }}</p>
+        } @else {
+          <p class="text-muted mb-0">Enter principal amount, interest rate, and tenure to preview backend-calculated EMI.</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>

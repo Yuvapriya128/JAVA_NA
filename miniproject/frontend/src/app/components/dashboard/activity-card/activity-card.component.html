@@ -1,0 +1,12 @@
+    <div class="card border-0 shadow-soft">
+      <div class="card-body">
+        <h6>{{ title }}</h6>
+        <div class="timeline mt-3">
+          @for (activity of activities; track activity) {
+            <div class="time-item">{{ activity }}</div>
+          }
+        </div>
+      </div>
+    </div>
+  
+

@@ -1,0 +1,78 @@
+<section class="login-page">
+  <div class="auth-grid">
+    <aside class="auth-hero">
+      <div class="hero-inner">
+        <p class="hero-chip"><i class="bi bi-stars me-2"></i>Enterprise Loan Operations</p>
+        <h1>Welcome to Nova Lending Workspace</h1>
+        <p class="hero-copy">Unify customer onboarding, loan approvals, risk tracking, and EMI collections in one intelligent console.</p>
+        <div class="hero-features">
+          <div><i class="bi bi-check2-circle"></i> Real-time portfolio visibility</div>
+          <div><i class="bi bi-check2-circle"></i> Multi-role secure operations</div>
+          <div><i class="bi bi-check2-circle"></i> Automated EMI intelligence</div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="auth-panel">
+      <div class="card login-card border-0 w-100">
+        <div class="card-body p-4 p-md-5">
+          <div class="brand-stack mb-4">
+            <div class="logo-orb mb-3"><i class="bi bi-origami"></i></div>
+            <h2 class="brand-title mb-1">Sign in</h2>
+            <p class="brand-subtitle mb-0">Access your enterprise dashboard</p>
+          </div>
+
+          @if (status().success) {
+          <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+          }
+          @if (status().error) {
+          <div class="alert alert-danger" role="alert">{{ status().error }}</div>
+          }
+
+          <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="email" placeholder="name@company.com" formControlName="email" [class.is-invalid]="controlInvalid('email')" [class.is-valid]="!controlInvalid('email') && loginForm.controls.email.value" />
+              <label for="email"><i class="bi bi-envelope me-2"></i>Work Email</label>
+              @if (loginForm.controls.email.errors?.['required'] && controlInvalid('email')) {
+              <div class="invalid-feedback d-block">Email is required.</div>
+              }
+              @if (loginForm.controls.email.errors?.['email'] && controlInvalid('email')) {
+              <div class="invalid-feedback d-block">Please enter a valid email address.</div>
+              }
+            </div>
+
+            <div class="form-floating mb-2">
+              <input type="password" class="form-control" id="password" placeholder="Enter password" formControlName="password" [class.is-invalid]="controlInvalid('password')" [class.is-valid]="!controlInvalid('password') && loginForm.controls.password.value" />
+              <label for="password"><i class="bi bi-shield-lock me-2"></i>Password</label>
+              @if (loginForm.controls.password.errors?.['required'] && controlInvalid('password')) {
+              <div class="invalid-feedback d-block">Password is required.</div>
+              }
+              @if (loginForm.controls.password.errors?.['minlength'] && controlInvalid('password')) {
+              <div class="invalid-feedback d-block">Password must be at least 8 characters.</div>
+              }
+            </div>
+
+            <div class="d-flex justify-content-end mb-4">
+              <a class="small fw-semibold" href="javascript:void(0)">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-login w-100 py-2" [disabled]="status().loading || loginForm.invalid">
+              @if (status().loading) {
+              <img src="/loading.svg" alt="" class="loading-image me-2" aria-hidden="true" />
+              } @else {
+              <i class="bi bi-box-arrow-in-right me-2"></i>
+              }
+              Continue
+            </button>
+
+            <p class="text-center small text-muted mt-3 mb-0">
+              Need access?
+              <a routerLink="/register" class="text-decoration-none fw-semibold">Create account</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  

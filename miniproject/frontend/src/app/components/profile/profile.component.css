@@ -1,0 +1,10 @@
+.profile-page .banner {
+	background: linear-gradient(120deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 75%, var(--hover)) 100%);
+	border-radius: 22px;
+}
+
+.detail-value {
+	font-size: 1.03rem;
+	font-weight: 600;
+	color: var(--text-primary);
+}
