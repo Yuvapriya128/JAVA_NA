@@ -1,0 +1,13 @@
+2026-07-21 17:07:45,406 | INFO | Analysis execution started
+2026-07-21 17:07:45,409 | INFO | Loaded investors.csv with 50 rows
+2026-07-21 17:07:45,410 | INFO | Loaded funds.csv with 50 rows
+2026-07-21 17:07:45,412 | INFO | Loaded transactions.csv with 50 rows
+2026-07-21 17:07:45,413 | INFO | Loaded nav_history.csv with 50 rows
+2026-07-21 17:07:45,423 | INFO | Missing data handling completed
+2026-07-21 17:07:45,425 | INFO | Removed 0 duplicate transaction rows
+2026-07-21 17:07:45,426 | INFO | Removed 1 transaction outliers (Amount > 99th percentile)
+2026-07-21 17:07:45,429 | INFO | Removed 0 NAV outliers (change > 3 std dev)
+2026-07-21 17:07:45,436 | INFO | Merged data created with 49 rows
+2026-07-21 17:07:46,452 | INFO | Charts generated in C:\Users\yuvapriya.s\IdeaProjects\AssessmentFolders\assessment7\charts
+2026-07-21 17:07:46,481 | INFO | Reports exported to C:\Users\yuvapriya.s\IdeaProjects\AssessmentFolders\assessment7\reports
+2026-07-21 17:07:46,481 | INFO | Analysis execution completed successfully

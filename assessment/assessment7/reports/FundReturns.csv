@@ -1,0 +1,6 @@
+FundID,StartNAV,EndNAV,FundReturnPct,FundName,Category,ExpenseRatio
+F101,24.5,25.22,2.938775510204077,Alpha Growth Fund,Equity,1.2
+F102,18.75,19.4,3.466666666666659,Bluechip Equity Fund,Equity,1.1
+F103,42.1,43.05,2.2565320665083033,Balanced Advantage Fund,Hybrid,0.95
+F104,31.8,32.88,3.396226415094345,Corporate Bond Fund,Debt,0.65
+F105,56.25,57.48,2.186666666666661,Small Cap Opportunities,Equity,1.45
