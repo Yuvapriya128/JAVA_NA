@@ -1,0 +1,21 @@
+<section class="card border-0 shadow-sm p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">Scan Details</h1>
+    <a routerLink="/scans" class="btn btn-outline-secondary btn-sm">Back to list</a>
+  </div>
+
+  <app-alert-message type="danger" [message]="errorMessage()"></app-alert-message>
+
+  @if (loading()) {
+    <app-loading message="Loading scan details..."></app-loading>
+  } @else if (scan()) {
+    <div class="row g-3">
+      <div class="col-md-6"><strong>ID:</strong> {{ scan()!.id }}</div>
+      <div class="col-md-6"><strong>Domain:</strong> {{ scan()!.domainName }}</div>
+      <div class="col-md-6"><strong>Pages:</strong> {{ scan()!.numPages }}</div>
+      <div class="col-md-6"><strong>Broken Links:</strong> {{ scan()!.numBrokenLinks }}</div>
+      <div class="col-md-6"><strong>Missing Images:</strong> {{ scan()!.numMissingImages }}</div>
+      <div class="col-md-6"><strong>Deleted:</strong> {{ scan()!.deleted ? 'Yes' : 'No' }}</div>
+    </div>
+  }
+</section>

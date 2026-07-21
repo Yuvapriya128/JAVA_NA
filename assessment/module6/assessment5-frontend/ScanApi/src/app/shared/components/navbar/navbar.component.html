@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" routerLink="/">Scan Dashboard</a>
+
+    <ul class="navbar-nav ms-auto flex-row flex-wrap gap-2 gap-lg-3 small">
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/scans" routerLinkActive="active">Scans</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/scans/add" routerLinkActive="active">Add Scan</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2" routerLink="/scans/search" routerLinkActive="active">Search</a>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,8 @@
+<div class="d-flex flex-wrap gap-2">
+  <span class="badge" [class.text-bg-success]="healthOk()" [class.text-bg-danger]="healthOk() === false" [class.text-bg-secondary]="healthOk() === null">
+    Health: {{ healthOk() === null ? 'Checking' : healthOk() ? 'UP' : 'DOWN' }}
+  </span>
+  <span class="badge" [class.text-bg-success]="readyOk()" [class.text-bg-danger]="readyOk() === false" [class.text-bg-secondary]="readyOk() === null">
+    Ready: {{ readyOk() === null ? 'Checking' : readyOk() ? 'UP' : 'DOWN' }}
+  </span>
+</div>

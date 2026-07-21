@@ -1,0 +1,59 @@
+<section class="card border-0 shadow-sm p-4">
+  <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">All Scans</h1>
+    <a routerLink="/scans/add" class="btn btn-sm btn-primary">Add Scan</a>
+  </div>
+
+  <app-alert-message type="success" [message]="successMessage()"></app-alert-message>
+  <app-alert-message type="danger" [message]="errorMessage()"></app-alert-message>
+
+  @if (loading()) {
+    <app-loading message="Loading scans..."></app-loading>
+  } @else if (scans().length === 0) {
+    <div class="text-center py-5 border rounded bg-light-subtle">
+      <h2 class="h6">No scans found</h2>
+      <p class="text-muted mb-3">Add your first scan to get started.</p>
+      <a routerLink="/scans/add" class="btn btn-primary btn-sm">Create Scan</a>
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Domain</th>
+            <th>Pages</th>
+            <th>Broken Links</th>
+            <th>Missing Images</th>
+            <th>Deleted</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (scan of scans(); track scan.id) {
+            <tr>
+              <td>{{ scan.id }}</td>
+              <td>{{ scan.domainName }}</td>
+              <td>{{ scan.numPages }}</td>
+              <td>{{ scan.numBrokenLinks }}</td>
+              <td>{{ scan.numMissingImages }}</td>
+              <td>
+                <span class="badge" [class.text-bg-secondary]="scan.deleted" [class.text-bg-success]="!scan.deleted">
+                  {{ scan.deleted ? 'Yes' : 'No' }}
+                </span>
+              </td>
+              <td class="text-end">
+                <div class="d-inline-flex gap-2">
+                  <a class="btn btn-outline-primary btn-sm" [routerLink]="['/scans', scan.id]">View</a>
+                  <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteScan(scan.id)">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

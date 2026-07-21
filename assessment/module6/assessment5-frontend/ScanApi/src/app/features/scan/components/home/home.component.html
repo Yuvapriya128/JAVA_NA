@@ -1,0 +1,79 @@
+<section class="card border-0 shadow-sm p-4 p-md-5">
+  <h1 class="h3 mb-3">Scan Dashboard</h1>
+  <p class="text-muted mb-4">
+    View scan insights and manage all domain scans from one place.
+  </p>
+
+  <div class="system-status-card mb-4">
+    <h2 class="status-title">System Status</h2>
+
+    @if (systemStatus().loading) {
+      <app-loading message="Checking backend status..."></app-loading>
+    }
+
+    <div class="status-row">
+      <p class="status-label">Backend Status</p>
+      <p class="status-value" [class.offline]="healthStatus() !== 'online'">
+        <span class="dot" [class.green]="healthStatus() === 'online'" [class.red]="healthStatus() !== 'online'"></span>
+        {{ healthStatus() === 'online' ? 'Online' : 'Offline' }}
+      </p>
+    </div>
+
+    <div class="status-row">
+      <p class="status-label">Ready Status</p>
+      <p class="status-value" [class.offline]="readyStatus() !== 'ready'">
+        <span class="dot" [class.green]="readyStatus() === 'ready'" [class.red]="readyStatus() !== 'ready'"></span>
+        {{ readyStatus() === 'ready' ? 'Ready' : 'Not Ready' }}
+      </p>
+    </div>
+
+    @if (systemStatus().error) {
+      <p class="status-error">{{ systemStatus().error }}</p>
+    }
+  </div>
+
+  <app-alert-message type="danger" [message]="errorMessage()"></app-alert-message>
+
+  @if (loading()) {
+    <app-loading message="Loading dashboard..."></app-loading>
+  } @else {
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-4 col-xl">
+        <div class="stat-card">
+          <p class="stat-label">Total Domains</p>
+          <p class="stat-value">{{ totalScans() }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl">
+        <div class="stat-card">
+          <p class="stat-label">Total Pages</p>
+          <p class="stat-value">{{ totalPages() }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl">
+        <div class="stat-card">
+          <p class="stat-label">Total Broken Links</p>
+          <p class="stat-value">{{ totalBrokenLinks() }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl">
+        <div class="stat-card">
+          <p class="stat-label">Total Missing Images</p>
+          <p class="stat-value">{{ totalMissingImages() }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl">
+        <div class="stat-card">
+          <p class="stat-label">Total Deleted</p>
+          <p class="stat-value">{{ totalDeleted() }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex">
+      <a routerLink="/scans" class="btn btn-primary">Go to Scan List</a>
+      <a routerLink="/scans/add" class="btn btn-outline-primary">Add New Scan</a>
+      <a routerLink="/scans/search" class="btn btn-outline-secondary">Search Scans</a>
+    </div>
+  }
+</section>

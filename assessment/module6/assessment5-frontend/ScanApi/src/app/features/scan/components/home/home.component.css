@@ -1,0 +1,83 @@
+:host {
+  display: block;
+}
+
+.system-status-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.status-title {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.status-label {
+  margin: 0;
+  color: #444;
+  font-weight: 600;
+}
+
+.status-value {
+  margin: 0;
+  color: #107c10;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-value.offline {
+  color: #c50f1f;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.green {
+  background: #107c10;
+}
+
+.dot.red {
+  background: #c50f1f;
+}
+
+.status-error {
+  margin: 10px 0 0;
+  color: #c50f1f;
+}
+
+.stat-card {
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+  padding: 16px;
+  background: #f8f9fa;
+  height: 100%;
+}
+
+.stat-label {
+  margin: 0 0 6px;
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #212529;
+}
