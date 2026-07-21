@@ -1,0 +1,29 @@
+{
+  "portfolio_metrics": {
+    "Total Loans": 99,
+    "Total Exposure": 93180000.0,
+    "Outstanding Exposure": 39103565.48,
+    "Default Rate (%)": 33.33,
+    "High Risk Customers": 50
+  },
+  "numpy_metrics": {
+    "Mean Loan Amount": 941212.12,
+    "Median Salary": 97000.0,
+    "75th Percentile Interest Rate": 11.5,
+    "Correlation (Salary vs LoanAmount)": 0.2099,
+    "Standard Deviation (LoanAmount)": 588216.4
+  },
+  "finance_metrics": {
+    "Debt-to-Income Ratio": 9.6977,
+    "Loan Utilization (%)": 41.97,
+    "Default %": 33.33,
+    "NPA %": 25.2,
+    "Average EMI": 12689.9,
+    "Expected Loss": 5865534.82
+  },
+  "record_counts": {
+    "merged_records": 99,
+    "high_risk_customers": 50,
+    "top_20_risky_customers": 20
+  }
+}
