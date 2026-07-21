@@ -1,0 +1,2 @@
+sqlalchemy 
+psychopg2
