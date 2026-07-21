@@ -1,0 +1,12 @@
+<div>
+    <h1>Attribute Directives Demo</h1>
+
+    <div [ngStyle]="{'color': textColor, 'font-size' : fontsize}">
+        <p>Hello Attributes</p>
+
+    </div>
+    
+    <div [ngClass]="marks > 80 ? 'active' : 'inactive'">
+        <p>Marks : {{marks}}</p>
+    </div>
+</div>

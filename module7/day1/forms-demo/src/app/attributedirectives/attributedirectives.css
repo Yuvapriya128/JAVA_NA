@@ -1,0 +1,13 @@
+.selected{
+    background-color: red;
+    font-weight: 55px;
+
+}
+.active{
+    color: green;
+    
+    
+}
+.inactive{
+    color:red;
+}

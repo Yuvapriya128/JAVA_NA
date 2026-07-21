@@ -1,0 +1,25 @@
+<div>
+    <h1>Normal Form</h1>
+
+    <form>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" [(ngModel)]="newCustomer.name" required>
+            
+            <small *ngIf="!newCustomer.name" style="color: red;">Name is required</small>
+             <small *ngIf="newCustomer.name &&  newCustomer.name.length <3 " style="color: red;">Name must be at least 3 characters long</small>
+           
+            </div>
+     
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" [(ngModel)]="newCustomer.age" required>
+            <small *ngIf="!newCustomer.age" style="color: red;">Age is required</small>
+            <small *ngIf="newCustomer.age && newCustomer.age < 18" style="color: red;">Age must be at least 18</small>
+          </div>
+   
+        <button type="submit">Submit</button>
+    </form>
+
+    <pre>{{newCustomer|json}} </pre>
+</div>

@@ -1,0 +1,25 @@
+<div> 
+    <h1>Pipes Demo</h1>
+    <p>String Pipe</p>
+    <p> Default : {{title}}</p>
+    <p> UpperCase : {{title | uppercase}}</p>
+      <p> LowerCase : {{title | lowercase  }}</p>
+        <p> TitleCase : {{title | titlecase}}</p>
+
+
+        <p> Date Pipe</p>
+        <p> Default : {{today | date}}</p>
+        <p> Full Date : {{today | date:'long'}}</p>
+        <p> Short Date : {{today | date:'short'}}</p>
+        <p> Medium Date : {{today | date:'medium'}}</p>
+        <p> dd/MM/yyyy : {{ today | date :'dd/MM/yyyy'}}</p>
+
+        <p> Currency Pipe</p>
+        <p>Default : {{salary | currency}}</p>
+         <p>In Euros : {{salary | currency : 'EUR'}}</p>
+        
+         <p> Decimal Pipe</p>
+         <p>Default : {{salary | number:'1.2-3'}}</p>
+
+         <p>{{newCustomer | json}}</p>
+</div>

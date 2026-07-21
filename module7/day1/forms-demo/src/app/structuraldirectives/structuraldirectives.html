@@ -1,0 +1,44 @@
+<div>
+    <h1>Structural Directives Demo</h1>
+    <div *ngIf="isLogged">
+        Welcome User
+
+    </div>
+    <div *ngIf="!isLogged">
+        Please Login
+    </div>
+
+    
+
+    @if (isLogged) {
+        <p>Welcome User</p>
+    }@else {
+        <p> Please Login</p>
+    }
+
+   <ul *ngFor="let item of employees">
+    <li>{{item}}</li>
+   </ul>
+
+   @for (item of employees; track $index) {
+    <h3>{{item}}</h3>
+   }
+   
+   <div [ngSwitch]="status">
+    <div *ngSwitchCase="'Approved'"><p>Loan Approved</p></div>
+     <div *ngSwitchCase="'Rejected'">Loan Rejected</div>
+    <div *ngSwitchDefault>Default Status</div>
+   </div>
+</div>
+
+@switch (status) {
+    @case ('Approved') {
+        <h3>Loan Approved</h3>
+    }
+    @case ('Rejected') {
+          <h3>Loan Rejected</h3>
+    }
+    @default {
+          <h3>Loan Status is not available</h3>
+    }
+}
