@@ -1,0 +1,59 @@
+<section class="page">
+  <header class="page__header">
+    <h1>Tracks</h1>
+    <a class="btn btn--primary" routerLink="/tracks/create">+ Add Track</a>
+  </header>
+
+  @if (status().loading) {
+    <div class="status status--loading">
+      <img src="loading.svg" alt="Loading tracks" width="64" height="64" />
+      <p>Loading tracks…</p>
+    </div>
+  } @else if (status().error) {
+    <div class="status status--error">
+      <p>{{ status().error }}</p>
+      <button type="button" class="btn btn--primary" (click)="loadTracks()">Retry</button>
+    </div>
+  } @else if (status().success && tracks().length === 0) {
+    <div class="empty-state">
+      <p>No tracks yet.</p>
+      <a class="btn btn--primary" routerLink="/tracks/create">Create your first track</a>
+    </div>
+  } @else if (status().success) {
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Album Name</th>
+            <th>Release Date</th>
+            <th>Play Count</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (track of tracks(); track track.id) {
+            <tr>
+              <td>{{ track.id }}</td>
+              <td>{{ track.title }}</td>
+              <td>{{ track.albumName }}</td>
+              <td>{{ track.releaseDate | date: 'mediumDate' }}</td>
+              <td>{{ track.playCount }}</td>
+              <td class="actions-col">
+                <button
+                  type="button"
+                  class="btn btn--danger"
+                  [disabled]="deletingId() === track.id"
+                  (click)="confirmDelete(track)"
+                >
+                  {{ deletingId() === track.id ? 'Deleting…' : 'Delete' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

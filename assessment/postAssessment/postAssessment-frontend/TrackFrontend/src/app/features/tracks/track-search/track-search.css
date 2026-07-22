@@ -1,0 +1,65 @@
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 520px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.result-card {
+  max-width: 520px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.result-card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.result-card dl {
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.result-card dl > div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 0.5rem;
+}
+
+.result-card dt {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.result-card dd {
+  margin: 0;
+  color: #111827;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #6b7280;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  max-width: 520px;
+}

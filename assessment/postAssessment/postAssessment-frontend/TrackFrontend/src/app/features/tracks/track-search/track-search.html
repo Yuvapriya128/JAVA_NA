@@ -1,0 +1,28 @@
+<section class="page">
+  <header class="page__header">
+    <h1>Search Track</h1>
+  </header>
+
+  <form class="search-bar" [formGroup]="form" (ngSubmit)="search()" novalidate>
+    <input type="text" formControlName="title" placeholder="Enter exact track title" />
+    <button type="submit" class="btn btn--primary" [disabled]="searching()">
+      {{ searching() ? 'Searching…' : 'Search' }}
+    </button>
+  </form>
+
+  @if (result(); as track) {
+    <article class="result-card">
+      <h2>{{ track.title }}</h2>
+      <dl>
+        <div><dt>ID</dt><dd>{{ track.id }}</dd></div>
+        <div><dt>Album</dt><dd>{{ track.albumName }}</dd></div>
+        <div><dt>Release Date</dt><dd>{{ track.releaseDate | date: 'mediumDate' }}</dd></div>
+        <div><dt>Play Count</dt><dd>{{ track.playCount }}</dd></div>
+      </dl>
+    </article>
+  } @else if (notFound()) {
+    <div class="empty-state">
+      <p>Track not found</p>
+    </div>
+  }
+</section>

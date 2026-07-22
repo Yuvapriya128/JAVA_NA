@@ -1,0 +1,60 @@
+<section class="page">
+  <header class="page__header">
+    <h1>Add Track</h1>
+  </header>
+
+  <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" placeholder="Track title" />
+      @if (controlInvalid('title')) {
+        <p class="error">
+          @if (form.controls.title.errors?.['required']) {
+            Title is required.
+          } @else if (form.controls.title.errors?.['minlength']) {
+            Title must be at least 2 characters.
+          }
+        </p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="albumName">Album Name</label>
+      <input id="albumName" type="text" formControlName="albumName" placeholder="Album name" />
+      @if (controlInvalid('albumName')) {
+        <p class="error">Album name is required.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="releaseDate">Release Date</label>
+      <input id="releaseDate" type="date" formControlName="releaseDate" />
+      @if (controlInvalid('releaseDate')) {
+        <p class="error">A valid release date is required.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="playCount">Play Count</label>
+      <input id="playCount" type="number" min="0" step="1" formControlName="playCount" />
+      @if (controlInvalid('playCount')) {
+        <p class="error">
+          @if (form.controls.playCount.errors?.['required']) {
+            Play count is required.
+          } @else {
+            Play count must be an integer of 0 or greater.
+          }
+        </p>
+      }
+    </div>
+
+    <div class="form__actions">
+      <button type="submit" class="btn btn--primary" [disabled]="submitting()">
+        {{ submitting() ? 'Saving…' : 'Create Track' }}
+      </button>
+      <button type="button" class="btn btn--ghost" [disabled]="submitting()" (click)="reset()">
+        Reset
+      </button>
+    </div>
+  </form>
+</section>

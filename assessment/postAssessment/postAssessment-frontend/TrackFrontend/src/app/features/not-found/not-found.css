@@ -1,0 +1,21 @@
+.not-found {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.not-found .code {
+  font-size: 5rem;
+  font-weight: 800;
+  color: #2563eb;
+  margin: 0;
+  line-height: 1;
+}
+
+.not-found h1 {
+  margin: 0.5rem 0;
+}
+
+.not-found .message {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
